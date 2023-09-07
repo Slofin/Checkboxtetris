@@ -1,0 +1,35 @@
+body{
+    height: 100%;
+    background-color: #252f50;
+    }
+
+    h1   {
+    color: #FFFFFF;
+    font-family:verdana;
+    }
+
+    .text-h-center {
+    text-align:center;
+    }
+
+    .text-h-left {
+    text-align:left;
+    }
+  
+    .text-v-center {
+    vertical-align: top;
+    }
+
+    .content{
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .box{
+        width: 33%;
+        height: 98vh;
+        margin: 0px;
+        background-color: #38477A;
+        color: #ffffff;
+;
+    }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<link href="./style.css" rel="stylesheet" type="text/css"/>
+<html>
+
+<body>
+  
+<div class="content text-h-center text-v-center">
+
+  <div class="box">
+    
+    <br><br><br><br>
+    <h3>Drop Speed :<br>
+    <input type="button" id="speed 1" value="1" > 
+    <input type="button" id="speed 2" value="2" >
+    <input type="button" id="speed 3" value="3" >
+    <input type="button" id="speed 4" value="4" >
+    <input type="button" id="speed 5" value="5" >
+    <input type="text" id="speedtext" name="speedT" value="200" disabled>
+    <br><br>
+     Delay Auto Shift (DAS) :<br>
+    <input type="button" id="das 1" value="1" > 
+    <input type="button" id="das 2" value="2" >
+    <input type="button" id="das 3" value="3" >
+    <input type="button" id="das 4" value="4" >
+    <input type="button" id="das 5" value="5" >
+    <input type="text" id="dastext" name="dasT" value=50 disabled>
+    <br><br>
+    Auto Repeat Rate (ARR) :<br>
+    <input type="button" id="arr 1" value="1" > 
+    <input type="button" id="arr 2" value="2" >
+    <input type="button" id="arr 3" value="3" >
+    <input type="button" id="arr 4" value="4" >
+    <input type="button" id="arr 5" value="5" >
+    <input type="text" id="arrtext" name="arrT" value="10" disabled>
+    <br><br>
+    Soft Drop Speed :<br>
+    <input type="button" id="sds 1" value="1" > 
+    <input type="button" id="sds 2" value="2" >
+    <input type="button" id="sds 3" value="3" >
+    <input type="button" id="sds 4" value="4" >
+    <input type="button" id="sds 5" value="5" >
+    <input type="text" id="sdstext" name="sdsT" value="10" disabled>
+    <br><br><br><br><br><br><br>
+
+    <img src="./logo.png" style="width:75%;height:75%;">
+
+
+    <script type="module">
+      import * as checkBoxTetrisGame from './checkBoxTetris.js'
+      checkBoxTetrisGame.init();
+      checkBoxTetrisGame.nextBlock();
+    </script>
+
+    </h3>
+  </div>
+
+  <div class="box">
+  
+      <h1>CheckBoxTetris</h1>
+      <div id="checkboxland"></div>
+      <h1 id="score"></h1>
+      
+  </div>
+
+  <div class="box text-h-left">
+    <br><br><br><br>
+      <h1>
+        [left/right] Move Block <br>
+        [down ] Soft Drop <br> 
+        [Z / X] Spin <br>
+        [Space] Hard Drop <br>
+        [Shift] Hold Block <br>
+      </h1>
+    </div>
+  
+</div>
+
+</body>
+
+</html>
