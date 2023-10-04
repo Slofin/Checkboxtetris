@@ -175,8 +175,8 @@ class Checkboxland {
         const checkedVal = indeterminateVal ? false : Boolean(cellData);
         checkboxEl.style.margin = 0;
         checkboxEl.style.verticalAlign = 'top';
-        checkboxEl.style.width = "30px";
-        checkboxEl.style.height = "30px";
+        checkboxEl.style.width = "24px";
+        checkboxEl.style.height = "24px";
         checkboxEl.type = 'checkbox';
         checkboxEl.tabIndex = '-1';
         checkboxEl.checked = checkedVal;
