@@ -3,6 +3,10 @@ body {
     background-color: #252f50;
 }
 
+html, body {
+    touch-action: manipulation;
+  }
+
 .aspect-ratio {
     position: relative;
     width: 100%;
