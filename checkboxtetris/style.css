@@ -33,11 +33,10 @@ h1 {
     color: #FFFFFF;
     font-family: verdana;
     font-size: larger;
-    
 }
 
 .line-height{
-    line-height : 5px;
+    line-height : 20px;
 }
 
 .text-h-center {
