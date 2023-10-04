@@ -55,11 +55,80 @@ h1 {
     color: #ffffff;
 }
 
+.buttonPhoneHardDrop,
+.buttonPhoneDown,
+.buttonPhoneLeft,
+.buttonPhoneRight,
+.buttonPhoneRotationLeft,
+.buttonPhoneRotationRight,
+.buttonPhoneRotationSwitch{
+    display: none;
+}
+
 @media screen and (max-width: 1170px) {
     .hide-in-phone {
         display: none;
     }
-    .game{
+
+    .game {
         width: 100%;
     }
+
+    .buttonPhoneHardDrop,
+    .buttonPhoneDown,
+    .buttonPhoneLeft,
+    .buttonPhoneRight,
+    .buttonPhoneRotationLeft,
+    .buttonPhoneRotationRight,
+    .buttonPhoneRotationSwitch{
+        display: flex;
+        position: fixed;
+        background-color: #252f50;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        justify-content: center;
+        align-items: center;
+        font-size:xx-large;
+        color:white;
+        user-select: none;
+        padding:  0;
+        width: 20%;
+        height: 10%;
+    }
+
+    .buttonPhoneHardDrop {
+        bottom: 10%;
+        right: 20%;
+    }
+
+    .buttonPhoneDown {
+        bottom: 0%;
+        right: 20%;
+    }
+
+    .buttonPhoneLeft {
+        bottom: 0%;
+        right: 40%;
+    }
+
+    .buttonPhoneRight {
+        bottom: 0%;
+        right: 0%;
+    }
+
+    .buttonPhoneRotationLeft {
+        bottom: 0%;
+        right: 80%;
+    }
+
+    .buttonPhoneRotationRight {
+        bottom: 0%;
+        right: 60%;
+    }
+    .buttonPhoneRotationSwitch {
+        bottom: 10%;
+        right: 80%;
+    }
+
 }
