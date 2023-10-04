@@ -67,6 +67,7 @@ h1 {
 .buttonPhoneRotationRight,
 .buttonPhoneRotationSwitch{
     display: none;
+    touch-action: manipulation;
 }
 
 @media screen and (max-width: 1170px) {
@@ -85,6 +86,7 @@ h1 {
     .buttonPhoneRotationLeft,
     .buttonPhoneRotationRight,
     .buttonPhoneRotationSwitch{
+        touch-action: manipulation;
         display: flex;
         position: fixed;
         background-color: #252f50;
@@ -93,7 +95,7 @@ h1 {
         background-position: center;
         justify-content: center;
         align-items: center;
-        font-size:xx-large;
+        font-size:40px;
         color:white;
         user-select: none;
         padding:  0;
