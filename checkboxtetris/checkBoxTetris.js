@@ -223,6 +223,24 @@ elementsArrayButton.forEach(function (e) {
   }
 })
 
+document.addEventListener('gesturestart', function(e) {
+  e.preventDefault();
+  // special hack to prevent zoom-to-tabs gesture in safari
+  document.body.style.zoom = 0.99;
+});
+
+document.addEventListener('gesturechange', function(e) {
+  e.preventDefault();
+  // special hack to prevent zoom-to-tabs gesture in safari
+  document.body.style.zoom = 0.99;
+});
+
+document.addEventListener('gestureend', function(e) {
+  e.preventDefault();
+  // special hack to prevent zoom-to-tabs gesture in safari
+  document.body.style.zoom = 0.99;
+});
+
 const Shapes = {
   ZShape: [[0, -1], [0, 0], [1, 0], [1, 1]], // 0
   SShape: [[1, -1], [0, 0], [1, 0], [0, 1]], // 1 
@@ -232,7 +250,6 @@ const Shapes = {
   LShape: [[0, -1], [0, 0], [0, 1], [1, -1]], // 5
   JShape: [[0, -1], [0, 0], [0, 1], [1, 1]], // 6
 };
-
 
 function init(existingCbl) {
   cbl = !!existingCbl ? existingCbl : new Checkboxland({ dimensions });
