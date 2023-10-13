@@ -326,7 +326,7 @@ function keyboardboard() {
     DASTimer++;
     ARRTimer++;
 
-
+    
   }
 
   if (map[32] && hardDropHold == false) { hardDrop(); }
@@ -384,6 +384,8 @@ function redrawGameMap() {
   else {
     console.log("gameover");
     clearTimeout(intervalId);
+
+
   }
 
   cbl.setData(corner);
