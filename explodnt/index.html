@@ -26,6 +26,8 @@
         }
 
         .divMiddle {
+            animation-iteration-count:1;
+            animation-fill-mode: inherit;
             visibility: hidden;
             display: flex;
             flex-wrap:wrap;
@@ -38,16 +40,15 @@
             font-size: larger;
             justify-content: center;
             color: white;
-            animation-fill-mode: forwards;
 
-            border: 1px rgb(255, 255, 255) solid;
+            /* border: 1px rgb(255, 255, 255) solid; */
         }
         .divBomb{
             display: inline-block;
-            margin: 0px;
+            margin: 1% 0.5% 0% 0.5%;
             padding: 0px;
-            width:33%;
-            height:49%;
+            width:32%;
+            height:47%;
             border: 1px rgb(255, 255, 255) solid;
         }
 
@@ -78,11 +79,12 @@
         }
 
         @keyframes fadeInn{
+            
             0% {
                 opacity: 0;
-                visibility: visible;
+                visibility:hidden;
             }
-            100% {
+            99.999999% {
                 opacity: 1;
                 visibility: visible;
             }
@@ -111,7 +113,7 @@
     </div>
 
     <!-- 這是炸彈 -->
-    <div class="divMiddle" style="height: 60%;width: 60%; " id="divBomb">
+    <div class="divMiddle" style="height: 70%;width: 60%; border: 3px rgb(255, 255, 255) solid; " id="divBomb">
         <div class="divBomb"></div>
         <div class="divBomb"></div>
         <div class="divBomb"></div>
@@ -119,9 +121,6 @@
         <div class="divBomb"></div>
         <div class="divBomb"></div>
     </div>
-
-
-    <script>console.log(document.getElementById("initButton").style);</script>
     <script src="./game.js"></script>
 
 </body>
