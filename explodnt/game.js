@@ -5,6 +5,10 @@ function setStyle( objId, propertyObject )
     elem.style[property] = propertyObject[property];
 }
 
+console.log(document.getElementById("startText").style);
+
 function gameStart() {
     setStyle("initButton",{'visibility':'hidden'});
+    setStyle("startText",{'animation':'fadeInAndOut 5s'});
+    setStyle("divBomb",{'animation':'fadeInn 3s'});
 }
