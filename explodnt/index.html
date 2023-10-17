@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/transition.css">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(20, 20, 35);
+        }
+
+        .divInitButton {
+            display: flex;
+            position: fixed;
+            width: 20%;
+            height: 10%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* border: 3px rgb(255, 255, 255) solid; */
+            font-size: larger;
+            justify-content: center;
+            color: white;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div class="divInitButton" id="initButton">
+        <button onclick="gameStart()" style="width: 100%;">Start</button>
+    </div>
+
+    <script>console.log(document.getElementById("initButton").style);</script>
+    <script src="./game.js"></script>
+    
+</body>
+
+</html>
