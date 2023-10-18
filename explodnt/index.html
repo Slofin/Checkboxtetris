@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../css/transition.css">
     <title>Document</title>
     <style>
+        html,
+        body {
+            overflow: hidden;
+        }
+
         body {
             background-color: rgb(20, 20, 35);
         }
@@ -26,11 +31,11 @@
         }
 
         .divMiddle {
-            animation-iteration-count:1;
-            animation-fill-mode: inherit;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
             visibility: hidden;
             display: flex;
-            flex-wrap:wrap;
+            flex-wrap: wrap;
             gap: 3px 0px;
             position: fixed;
             width: 20%;
@@ -41,19 +46,64 @@
             font-size: larger;
             justify-content: center;
             color: white;
-            line-height:0%;
+            line-height: 0%;
 
             /* border: 1px rgb(255, 255, 255) solid; */
         }
-        .divBomb{
+
+        .divBomb {
             display: inline-block;
             margin: 0.5% 0.5% 0.5% 0.5%;
             padding: 0px;
-            width:32%;
-            height:48%;
+            width: 32%;
+            height: 47%;
             border: 1px rgb(255, 255, 255) solid;
         }
 
+        .divInsidebomb {
+            display: inline-block;
+            position: fixed;
+            width: 5%;
+            height: 5%;
+            font-size: larger;
+            justify-content: center;
+            color: white;
+
+            /* border: 1px red solid; */
+        }
+
+        #divBackground {
+            width: 100vw;
+            height: 100vh;
+            background-image: url(./logo.png);
+            position: absolute;
+            background-position: 50% 150%;
+        }
+
+        #divRightBottomButton {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            bottom: 0px;
+            right: 0px;
+            background-image: url(../img/car.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        #divRightBottomButton:hover~#divRightBottomButtonText {
+            position: fixed;
+            width: 100px;
+            height: 20px;
+            bottom: 87px;
+            right: 0px;
+            text-align: center;
+            color: white;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
 
         @keyframes fadeInAndOut {
             0% {
@@ -80,48 +130,84 @@
 
         }
 
-        @keyframes fadeInn{
-            
+        @keyframes fade-in {
+
             0% {
                 opacity: 0;
-                visibility:hidden;
+                visibility: hidden;
             }
+
             99.999999% {
                 opacity: 1;
                 visibility: visible;
             }
+
             100% {
                 visibility: visible;
             }
 
         }
 
+        @keyframes fade-out {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
 
+            99.99999% {
+                visibility: visible;
+            }
+
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
     </style>
 
 </head>
 
 <body>
-    
+    <!-- 背景，但是遊戲開始之後會淡出所以要分開寫 -->
+    <div id="divBackground"></div>
+
+    <!-- 右下的按鈕，現階段先用來skip開場白，之後改成上一頁 -->
+    <a href="../" id="divRightBottomButton"></a>
+    <!-- <button id="divRightBottomButton" onclick="skipIntro()" style="background-color:rgba(255, 255, 255, 0);"></button> -->
+    <div id="divRightBottomButtonText" style="user-select: none;">回到首頁</div>
 
     <!-- 這是一開始的開始遊戲按鈕 -->
     <div class="divInitButton" id="initButton">
-        <button onclick="gameStart()" style="width: 100%;">Start</button>
+        <button onclick="gameStartButton()" style="width: 100%;font-size: 24px;">開始</button>
     </div>
 
     <!-- 這是按下按鈕之後出現的警告字眼 -->
-    <div class="divMiddle" id="startText" style="width: 100%;height:15%;font-size: 48px;color: red;">
-    警告：你不可以觀看拆彈手冊
+    <div class="divMiddle" id="startText" style="width: 100%;height:15%;font-size: 48px;color: red;user-select: none;">
+        警告：你不可以觀看拆彈手冊
     </div>
 
     <!-- 這是炸彈 -->
-    <div class="divMiddle" style="height: 75%;width: 60%; border: 3px rgb(255, 255, 255) solid; " id="divBomb">
-        <div class="divBomb"></div>
-        <div class="divBomb"></div>
-        <div class="divBomb"></div>
-        <div class="divBomb"></div>
-        <div class="divBomb"></div>
-        <div class="divBomb"></div>
+    <div class="divMiddle" style="height: 70%;width: 60%; border: 2px rgb(255, 255, 255) solid; " id="divBomb">
+        <div class="divBomb" id="divBomb1">
+            <div class="divInsidebomb" style="left:2%; top:10%; width:28%; text-align: center;">
+                <input type="text" id="" value="EEEEEE" style="font-size: 20px;width:100%;height: 100%;text-align: center;">
+            </div>
+            <div class="divInsidebomb" style="left:2%; top:18%; width:28%; text-align: center;">
+                <input type="text" id="" value="EEEEEE" style="font-size: 20px;width:100%;height: 100%;text-align: center;">
+            </div>
+            <div class="divInsidebomb" style="left:2%; top:26%; width:28%; text-align: center;">
+                <input type="text" id="" value="EEEEEE" style="font-size: 20px;width:100%;height: 100%;text-align: center;">
+            </div>
+            <div class="divInsidebomb" style="left:2%; top:40%; width:29%; text-align: center; ">
+                <button onclick="submitBomb()">提交</button>
+            </div>
+        </div>
+
+        <div class="divBomb" id="divBomb2">2</div>
+        <div class="divBomb" id="divBomb3">3</div>
+        <div class="divBomb" id="divBomb4">4</div>
+        <div class="divBomb" id="divBomb5">5</div>
+        <div class="divBomb" id="divBomb6">6</div>
     </div>
     <script src="./game.js"></script>
 
