@@ -18,7 +18,6 @@ function bombQuest(id, question, answer, whereBomb, bombType) {
     this.whereBomb = whereBomb;
     this.bombType = bombType;
 }
-//
 
 // 藉由 Id 抓 html 改變 css 樣式的方便代碼
 function setStyle(objId, propertyObject) {
@@ -27,6 +26,7 @@ function setStyle(objId, propertyObject) {
         elem.style[property] = propertyObject[property];
 }
 
+// 跳過開場動畫，Debug用
 function skipIntro() {
     // 我不寫這個會可能等Intro等到死掉
 
@@ -43,6 +43,7 @@ function skipIntro() {
 
 }
 
+// 開始按鈕被按下之後
 function gameStartButton() {
 
     // 這裡你按下了開始按鈕
@@ -59,6 +60,7 @@ function gameStartButton() {
     }, 4000);
 
 }
+
 //設定一個炸彈
 function setBomb(bombDiv, bombType) {
     var bombText;
@@ -72,9 +74,9 @@ function setBomb(bombDiv, bombType) {
             //
             // 規則：
             // 
-            // 該模塊會有三個被 "e","E","1" 填滿的文字方塊
+            // 該模塊會有兩個被 "e","E","1" 填滿的文字方塊
             // 要成功拆除這個模組，就需要根據條件改變字串
-            // 三個字串都必須答對才會拆除，若答錯就會重置該區塊。
+            // 兩個字串都必須答對才會拆除，若答錯就會重置該區塊。
             // 
             // 條件：                                          應對：
             // 如果該字串長度為 8，                            刪除該字串所有的 E。               
@@ -89,7 +91,7 @@ function setBomb(bombDiv, bombType) {
             // 這會顯示在文字方塊上作為提示。   
 
             var questions = [];
-            for (k = 0; k <= 2; k++) {
+            for (k = 0; k <= 1; k++) {
                 var question = '';
                 var loop = Math.floor(Math.random() * 4) + 5; // 5~8
                 var choice;
@@ -109,9 +111,8 @@ function setBomb(bombDiv, bombType) {
             }
 
             //這裡生成解答
-
             var answers = [];
-            for (k = 0; k <= 2; k++) {
+            for (k = 0; k <= 1; k++) {
 
                 //答案向下覆蓋
                 var answer = ""; // 否則，將該字串刪除。 優先度 5
@@ -166,16 +167,22 @@ function setBomb(bombDiv, bombType) {
                 answers[k] = answer;
             }
 
+            // console.log(questions[0], answers[0]);
+            // console.log(questions[1], answers[1]);
+
             //設定這個炸彈的數值與答案
-            bombId[bombIdCount] = new bombQuest(bombIdCount, questions[0], answers[0], bombDiv, bombType);
-            bombId[bombIdCount + 1] = new bombQuest(bombIdCount + 1, questions[1], answers[1], bombDiv, bombType);
-            bombId[bombIdCount + 2] = new bombQuest(bombIdCount + 2, questions[2], answers[2], bombDiv, bombType);
+            bombId.push(new bombQuest(bombIdCount, questions[0], answers[0], bombDiv, bombType));
+            bombId.push(new bombQuest(bombIdCount + 1, questions[1], answers[1], bombDiv, bombType));
+            // bombId.push(new bombQuest(bombIdCount + 2, questions[2], answers[2], bombDiv, bombType));
 
             //這裡寫入炸彈的 html，這沒辦法換行。
-            bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount].id + '" value="' + bombId[bombIdCount].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 1].id + '" value="' + bombId[bombIdCount + 1].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 2].id + '" value="' + bombId[bombIdCount + 2].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button onclick="submitBomb(' + bombId[bombIdCount].whereBomb + ')" style="font-size:24px; width:120%;">提交</button> </div>';
+            bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombIdCount + '" value="' + questions[0] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + (bombIdCount + 1) + '" value="' + questions[1] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button onclick="submitBomb(' + bombDiv + ')" style="font-size:24px; width:120%;">提交</button> </div>';
+
+            // 三個文字方塊的html
+            // bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombIdCount + '" value="' + questions[0] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + (bombIdCount + 1) + '" value="' + questions[1] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + (bombIdCount + 2) + '" value="' + questions[2] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button onclick="submitBomb(' + bombDiv + ')" style="font-size:24px; width:120%;">提交</button> </div>';
 
             //把 bombIdCount 往前推避免重疊
-            bombIdCount += 3;
+            bombIdCount += 2;
 
             break; //好不容易寫完了，但別忘了這裡是在 switch case 裡面
         }
@@ -193,9 +200,8 @@ function setBomb(bombDiv, bombType) {
 
 //驗證某顆炸彈，由按鈕觸發
 function submitBomb(bombDivForSolveCheck) {
-    var correct = true;
-    this.bombDivForSolveCheck = bombDivForSolveCheck;
 
+    var correct = true;
     //這裡用 forEach 找到按鈕觸發的所有問題
     bombId.forEach(e => {
 
@@ -218,14 +224,43 @@ function submitBomb(bombDivForSolveCheck) {
                 }
             }
         }
+
     });
 
-    if(correct){
-        bomb[bombDivForSolveCheck].innerHTML = '';
+    if (correct) {
+        //動畫：炸彈被拆除之後掉落
+        var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
+        setStyle(styleSelector, {
+            "animation": "bombDrop 1.5s",
+            "pointer-events": "none",
+            "animation-fill-mode": "forwards"
+        });
+        //刪除掉炸彈
+        setTimeout(function () {
+            bomb[bombDivForSolveCheck].innerHTML = '';
+        }, 2000);
     }
-    else{
-        bomb[bombDivForSolveCheck].style='pointer-events:none';
-        bomb[bombDivForSolveCheck].style='animation:bombDrop 1s';
+    else {
+        //這裡要因為錯誤而重置題目 
+        var arrayShiftTime = 0;
+
+        bombId.forEach(e => {
+            if (e.whereBomb == bombDivForSolveCheck) {
+                bombTypeTemp = e.bombType;
+                bombId[e.id].whereBomb = -1;
+            }
+        })
+
+        bomb[bombDivForSolveCheck].innerHTML = '';
+        setBomb(bombDivForSolveCheck, bombTypeTemp);
+
+        var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
+        setStyle(styleSelector, {
+            "animation": "bombShake 0.5s",
+            "animation-fill-mode": "none",
+        });
+        setTimeout(function () { setStyle(styleSelector, { "animation": "" }); }, 500);
+
     }
     correct ? console.log("沒炸") : console.log("炸了");
 
@@ -247,13 +282,12 @@ function Bag() {
     }
 }
 
-
 //光速跳過開場
-skipIntro();    
+// skipIntro();
 
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
-Bag();          
+Bag();
 
 //放炸彈
 setBomb(randomOrder[0], 1);
-setBomb(randomOrder[1], 1);
+
