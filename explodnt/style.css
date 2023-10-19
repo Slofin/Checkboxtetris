@@ -69,6 +69,7 @@ body {
     background-image: url(./logo.png);
     position: absolute;
     background-position: 50% 150%;
+    background-repeat: no-repeat;
 }
 
 #divRightBottomButton {
@@ -153,4 +154,15 @@ body {
         opacity: 0;
         visibility: hidden;
     }
+}
+
+@keyframes bombDrop {
+
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(10deg);
+    }
+
 }

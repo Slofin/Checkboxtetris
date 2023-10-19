@@ -9,6 +9,7 @@ document.getElementById("divBomb6"),];
 
 var bombId = [];
 var bombIdCount = 0;
+var randomOrder = [];
 
 function bombQuest(id, question, answer, whereBomb, bombType) {
     this.id = id;
@@ -64,6 +65,8 @@ function setBomb(bombDiv, bombType) {
     switch (bombType) {
         case 1: {
 
+            // -----------------------------------------------------------
+
             // 炸彈模塊 【"E"生在哪】
             // 這裡有好多1...E..小寫e? 
             //
@@ -76,9 +79,11 @@ function setBomb(bombDiv, bombType) {
             // 條件：                                          應對：
             // 如果該字串長度為 8，                            刪除該字串所有的 E。               
             // 否則，如果該字串有兩個相連的 E，                 該字串所有的 e 更換為 E。
-            // 否則，如果該字串的 e, E, 1 三者只有其中兩個，    將該字串尾端新增一個缺失的字。(如果只有 e 和 E，新增一個1在尾端)。
-            // 否則，如果該字串的數字跟字母一樣多，             如果開頭是數字，將該字串所有 E 和 e 刪除。否則刪除該字串所有數字。
+            // 否則，如果該字串的 e, E, 1 三者只有其中兩種，    將該字串尾端新增一個缺失的字。(如果只有 e 和 E，新增一個1在尾端)。
+            // 否則，如果該字串的數字跟字母一樣多(字母包含E和e)，如果開頭是數字，將該字串所有 E 和 e 刪除。否則刪除該字串所有數字。
             // 否則，                                          將該字串刪除。
+
+            // -----------------------------------------------------------
 
             // 這一段生成由 "e","E","1" 組成，長度為 5~8 的字串的陣列[0,1,2]
             // 這會顯示在文字方塊上作為提示。   
@@ -104,21 +109,78 @@ function setBomb(bombDiv, bombType) {
             }
 
             //這裡生成解答
-            
-            console.log(questions[0].match(/e/));
 
+            var answers = [];
+            for (k = 0; k <= 2; k++) {
+
+                //答案向下覆蓋
+                var answer = ""; // 否則，將該字串刪除。 優先度 5
+
+                //如果該字串的數字跟字母一樣多 優先度 4
+                var questionNumCounts = questions[k].match(/(1)/g);
+                var questionFontCounts = questions[k].match(/(e|E)/g);
+
+                //如果沒有0或Ee他會null
+                if (questionNumCounts == null) {
+                    questionNumCounts = 0;
+                }
+                if (questionFontCounts == null) {
+                    questionFontCounts = 0;
+                }
+
+                if (questionNumCounts.length == questionFontCounts.length) {
+                    if (questions[k].match(/^(e|E)/)) {
+                        answer = questions[k].replace(/1/g, '');
+                    }
+                    else if (questions[k].match(/^1/)) {
+                        answer = questions[k].replace(/(E|e)/g, '');
+                    }
+                    else {
+                        alert("可能哪裡出錯了");
+                    }
+                }
+
+
+                // 如果該字串的 e, E, 1 三者只有其中兩種 優先度 3
+                // 用 Set 抓唯一值，並驗證缺失了其中一種
+                var questionSet = Array.from(new Set(questions[k]));
+                if (questionSet[2] == undefined) {
+                    var lost = "Ee1";
+                    questionSet.forEach(e => {
+                        lost = lost.replace(e, '');
+                    });
+                    answer = questions[k] + lost;
+                }
+
+
+                //如果該字串有兩個相連的 E 優先度 2
+                if (questions[k].match(/E{2}/)) {
+                    answer = questions[k].replace(/e/g, 'E'); // 這裡用 /e/g ，正規表示式會抓到全部的小寫e
+                }
+
+                //如果該字串長度為 8 優先度 1
+                if (questions[k].match(/^(e|E|1){8}$/)) {
+                    answer = questions[k].replace(/E/g, ''); //  刪除該字串所有的 E。
+                }
+
+                answers[k] = answer;
+            }
 
             //設定這個炸彈的數值與答案
-            bombId[bombIdCount] = new bombQuest("divBomb1-1", questions[0], "1", bombDiv, bombType);
-            bombId[bombIdCount + 1] = new bombQuest("divBomb1-2", questions[1], "2", bombDiv, bombType);
-            bombId[bombIdCount + 2] = new bombQuest("divBomb1-3", questions[2], "3", bombDiv, bombType);
+            bombId[bombIdCount] = new bombQuest(bombIdCount, questions[0], answers[0], bombDiv, bombType);
+            bombId[bombIdCount + 1] = new bombQuest(bombIdCount + 1, questions[1], answers[1], bombDiv, bombType);
+            bombId[bombIdCount + 2] = new bombQuest(bombIdCount + 2, questions[2], answers[2], bombDiv, bombType);
 
             //這裡寫入炸彈的 html，這沒辦法換行。
-            bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount].id + '" value="' + bombId[bombIdCount].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 1].id + '" value="' + bombId[bombIdCount + 1].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 2].id + '" value="' + bombId[bombIdCount + 2].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:36%; top:50%; width:29%; text-align: center; "> <button onclick="submitBomb(' + bombId[bombIdCount].whereBomb + ')">提交</button> </div>';
+            bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount].id + '" value="' + bombId[bombIdCount].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 1].id + '" value="' + bombId[bombIdCount + 1].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombId[bombIdCount + 2].id + '" value="' + bombId[bombIdCount + 2].question + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button onclick="submitBomb(' + bombId[bombIdCount].whereBomb + ')" style="font-size:24px; width:120%;">提交</button> </div>';
 
             //把 bombIdCount 往前推避免重疊
             bombIdCount += 3;
 
+            break; //好不容易寫完了，但別忘了這裡是在 switch case 裡面
+        }
+
+        case 2: {
             break;
         }
         default: {
@@ -127,25 +189,20 @@ function setBomb(bombDiv, bombType) {
     }
 
     bomb[bombDiv].innerHTML = bombText;
-    // console.log(bomb[bombDiv].innerHTML);
 }
 
 //驗證某顆炸彈，由按鈕觸發
 function submitBomb(bombDivForSolveCheck) {
-
     var correct = true;
-
     this.bombDivForSolveCheck = bombDivForSolveCheck;
-    console.log(bombDivForSolveCheck);
-
 
     //這裡用 forEach 找到按鈕觸發的所有問題
     bombId.forEach(e => {
-        console.log(e.answer);
-        //console.log(e.bombType);
-        console.log(document.getElementById(e.id).value);
+
         //先抓是哪一顆炸彈被觸發解答了
         if (e.whereBomb == bombDivForSolveCheck) {
+            // console.log(`題目為:${e.question}`);
+            // console.log(`答案為:${e.answer}`);
             switch (e.bombType) {
                 case 1: {
                     if (e.answer == document.getElementById(e.id).value) {
@@ -163,13 +220,40 @@ function submitBomb(bombDivForSolveCheck) {
         }
     });
 
+    if(correct){
+        bomb[bombDivForSolveCheck].innerHTML = '';
+    }
+    else{
+        bomb[bombDivForSolveCheck].style='pointer-events:none';
+        bomb[bombDivForSolveCheck].style='animation:bombDrop 1s';
+    }
     correct ? console.log("沒炸") : console.log("炸了");
 
 }
 
+// 用來生產0~5，不重複數字的隨機陣列
+function Bag() {
+    var nums = [0, 1, 2, 3, 4, 5],
+        ranNums = [],
+        i = nums.length,
+        j = 0;
+    if (randomOrder.length <= 6) {
+        while (i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            ranNums.push(nums[j]);
+            nums.splice(j, 1);
+        }
+        ranNums.forEach(e => randomOrder.push(e));
+    }
+}
 
 
-skipIntro();
+//光速跳過開場
+skipIntro();    
 
-setBomb(Math.floor(Math.random() * 6), 1);
+//生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
+Bag();          
 
+//放炸彈
+setBomb(randomOrder[0], 1);
+setBomb(randomOrder[1], 1);
