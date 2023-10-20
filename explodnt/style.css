@@ -97,6 +97,46 @@ body {
     background-position: center;
 }
 
+.roundButton {
+
+    position: relative;
+    left:25%;
+    top:20%;
+
+    
+    border: none;
+    padding: 5px;
+    font-size: 24px;
+    height: 58%;
+    width: 48%;
+    box-shadow: 0 6px 4px darkslategray;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    border-radius: 70%;
+}
+
+.roundButtonBlue{
+    background-color:dodgerblue;
+    color: white;
+}
+.roundButtonRed{
+    background-color:red;
+    color: white;
+}
+.roundButtonGreen{
+    background-color:forestgreen;
+    color: white;
+}
+.roundButtonYellow{
+    background-color:yellow;
+    color: black;
+}
+
+.roundButton:active {
+    box-shadow: 0 0 4px darkslategray;
+    transform: translateY(6px);
+}
+
 @keyframes fadeInAndOut {
     0% {
         opacity: 0;

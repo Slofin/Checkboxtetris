@@ -7,16 +7,19 @@ document.getElementById("divBomb4"),
 document.getElementById("divBomb5"),
 document.getElementById("divBomb6"),];
 
+var bombTimer = [];
 var bombId = [];
 var bombIdCount = 0;
 var randomOrder = [];
 
-function bombQuest(id, question, answer, whereBomb, bombType) {
-    this.id = id;
-    this.question = question;
-    this.answer = answer;
-    this.whereBomb = whereBomb;
-    this.bombType = bombType;
+class bombQuest {
+    constructor(id, question, answer, whereBomb, bombType) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.whereBomb = whereBomb;
+        this.bombType = bombType;
+    }
 }
 
 // 藉由 Id 抓 html 改變 css 樣式的方便代碼
@@ -63,9 +66,9 @@ function gameStartButton() {
 
 //設定一個炸彈
 function setBomb(bombDiv, bombType) {
-    var bombText;
+    var bombText = "";
     switch (bombType) {
-        case 1: {
+        case 1: {//炸彈模塊 【"E"生在哪】
 
             // -----------------------------------------------------------
 
@@ -187,7 +190,58 @@ function setBomb(bombDiv, bombType) {
             break; //好不容易寫完了，但別忘了這裡是在 switch case 裡面
         }
 
-        case 2: {
+        case 2: {//炸彈模塊 【按鈕】
+
+            // -----------------------------------------------------------
+            //
+            // 炸彈模塊 【按鈕】
+            // 只要是炸彈那就少不了按鈕的，接受現實吧。
+            // 
+            // 
+            // 
+            // -----------------------------------------------------------
+
+
+            var questions = [];
+            var answers = [];
+
+            const question0List = ["按鈕", "藍色", "紅色", "綠色", "黃色", "你說什麼", "我不知道", "按我", "爆炸"];
+            questions[0] = question0List[Math.floor(Math.random() * question0List.length)];
+
+            const question1List = ["Blue", "Red", "Green", "Yellow"];
+            questions[1] = question1List[Math.floor(Math.random() * question1List.length)];
+
+            // switch (Math.floor(Math.random() * 4)) {
+            //     case 0:{
+            //         questions[1] = "Blue";
+            //         break;
+            //     }
+            //     case 1:{
+            //         questions[1] = "Red";
+            //         break;
+            //     }
+            //     case 2:{
+            //         questions[1] = "Green";
+            //         break;
+            //     }
+            //     case 3:{
+            //         questions[1] = "Yellow";
+            //         break;
+            //     }
+            //     default:{
+            //         questions[1] = "Yellow";
+            //         break;
+            //     }
+            // }
+
+
+            // 區分大小寫
+
+            bombText += `<button id="${bombIdCount}" class="roundButton roundButton${questions[1]}" onmousedown="submitBomb(${bombDiv})">${questions[0]}</button>`;
+            bombId.push(new bombQuest(bombIdCount, questions[0], 10, bombDiv, bombType));
+            bombId.push(new bombQuest(bombIdCount + 1, questions[1], 0, bombDiv, -1));
+
+            bombIdCount += 2;
             break;
         }
         default: {
@@ -195,6 +249,7 @@ function setBomb(bombDiv, bombType) {
         }
     }
 
+    // $(`#${bomb[bombDiv].id}`).html(bombText);
     bomb[bombDiv].innerHTML = bombText;
 }
 
@@ -213,11 +268,31 @@ function submitBomb(bombDivForSolveCheck) {
                 case 1: {
                     if (e.answer == document.getElementById(e.id).value) {
                         console.log("答對");
+                        bombTrigger(true,bombDivForSolveCheck);
                     }
                     else {
                         console.log("答錯");
-                        correct = false;
+                        bombTrigger(false,bombDivForSolveCheck);
                     }
+                    break;
+                }
+
+                case 2: {
+                    bombId[e.id+1].answer++;
+                    console.log(bombId[e.id+1].answer);
+
+                    clearTimeout(bombTimer[e.id]);
+                    bombTimer[e.id] = setTimeout(function(){
+                        if (e.answer == bombId[e.id+1].answer) {
+                            console.log("答對");
+                            bombTrigger(true,bombDivForSolveCheck);
+                        }
+                        else {
+                            console.log("答錯");
+                            bombTrigger(false,bombDivForSolveCheck);
+                        }
+                    },1000);
+                    break;
                 }
                 default: {
                     break;
@@ -227,7 +302,12 @@ function submitBomb(bombDivForSolveCheck) {
 
     });
 
-    if (correct) {
+
+
+}
+
+function bombTrigger(solved,bombDivForSolveCheck) {
+    if (solved) {
         //動畫：炸彈被拆除之後掉落
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
         setStyle(styleSelector, {
@@ -246,7 +326,9 @@ function submitBomb(bombDivForSolveCheck) {
 
         bombId.forEach(e => {
             if (e.whereBomb == bombDivForSolveCheck) {
-                bombTypeTemp = e.bombType;
+                if(e.bombType!=-1){
+                    bombTypeTemp = e.bombType;
+                }
                 bombId[e.id].whereBomb = -1;
             }
         })
@@ -262,11 +344,11 @@ function submitBomb(bombDivForSolveCheck) {
         setTimeout(function () { setStyle(styleSelector, { "animation": "" }); }, 500);
 
     }
-    correct ? console.log("沒炸") : console.log("炸了");
 
+    solved ? console.log("沒炸") : console.log("炸了");
 }
 
-// 用來生產0~5，不重複數字的隨機陣列
+// 用來生產0~5，不重複數字的隨機陣列（這是從自己另一款遊戲抓過來的）
 function Bag() {
     var nums = [0, 1, 2, 3, 4, 5],
         ranNums = [],
@@ -283,11 +365,16 @@ function Bag() {
 }
 
 //光速跳過開場
-// skipIntro();
+skipIntro();
 
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
 Bag();
 
 //放炸彈
+// setBomb(randomOrder[0], 1);
 setBomb(randomOrder[0], 1);
+setBomb(randomOrder[1], 2);
+
+
+
 

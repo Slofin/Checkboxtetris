@@ -10,7 +10,7 @@
     
     <div class="divMiddle" style="height: 70%;width: 60%; border: 2px rgb(255, 255, 255) solid; visibility: visible;" id="divBomb">
         <div class="divBomb" id="divBomb1">
-            <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;">
+            <!-- <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;">
                 <input type="text" id="" value="EEEEEE" style="font-size: 20px;width:100%;height: 100%;text-align: center;">
             </div>
             <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;">
@@ -21,10 +21,12 @@
             </div>
             <div class="divInsidebomb" style="left:36%; top:50%; width:29%; text-align: center; ">
                 <button onclick="submitBomb()">提交</button>
-            </div>
+            </div> -->
         </div>
 
-        <div class="divBomb" id="divBomb2">2</div>
+        <div class="divBomb" id="divBomb2">
+            <button class="roundButton"></button>
+        </div>      
         <div class="divBomb" id="divBomb3">3</div>
         <div class="divBomb" id="divBomb4">4</div>
         <div class="divBomb" id="divBomb5">5</div>
@@ -36,7 +38,7 @@
 </html>
 
 
-<div class="divBomb" id="divBomb1">
+<!-- <div class="divBomb" id="divBomb1">
     <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;">
         <input type="text" id="'+bombId[bombIdCount].id+'" value="'+bombId[bombIdCount].question+'" style="font-size: 20px;width:100%;height: 100%;text-align: center;">
     </div>
@@ -49,6 +51,5 @@
     <div class="divInsidebomb" style="left:36%; top:50%; width:29%; text-align: center; ">
         <button onclick="submitBomb('+bombId[bombIdCount].whereBomb+')">提交</button>
     </div>
-</div>
+</div> -->
 
-'<div class="divBomb" id="divBomb1"> <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="'+bombId[bombIdCount].id+'" value="'+bombId[bombIdCount].question'"+ style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="'+bombId[bombIdCount+1].id+'" value="'+bombId[bombIdCount+1].question'"+ style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="'+bombId[bombIdCount+2].id+'" value="'+bombId[bombIdCount+2].question'"+ style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:36%; top:50%; width:29%; text-align: center; "> <button onclick="submitBomb('+bombId[bombIdCount].whichBomb+')">提交</button> </div> </div>'
