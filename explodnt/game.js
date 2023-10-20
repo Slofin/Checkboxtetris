@@ -1,5 +1,5 @@
-//先簡化這些炸彈
-//這樣你就可以 Bomb[0].classList.add("red");
+//簡化這些炸彈
+//就可以 Bomb[0].classList.add("red");
 var bomb = [document.getElementById("divBomb1"),
 document.getElementById("divBomb2"),
 document.getElementById("divBomb3"),
@@ -7,18 +7,19 @@ document.getElementById("divBomb4"),
 document.getElementById("divBomb5"),
 document.getElementById("divBomb6"),];
 
-var bombTimer = [];
-var bombId = [];
-var bombIdCount = 0;
-var randomOrder = [];
+var bombTimer = [];     // 當炸彈有時間執行參數時，會被放在這裡
+var bombId = [];        // 用來存放各種 bombQuest
+var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
+var bombIdCount = 0;    // 用來存放id
 
+// 一個炸彈由以下五個值組合：
 class bombQuest {
     constructor(id, question, answer, whereBomb, bombType) {
-        this.id = id;
-        this.question = question;
-        this.answer = answer;
-        this.whereBomb = whereBomb;
-        this.bombType = bombType;
+        this.id = id;                   // id
+        this.question = question;       // 問題
+        this.answer = answer;           // 答案
+        this.whereBomb = whereBomb;     // 炸彈的位置
+        this.bombType = bombType;       // 炸彈的類型
     }
 }
 
@@ -36,7 +37,6 @@ function skipIntro() {
     setStyle("divBackground", { 'animation': 'fade-out 0.1s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
-
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 0.1s', 'animation-fill-mode': 'forwards' });
 
@@ -64,7 +64,7 @@ function gameStartButton() {
 
 }
 
-//設定一個炸彈
+// 設定一個炸彈
 function setBomb(bombDiv, bombType) {
     var bombText = "";
     switch (bombType) {
@@ -212,7 +212,7 @@ function setBomb(bombDiv, bombType) {
             const question0List =
                 ["按鈕", "藍色", "紅色", "綠色", "黃色",
                     "不知道", "我不知道", "你說什麼", "按我", "爆炸",
-                    "", "", "按下", Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+                    "", "", "按下", Math.floor(Math.random() * 9)+1, Math.floor(Math.random() * 9)+1];
             questions[0] = question0List[Math.floor(Math.random() * question0List.length)];
             //這裡是按鈕上面的顏色，隨機挑一個
             const question1List = ["Blue", "Red", "Green", "Yellow"];
@@ -236,7 +236,7 @@ function setBomb(bombDiv, bombType) {
                 questions[0] % 2 == 0 ? answer = questions[0] : answer = 1;
             }
 
-            if (questions[0] == '') {
+            if (questions[0] == '' ) {
                 answer = 2;
             }
 
@@ -250,24 +250,26 @@ function setBomb(bombDiv, bombType) {
             break;
         }
 
+        case 3: {//炸彈模塊 【打勾方塊】 TODO
+
+        }
+
         default: {
             break;
         }
     }
-
     // $(`#${bomb[bombDiv].id}`).html(bombText);
     bomb[bombDiv].innerHTML = bombText;
 }
 
-//驗證某顆炸彈，由按鈕觸發
+// 驗證某顆炸彈，由按鈕使用觸發
 function submitBomb(bombDivForSolveCheck) {
-
     var correct = true;
-    //這裡用 forEach 找到按鈕觸發的所有問題
+    //用 forEach 找到按鈕觸發的所有問題
     bombId.forEach(e => {
-
         //先抓是哪一顆炸彈被觸發解答了
         if (e.whereBomb == bombDivForSolveCheck) {
+
             // console.log(`題目為:${e.question}`);
             // console.log(`答案為:${e.answer}`);
             switch (e.bombType) {
@@ -284,8 +286,7 @@ function submitBomb(bombDivForSolveCheck) {
                 }
 
                 case 2: {
-
-                    //你每按一次，變數+1，且重置按鈕觸發的時間
+                    //每按一次，變數+1，且重置按鈕觸發的時間
                     bombId[e.id + 1].answer++;
                     console.log(bombId[e.id + 1].answer);
 
@@ -302,20 +303,22 @@ function submitBomb(bombDivForSolveCheck) {
                     }, 1000);
                     break;
                 }
+
                 default: {
                     break;
                 }
             }
         }
-
     });
 
+    
 
 
 }
 
-function bombTrigger(solved, bombDivForSolveCheck) {
-    if (solved) {
+// 觸發某顆炸彈
+function bombTrigger(correct, bombDivForSolveCheck) {
+    if (correct) {   // 回答正確
         //動畫：炸彈被拆除之後掉落
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
         setStyle(styleSelector, {
@@ -328,8 +331,8 @@ function bombTrigger(solved, bombDivForSolveCheck) {
             bomb[bombDivForSolveCheck].innerHTML = '';
         }, 2000);
     }
-    else {
-        //這裡要因為錯誤而重置題目 
+    else {  // 回答錯誤
+        //重骰該題目
         var arrayShiftTime = 0;
 
         bombId.forEach(e => {
@@ -353,10 +356,10 @@ function bombTrigger(solved, bombDivForSolveCheck) {
 
     }
 
-    solved ? console.log("沒炸") : console.log("炸了");
+    correct ? console.log("沒炸") : console.log("炸了");
 }
 
-// 用來生產0~5，不重複數字的隨機陣列（這是從自己另一款遊戲抓過來的）
+// 用來生產0~5，但不重複數字的隨機陣列
 function Bag() {
     var nums = [0, 1, 2, 3, 4, 5],
         ranNums = [],
@@ -372,7 +375,7 @@ function Bag() {
     }
 }
 
-//光速跳過開場
+//跳過開場
 skipIntro();
 
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
@@ -382,7 +385,3 @@ Bag();
 // setBomb(randomOrder[0], 1);
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
-
-
-
-
