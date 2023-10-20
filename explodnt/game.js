@@ -197,53 +197,59 @@ function setBomb(bombDiv, bombType) {
             // 炸彈模塊 【按鈕】
             // 只要是炸彈那就少不了按鈕的，接受現實吧。
             // 
-            // 
+            // 如果上面沒有字，按兩次。
+            // 否則，如果上面有數字且是偶數，依照上面的數字按下按鈕數次。若是奇數，按一次。
+            // 否則，如果按鈕是藍色，按鈕上每有一個字就按一次。
+            // 否則，如果按鈕上面若有人稱代名詞（你、我、他），按六次。
+            // 否則，按一次。 
             // 
             // -----------------------------------------------------------
 
 
             var questions = [];
-            var answers = [];
 
-            const question0List = ["按鈕", "藍色", "紅色", "綠色", "黃色", "你說什麼", "我不知道", "按我", "爆炸"];
+            //這裡是按鈕上面的字，隨機挑一個
+            const question0List =
+                ["按鈕", "藍色", "紅色", "綠色", "黃色",
+                    "不知道", "我不知道", "你說什麼", "按我", "爆炸",
+                    "", "", "按下", Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
             questions[0] = question0List[Math.floor(Math.random() * question0List.length)];
-
+            //這裡是按鈕上面的顏色，隨機挑一個
             const question1List = ["Blue", "Red", "Green", "Yellow"];
             questions[1] = question1List[Math.floor(Math.random() * question1List.length)];
 
-            // switch (Math.floor(Math.random() * 4)) {
-            //     case 0:{
-            //         questions[1] = "Blue";
-            //         break;
-            //     }
-            //     case 1:{
-            //         questions[1] = "Red";
-            //         break;
-            //     }
-            //     case 2:{
-            //         questions[1] = "Green";
-            //         break;
-            //     }
-            //     case 3:{
-            //         questions[1] = "Yellow";
-            //         break;
-            //     }
-            //     default:{
-            //         questions[1] = "Yellow";
-            //         break;
-            //     }
-            // }
+            //這裡寫答案，預設為按一下
+            var answer = 1;
 
+            //避免程式爆掉
+            if (typeof questions[0] != 'number') {
+                if (questions[0].match(/(你|我|他)/g)) {
+                    answer = 6;
+                }
+            }
+
+            if (questions[1] == "Blue") {
+                answer = questions[0].length;
+            }
+
+            if (typeof questions[0] == 'number') {
+                questions[0] % 2 == 0 ? answer = questions[0] : answer = 1;
+            }
+
+            if (questions[0] == '') {
+                answer = 2;
+            }
 
             // 區分大小寫
 
             bombText += `<button id="${bombIdCount}" class="roundButton roundButton${questions[1]}" onmousedown="submitBomb(${bombDiv})">${questions[0]}</button>`;
-            bombId.push(new bombQuest(bombIdCount, questions[0], 10, bombDiv, bombType));
+            bombId.push(new bombQuest(bombIdCount, questions[0], answer, bombDiv, bombType));
             bombId.push(new bombQuest(bombIdCount + 1, questions[1], 0, bombDiv, -1));
 
             bombIdCount += 2;
             break;
         }
+
         default: {
             break;
         }
@@ -268,30 +274,32 @@ function submitBomb(bombDivForSolveCheck) {
                 case 1: {
                     if (e.answer == document.getElementById(e.id).value) {
                         console.log("答對");
-                        bombTrigger(true,bombDivForSolveCheck);
+                        bombTrigger(true, bombDivForSolveCheck);
                     }
                     else {
                         console.log("答錯");
-                        bombTrigger(false,bombDivForSolveCheck);
+                        bombTrigger(false, bombDivForSolveCheck);
                     }
                     break;
                 }
 
                 case 2: {
-                    bombId[e.id+1].answer++;
-                    console.log(bombId[e.id+1].answer);
+
+                    //你每按一次，變數+1，且重置按鈕觸發的時間
+                    bombId[e.id + 1].answer++;
+                    console.log(bombId[e.id + 1].answer);
 
                     clearTimeout(bombTimer[e.id]);
-                    bombTimer[e.id] = setTimeout(function(){
-                        if (e.answer == bombId[e.id+1].answer) {
+                    bombTimer[e.id] = setTimeout(function () {
+                        if (e.answer == bombId[e.id + 1].answer) {
                             console.log("答對");
-                            bombTrigger(true,bombDivForSolveCheck);
+                            bombTrigger(true, bombDivForSolveCheck);
                         }
                         else {
                             console.log("答錯");
-                            bombTrigger(false,bombDivForSolveCheck);
+                            bombTrigger(false, bombDivForSolveCheck);
                         }
-                    },1000);
+                    }, 1000);
                     break;
                 }
                 default: {
@@ -306,7 +314,7 @@ function submitBomb(bombDivForSolveCheck) {
 
 }
 
-function bombTrigger(solved,bombDivForSolveCheck) {
+function bombTrigger(solved, bombDivForSolveCheck) {
     if (solved) {
         //動畫：炸彈被拆除之後掉落
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
@@ -326,7 +334,7 @@ function bombTrigger(solved,bombDivForSolveCheck) {
 
         bombId.forEach(e => {
             if (e.whereBomb == bombDivForSolveCheck) {
-                if(e.bombType!=-1){
+                if (e.bombType != -1) {
                     bombTypeTemp = e.bombType;
                 }
                 bombId[e.id].whereBomb = -1;
