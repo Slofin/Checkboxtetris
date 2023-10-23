@@ -38,11 +38,12 @@ body {
     justify-content: center;
     color: white;
     line-height: 0%;
-
+    background-color: dimgray;
     /* border: 1px rgb(255, 255, 255) solid; */
 }
 
 .divBomb {
+    background-color: darkgray;
     display: inline-block;
     margin: 0.5% 0.5% 0.5% 0.5%;
     padding: 0px;
@@ -100,10 +101,10 @@ body {
 .roundButton {
 
     position: relative;
-    left:25%;
-    top:20%;
+    left: 25%;
+    top: 20%;
 
-    
+
     border: none;
     padding: 5px;
     font-size: 24px;
@@ -115,26 +116,47 @@ body {
     border-radius: 70%;
 }
 
-.roundButtonBlue{
-    background-color:dodgerblue;
+.checkboxlandBox {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.roundButtonBlue {
+    background-color: dodgerblue;
     color: white;
 }
-.roundButtonRed{
-    background-color:red;
+
+.roundButtonRed {
+    background-color: red;
     color: white;
 }
-.roundButtonGreen{
-    background-color:forestgreen;
+
+.roundButtonGreen {
+    background-color: forestgreen;
     color: white;
 }
-.roundButtonYellow{
-    background-color:yellow;
+
+.roundButtonYellow {
+    background-color: yellow;
     color: black;
 }
 
 .roundButton:active {
     box-shadow: 0 0 4px darkslategray;
     transform: translateY(6px);
+}
+
+#startText {
+    width: 100%;
+    height: 15%;
+    font-size: 48px;
+    color: red;
+    user-select: none;
+    background-color: unset;
 }
 
 @keyframes fadeInAndOut {
