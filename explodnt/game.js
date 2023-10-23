@@ -9,7 +9,7 @@ document.getElementById("divBomb4"),
 document.getElementById("divBomb5"),
 document.getElementById("divBomb6"),];
 
-var bombTimer = [];     // 當炸彈有時間執行參數時，會被放在這裡
+var bombTimer = [];     // 當炸彈有時間執行的物件時，會被放在這裡
 var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
@@ -283,30 +283,112 @@ function setBomb(bombDiv, bombType) {
             //  Feat.Checkboxland 行欄列行不行？
             //
             //  該模塊為 6x6 的打勾方塊陣列
-            //  必須在按兩次內，將圖形按成以下的其中一個就可以拆除：
-            //  [附件：九種可能的答案]
+            //  必須在按兩次內，將圖形按成以下的其中一種就可以拆除：
+            //  [附件：六種可能的答案]
+            //
+            // 000000 000000 000100
+            // 000000 001000 000000
+            // 000001 000000 000000
+            // 000000 000000 000100
+            // 100000 000000 000000
+            // 000000 000100 000000
+            //
+            // 100000 000000 000000
+            // 000000 000000 000000
+            // 000000 000100 100000
+            // 000000 001000 000000
+            // 000000 000000 000100
+            // 000010 000000 000000
+            //
             //  *若一開始顯示的就是答案，在某一格上點兩下就可以拆除。
             //  *技術上問題所以沒辦法生成兩個以上的該模塊
             //
 
             // -----------------------------------------------------------
 
-            bombText += `<div class="checkboxlandBox"><div id="checkboxland"></div></div>`;
+
+            bombId.push(new bombQuest(bombIdCount, -1, -1, bombDiv, 3));
+            bombText += `<div class="checkboxlandBox" id=${bombIdCount}><div id="checkboxland"></div></div>`;
             bomb[bombDiv].innerHTML = `${bombText}`;
-            const cbl = new Checkboxland({ dimensions: '6x6' });
 
-            const heart = [
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-            ];
+            if (typeof cbl === 'undefined') {
+                var cbl = new Checkboxland({ dimensions: '6x6' });
+            }
 
+            var cblGrid = [];       //從答案複製過來被隨機按兩次
+            var cblTrigger = 2;     //必須在按兩次內按出答案
+            var cblAnswers =
+                [[[0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0],
+                [1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]],
 
-            cbl.setData(heart);
+                [[0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]],
 
+                [[0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]],
+
+                [[1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0]],
+
+                [[0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0],
+                [0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0]],
+
+                [[0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0]]];
+
+            cblGrid = structuredClone(cblAnswers[Math.floor(Math.random() * 6)]); // hardcopy
+
+            for (var i = 2; i > 0; i--) {   // 隨機挑兩個按鈕按一下
+                var randomGridX = Math.floor(Math.random() * 6);
+                var randomGridY = Math.floor(Math.random() * 6);
+                cblGrid[randomGridX][randomGridY] == 1 ? cblGrid[randomGridX][randomGridY] = 0 : cblGrid[randomGridX][randomGridY] = 1;
+            }
+
+            cbl.setData(cblGrid); // 設置打勾
+
+            cbl.onClick(function handleCheckboxClick({ x, y }) {
+                cblGrid[y][x] == 1 ? cblGrid[y][x] = 0 : cblGrid[y][x] = 1;
+                if (cblTrigger >= 2) {
+                    cblTrigger--;
+                }
+                else {
+                    var correct = false;
+                    console.log(cblGrid);
+                    cblAnswers.forEach(e => {
+                        if (JSON.stringify(e) === JSON.stringify(cblGrid)) {
+                            console.log("yes");
+                            correct = true;
+                        }
+                    });
+                    bombTrigger(correct, bombDiv);
+                }
+            });
+
+            bombIdCount += 1;
             break;
         }
 
@@ -316,7 +398,7 @@ function setBomb(bombDiv, bombType) {
         }
     }
     // $(`#${bomb[bombDiv].id}`).html(bombText);
-    // bomb[bombDiv].innerHTML = bombText;
+    // bomb[bombDiv].style = "visibility:visible;"
 }
 
 // 驗證某顆炸彈，由按鈕使用觸發
@@ -359,6 +441,10 @@ function submitBomb(bombDivForSolveCheck) {
                             bombTrigger(false, bombDivForSolveCheck);
                         }
                     }, 1000);
+                    break;
+                }
+
+                case 3: {
                     break;
                 }
 
@@ -440,19 +526,20 @@ skipIntro();
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
 Bag();
 
-
-
-
-
-
 //放炸彈
-
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
-setBomb(randomOrder[3], 2);
-setBomb(randomOrder[2], 3);
+setBomb(randomOrder[2], 2);
+setBomb(randomOrder[3], 3);
 
+//隱藏沒有炸彈的方格
+bomb.forEach(e => {
+    if(e.childNodes.length==0){
+        e.style = "visibility:hidden";
+    }
+});
 
+//讓開始按紐生效
 $(".divInitButton>Button").bind('click', function () {
     gameStartButton();
 });

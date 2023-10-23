@@ -44,6 +44,7 @@ body {
 
 .divBomb {
     background-color: darkgray;
+    /* visibility: hidden; */
     display: inline-block;
     margin: 0.5% 0.5% 0.5% 0.5%;
     padding: 0px;
