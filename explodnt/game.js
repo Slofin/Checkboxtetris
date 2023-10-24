@@ -13,6 +13,8 @@ var bombTimer = [];     // 當炸彈有時間執行的物件時，會被放在�
 var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
+var life = 2;             // 這是你的命
+var gameTime = 300000;    // 計時
 
 // 一個炸彈由以下五個值組合：
 class bombQuest {
@@ -41,11 +43,7 @@ function skipIntro() {
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 0.1s', 'animation-fill-mode': 'forwards' });
-
-    setTimeout(function () {
-        setStyle("divBomb", { 'animation': 'fade-in 0.1s', 'visibility': 'visible' });
-    }, 200);
-
+    setBomb(randomOrder[5], 0);
 }
 
 // 開始按鈕被按下之後
@@ -58,6 +56,7 @@ function gameStartButton() {
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 5s', 'animation-fill-mode': 'forwards' });
+    setBomb(randomOrder[5], 0);
 
     //有延遲的動畫
     setTimeout(function () {
@@ -79,6 +78,74 @@ function setBomb(bombDiv, bombType) {
             //
 
             // -----------------------------------------------------------
+
+            setTimeout(function () {
+
+                var now = new Date().getTime();
+                var countDownDate = new Date(now + gameTime).getTime();
+
+                var timing = setInterval(function () {
+                    //這裡是分:秒，從5分鐘開始往下數到剩下60秒
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+                    seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+
+                    $(".clock").text(`${minutes}:${seconds}`);
+                    if (minutes <= 0) {
+                        //這裡是剩下60秒之後的情況，會以秒:毫秒的方式計時
+                        var timingLessMin = setInterval(function () {
+                            now = new Date().getTime();
+                            distance = countDownDate - now;
+                            var minseconds = (Math.floor((distance % (1000 * 60)) / 10) / 100);
+                            var minTime = minseconds.toLocaleString('en', { minimumIntegerDigits: 2, minimumFractionDigits: 2, useGrouping: false });
+                            console.log(`${minTime}`);
+                            $(".clock").text(`${minTime}`);
+                            //剩下30秒，數字會開始閃逤
+                            if (minTime < 30) {
+                                $(".clock").css("animation-name", "numberFlashing");
+                            }
+                            if (minTime <= 0) {
+                                clearInterval(timingLessMin);
+                                minTime = 0;
+                                $(".clock").css("animation-name", "");
+                            }
+                        }, 10);
+
+                        $(".clockbg").text("88.88");
+                        clearInterval(timing);
+                    }
+
+                }, 100);
+            }, 10000);
+
+            //要在遊戲開始計時前就把時間顯示好
+            var preTimerMinute = ((gameTime % 3600000) / 60000).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+            var preTimerSecond = ((gameTime % 60000) / 1000).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+
+            bombText =
+                `
+            <div class="clockout">
+                <div class="clock">${preTimerMinute}:${preTimerSecond}</div>
+                <div class="clockbg">88:88</div>
+            </div>       
+            <div class="counterout">
+                <div class="counter">!!</div>
+                <div class="counterbg">XX</div>
+            </div>    
+            `
+            bomb[bombDiv].innerHTML = bombText;
+
+            //隱藏沒有炸彈的方格
+            bomb.forEach(e => {
+                if (e.childNodes.length == 0) {
+                    e.style = "visibility:hidden";
+                }
+            });
+
+            break;
         }
 
         case 1: {//炸彈模塊【"E"生在哪】
@@ -188,8 +255,20 @@ function setBomb(bombDiv, bombType) {
             bombId.push(new bombQuest(bombIdCount + 1, questions[1], answers[1], bombDiv, -1));
             // bombId.push(new bombQuest(bombIdCount + 2, questions[2], answers[2], bombDiv, bombType));
 
-            //這裡寫入炸彈的 html，這沒辦法換行。
-            bombText = `<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="${bombIdCount}" value="${questions[0]}" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="${(bombIdCount + 1)}" value="${questions[1]}" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button style="font-size:24px; width:120%" id="bombbutton${bombIdCount}">提交</button> </div>`;
+            bombText = `
+            <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> 
+            <input type="text" id="${bombIdCount}" value="${questions[0]}"
+             style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
+            </div> 
+
+            <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> 
+            <input type="text" id="${(bombIdCount + 1)}" value="${questions[1]}"
+             style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
+             </div> 
+
+            <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> 
+            <button style="font-size:24px; width:120%" id="bombbutton${bombIdCount}">提交</button> 
+            </div>`;
 
 
             bomb[bombDiv].innerHTML = bombText;
@@ -197,8 +276,6 @@ function setBomb(bombDiv, bombType) {
             $("#bombbutton" + bombIdCount).bind('click', function () {
                 submitBomb(bombDiv);
             })
-
-            // bombText = '<div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + bombIdCount + '" value="' + questions[0] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + (bombIdCount + 1) + '" value="' + questions[1] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:9%; top:36%; width:80%; height: 10%; text-align: center;"> <input type="text" id="' + (bombIdCount + 2) + '" value="' + questions[2] + '" style="font-size: 20px;width:100%;height: 100%;text-align: center;"> </div> <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> <button onclick="submitBomb(' + bombDiv + ')" style="font-size:24px; width:120%;">提交</button> </div>';
 
             //把 bombIdCount 往前推避免重疊
             bombIdCount += 2;
@@ -308,7 +385,10 @@ function setBomb(bombDiv, bombType) {
 
 
             bombId.push(new bombQuest(bombIdCount, -1, -1, bombDiv, 3));
-            bombText += `<div class="checkboxlandBox" id=${bombIdCount}><div id="checkboxland"></div></div>`;
+            bombText += `
+            <div class="checkboxlandBox" id=${bombIdCount}>
+                 <div id="checkboxland"></div>
+            </div>`;
             bomb[bombDiv].innerHTML = `${bombText}`;
 
             if (typeof cbl === 'undefined') {
@@ -499,6 +579,14 @@ function bombTrigger(correct, bombDivForSolveCheck) {
         });
         setTimeout(function () { setStyle(styleSelector, { "animation": "" }); }, 500);
 
+        if (life == 1) {
+            $(".counter").text("XX");
+        }
+        else {
+            life--;
+            $(".counter").text("X!");
+        }
+
     }
 
     correct ? console.log("沒炸") : console.log("炸了");
@@ -519,27 +607,23 @@ function Bag() {
         ranNums.forEach(e => randomOrder.push(e));
     }
 }
-
-//跳過開場
-skipIntro();
-
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
 Bag();
 
 //放炸彈
+
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
 setBomb(randomOrder[3], 3);
 
-//隱藏沒有炸彈的方格
-bomb.forEach(e => {
-    if(e.childNodes.length==0){
-        e.style = "visibility:hidden";
-    }
-});
+// skipIntro();
 
 //讓開始按紐生效
 $(".divInitButton>Button").bind('click', function () {
     gameStartButton();
 });
+
+//跳過開場
+
+
