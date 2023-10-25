@@ -13,10 +13,10 @@ var bombTimer = [];     // 當炸彈有時間執行的物件時，會被放在�
 var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
-var life = 2;             // 這是你的命
-var gameTime = 300000;    // 計時
+var life = 2;             // 這是你的命。勝利時，將生命設置成3
+var gameTime = 300 * 1000;    // 計時
 
-// 一個炸彈由以下五個值組合：
+// 一個炸彈模塊由以下五個值組合：
 class bombQuest {
     constructor(id, question, answer, whereBomb, bombType) {
         this.id = id;                   // id
@@ -38,12 +38,14 @@ function setStyle(objId, propertyObject) {
 function skipIntro() {
     // 我不寫這個會可能等Intro等到死掉
 
-    setStyle("divBackground", { 'animation': 'fade-out 0.1s', 'animation-fill-mode': 'forwards' });
+    setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
-    setStyle("startText", { 'animation': 'fadeInAndOut 0.1s', 'animation-fill-mode': 'forwards' });
+    setStyle("startText", { 'animation': 'fadeInAndOut 0.0001s', 'animation-fill-mode': 'forwards' });
     setBomb(randomOrder[5], 0);
+
+    setStyle("divBomb", { 'animation': 'fade-in 0.25s', 'visibility': 'visible' });
 }
 
 // 開始按鈕被按下之後
@@ -65,10 +67,11 @@ function gameStartButton() {
 
 }
 
-// 設定一個炸彈
+// 設定一個炸彈模塊
 function setBomb(bombDiv, bombType) {
     var bombText = "";
     switch (bombType) {
+
         case 0: {//炸彈模塊【計時器】 TODO
             // -----------------------------------------------------------
 
@@ -92,7 +95,9 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-
+                    if(life == 3){
+                        clearInterval(timing);
+                    }
                     $(".clock").text(`${minutes}:${seconds}`);
                     if (minutes <= 0) {
                         //這裡是剩下60秒之後的情況，會以秒:毫秒的方式計時
@@ -101,9 +106,11 @@ function setBomb(bombDiv, bombType) {
                             distance = countDownDate - now;
                             var minseconds = (Math.floor((distance % (1000 * 60)) / 10) / 100);
                             var minTime = minseconds.toLocaleString('en', { minimumIntegerDigits: 2, minimumFractionDigits: 2, useGrouping: false });
-                            console.log(`${minTime}`);
                             $(".clock").text(`${minTime}`);
                             //剩下30秒，數字會開始閃逤
+                            if(life == 3){
+                                clearInterval(timingLessMin);
+                            }
                             if (minTime < 30) {
                                 $(".clock").css("animation-name", "numberFlashing");
                             }
@@ -111,6 +118,7 @@ function setBomb(bombDiv, bombType) {
                                 clearInterval(timingLessMin);
                                 minTime = 0;
                                 $(".clock").css("animation-name", "");
+                                defusedOrExploded(false);
                             }
                         }, 10);
 
@@ -167,6 +175,8 @@ function setBomb(bombDiv, bombType) {
             // 否則，如果該字串的 e, E, 1 三者只有其中兩種，    將該字串尾端新增一個缺失的字。(如果只有 e 和 E，新增一個1在尾端)。
             // 否則，如果該字串的數字跟字母一樣多(字母包含E和e)，如果開頭是數字，將該字串所有 E 和 e 刪除。否則刪除該字串所有數字。
             // 否則，                                          將該字串刪除。
+            //
+            // 注意：在繳交答案前，請確保沒有
 
             // -----------------------------------------------------------
 
@@ -247,8 +257,10 @@ function setBomb(bombDiv, bombType) {
                     answer = questions[k].replace(/E/g, ''); //  刪除該字串所有的 E。
                 }
 
+                // console.log(answer);
                 answers[k] = answer;
             }
+
 
             //設定這個炸彈的數值與答案
             bombId.push(new bombQuest(bombIdCount, questions[0], answers[0], bombDiv, bombType));
@@ -363,10 +375,10 @@ function setBomb(bombDiv, bombType) {
             //  必須在按兩次內，將圖形按成以下的其中一種就可以拆除：
             //  [附件：六種可能的答案]
             //
-            // 000000 000000 000100
+            // 000000 000000 000010
             // 000000 001000 000000
             // 000001 000000 000000
-            // 000000 000000 000100
+            // 000000 000000 000010
             // 100000 000000 000000
             // 000000 000100 000000
             //
@@ -457,10 +469,10 @@ function setBomb(bombDiv, bombType) {
                 }
                 else {
                     var correct = false;
-                    console.log(cblGrid);
+                    // console.log(cblGrid);
                     cblAnswers.forEach(e => {
                         if (JSON.stringify(e) === JSON.stringify(cblGrid)) {
-                            console.log("yes");
+                            // console.log("yes");
                             correct = true;
                         }
                     });
@@ -481,7 +493,7 @@ function setBomb(bombDiv, bombType) {
     // bomb[bombDiv].style = "visibility:visible;"
 }
 
-// 驗證某顆炸彈，由按鈕使用觸發
+// 驗證某顆炸彈模塊，由按鈕使用觸發
 function submitBomb(bombDivForSolveCheck) {
     var correct = true;
     //用 forEach 找到按鈕觸發的所有問題
@@ -495,11 +507,11 @@ function submitBomb(bombDivForSolveCheck) {
                 case 1: {
                     if (bombId[e.id].answer == document.getElementById(e.id).value &&
                         bombId[e.id + 1].answer == document.getElementById(e.id + 1).value) {
-                        console.log("答對");
+                        // console.log("答對");
                         bombTrigger(true, bombDivForSolveCheck);
                     }
                     else {
-                        console.log("答錯");
+                        // console.log("答錯");
                         bombTrigger(false, bombDivForSolveCheck);
                     }
                     break;
@@ -508,16 +520,15 @@ function submitBomb(bombDivForSolveCheck) {
                 case 2: {
                     //每按一次，變數+1，且重置按鈕觸發的時間
                     bombId[e.id + 1].answer++;
-                    console.log(bombId[e.id + 1].answer);
-
+                    // console.log(bombId[e.id + 1].answer);
                     clearTimeout(bombTimer[e.id]);
                     bombTimer[e.id] = setTimeout(function () {
                         if (e.answer == bombId[e.id + 1].answer) {
-                            console.log("答對");
+                            // console.log("答對");
                             bombTrigger(true, bombDivForSolveCheck);
                         }
                         else {
-                            console.log("答錯");
+                            // console.log("答錯");
                             bombTrigger(false, bombDivForSolveCheck);
                         }
                     }, 1000);
@@ -532,18 +543,19 @@ function submitBomb(bombDivForSolveCheck) {
                     break;
                 }
             }
-
         }
     });
-
-
-
-
 }
 
-// 觸發某顆炸彈
+// 觸發某顆炸彈模塊
 function bombTrigger(correct, bombDivForSolveCheck) {
+
     if (correct) {   // 回答正確
+        bombId.forEach(e => {
+            if (e.whereBomb == bombDivForSolveCheck) {
+                bombId[e.id].whereBomb = -1;
+            }
+        });
         //動畫：炸彈被拆除之後掉落
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
         setStyle(styleSelector, {
@@ -581,6 +593,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
 
         if (life == 1) {
             $(".counter").text("XX");
+            defusedOrExploded(false);
         }
         else {
             life--;
@@ -588,8 +601,47 @@ function bombTrigger(correct, bombDivForSolveCheck) {
         }
 
     }
+    
+    var allBombsAreDefused = true;
+    bombId.forEach(e => {
+        if (e.whereBomb != -1) {
+            allBombsAreDefused = false;
+        }
+    });
 
-    correct ? console.log("沒炸") : console.log("炸了");
+    if (allBombsAreDefused) {
+        console.log("a");
+        defusedOrExploded(true);
+    }
+}
+
+// 觸發炸彈，或者是拆掉炸彈
+function defusedOrExploded(correct) {
+    if (correct) {
+
+        life=3;
+        $(".clock").css("animation-name", "numberFlashing");
+        $(".clock").css("animation-iteration-count", "1");
+
+        setTimeout(() => {
+            setStyle("divForeground",{
+            'animation': 'bombDefuseShow 10s',
+            'animation-fill-mode': 'forwards',
+            'background-image':'url(./img/bombDefused.png)'});
+        }, 1200);
+
+    }
+    else {
+        setStyle("divBomb", { 'visibility': 'hidden' });
+        document.body.style = `background-color: rgb(0, 0, 0)`;
+
+        setStyle("divForeground",{
+            'animation': 'fadeInAndOut 10s',
+            'animation-fill-mode': 'forwards',
+            'background-image':'url(./img/youdied.png)'});
+
+        // 滿 滿 的 動 畫
+    }
 }
 
 // 用來生產0~5，但不重複數字的隨機陣列
@@ -617,13 +669,14 @@ setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
 setBomb(randomOrder[3], 3);
 
-// skipIntro();
+//跳過開場
+skipIntro();
 
 //讓開始按紐生效
 $(".divInitButton>Button").bind('click', function () {
     gameStartButton();
 });
 
-//跳過開場
+
 
 
