@@ -15,9 +15,9 @@ var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;             // 這是你的命。勝利時，將生命設置成3
 var gameTime = 300 * 1000;    // 計時
-
-// 一個炸彈模塊由以下五個值組合：
-class bombQuest {
+var audio = {}; //音效
+    
+class bombQuest { // 一個炸彈模塊由以下五個值組合：
     constructor(id, question, answer, whereBomb, bombType) {
         this.id = id;                   // id
         this.question = question;       // 問題
@@ -598,6 +598,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
         else {
             life--;
             $(".counter").text("X!");
+            audio["wrong"].play();
         }
 
     }
@@ -662,8 +663,13 @@ function Bag() {
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
 Bag();
 
-//放炸彈
+//設置音效
+$('document').ready(function () {
+    audio["wrong"] = new Audio();
+    audio["wrong"].src = "./audio/wrong.mp3"
+});
 
+//放炸彈
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
