@@ -15,8 +15,9 @@ var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;             // 這是你的命。勝利時，將生命設置成3
 var gameTime = 300 * 1000;    // 計時
-var audio = {}; //音效
-    
+var audio = {}; // 音效
+var wrongs = 0 // 錯誤次數 小專報告用
+
 class bombQuest { // 一個炸彈模塊由以下五個值組合：
     constructor(id, question, answer, whereBomb, bombType) {
         this.id = id;                   // id
@@ -46,6 +47,7 @@ function skipIntro() {
     setBomb(randomOrder[5], 0);
 
     setStyle("divBomb", { 'animation': 'fade-in 0.25s', 'visibility': 'visible' });
+
 }
 
 // 開始按鈕被按下之後
@@ -65,6 +67,8 @@ function gameStartButton() {
         setStyle("divBomb", { 'animation': 'fade-in 5s', 'visibility': 'visible' });
     }, 4000);
 
+
+
 }
 
 // 設定一個炸彈模塊
@@ -81,11 +85,17 @@ function setBomb(bombDiv, bombType) {
             //
 
             // -----------------------------------------------------------
+            
 
             setTimeout(function () {
 
                 var now = new Date().getTime();
                 var countDownDate = new Date(now + gameTime).getTime();
+
+                    audio["beep"].play();
+                var beeping = setInterval(function () {
+                    audio["beep"].play();
+                },1000);
 
                 var timing = setInterval(function () {
                     //這裡是分:秒，從5分鐘開始往下數到剩下60秒
@@ -95,7 +105,7 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-                    if(life == 3){
+                    if (life == 3) {
                         clearInterval(timing);
                     }
                     $(".clock").text(`${minutes}:${seconds}`);
@@ -108,7 +118,7 @@ function setBomb(bombDiv, bombType) {
                             var minTime = minseconds.toLocaleString('en', { minimumIntegerDigits: 2, minimumFractionDigits: 2, useGrouping: false });
                             $(".clock").text(`${minTime}`);
                             //剩下30秒，數字會開始閃逤
-                            if(life == 3){
+                            if (life == 3) {
                                 clearInterval(timingLessMin);
                             }
                             if (minTime < 30) {
@@ -596,13 +606,15 @@ function bombTrigger(correct, bombDivForSolveCheck) {
             defusedOrExploded(false);
         }
         else {
-            life--;
-            $(".counter").text("X!");
-            audio["wrong"].play();
+            // life--;
+            // $(".counter").text("X!");
+            wrongs++;
+            $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
+            audioPlay("wrong");
         }
 
     }
-    
+
     var allBombsAreDefused = true;
     bombId.forEach(e => {
         if (e.whereBomb != -1) {
@@ -620,15 +632,16 @@ function bombTrigger(correct, bombDivForSolveCheck) {
 function defusedOrExploded(correct) {
     if (correct) {
 
-        life=3;
+        life = 3;
         $(".clock").css("animation-name", "numberFlashing");
         $(".clock").css("animation-iteration-count", "1");
 
         setTimeout(() => {
-            setStyle("divForeground",{
-            'animation': 'bombDefuseShow 10s',
-            'animation-fill-mode': 'forwards',
-            'background-image':'url(./img/bombDefused.png)'});
+            setStyle("divForeground", {
+                'animation': 'bombDefuseShow 10s',
+                'animation-fill-mode': 'forwards',
+                'background-image': 'url(./img/bombDefused.png)'
+            });
         }, 1200);
 
     }
@@ -636,13 +649,34 @@ function defusedOrExploded(correct) {
         setStyle("divBomb", { 'visibility': 'hidden' });
         document.body.style = `background-color: rgb(0, 0, 0)`;
 
-        setStyle("divForeground",{
+        setStyle("divForeground", {
             'animation': 'fadeInAndOut 10s',
             'animation-fill-mode': 'forwards',
-            'background-image':'url(./img/youdied.png)'});
+            'background-image': 'url(./img/youdied.png)'
+        });
 
         // 滿 滿 的 動 畫
     }
+}
+
+function audioLoad(name,src){
+    audio[`${name}`] = new Audio();
+    audio[`${name}`].src = src;
+}
+
+//設置音效
+$('document').ready(function () {
+    audioLoad("wrong","./audio/wrong.mp3");
+    audioLoad("beep","./audio/beep.wav");
+});
+
+function audioPlay(name){
+    if(audio[name].paused){
+        audio[name].play();
+        }
+        else{
+            audio[name].currentTime = 0 ;
+        }
 }
 
 // 用來生產0~5，但不重複數字的隨機陣列
@@ -663,25 +697,22 @@ function Bag() {
 //生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
 Bag();
 
-//設置音效
-$('document').ready(function () {
-    audio["wrong"] = new Audio();
-    audio["wrong"].src = "./audio/wrong.mp3"
-});
 
-//放炸彈
+
+//放炸彈    
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
 setBomb(randomOrder[3], 3);
 
 //跳過開場
-skipIntro();
+// skipIntro();
 
 //讓開始按紐生效
 $(".divInitButton>Button").bind('click', function () {
     gameStartButton();
 });
+
 
 
 

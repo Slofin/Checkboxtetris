@@ -250,25 +250,25 @@ body {
 }
 
 .counter {
-    letter-spacing: -16px;
+    letter-spacing: -8px;
     font-family: DSEG14;
     color: red;
     font-size: 2em;
     position: absolute;
-    /* animation-name: numberFlashing; */
+    /* animation-nam8e: numberFlashing; */
     animation-duration: 1s;
     animation-iteration-count: infinite;
-    transform:translateX(-7px);
+    transform:translateX(-4px);
     user-select: none;
 }
 
 .counterbg {
-    letter-spacing: -16px;
+    letter-spacing: -8px;
     font-family: DSEG14;
     color: rgba(194, 206, 206, 0.12);
     font-size: 2em;
     position: absolute; 
-    transform:translateX(-7px);
+    transform:translateX(-4px);
     user-select: none;
 }
 
