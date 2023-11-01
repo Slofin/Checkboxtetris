@@ -9,12 +9,12 @@ body {
 
 @font-face {
     font-family: DSEG7;
-    src: url(./DSEG7Modern-Bold.woff)
+    src: url(./font/DSEG7Modern-Bold.woff)
 }
 
 @font-face {
     font-family: DSEG14;
-    src: url(./DSEG14Modern-Bold.woff)
+    src: url(./font/DSEG14Modern-Bold.woff)
 }
 
 .divInitButton {

@@ -17,7 +17,7 @@ var life = 2;             // 這是你的命。勝利時，將生命設置成3
 var gameTime = 300 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0 // 錯誤次數 小專報告用
-
+var beeping = {};
 class bombQuest { // 一個炸彈模塊由以下五個值組合：
     constructor(id, question, answer, whereBomb, bombType) {
         this.id = id;                   // id
@@ -85,17 +85,17 @@ function setBomb(bombDiv, bombType) {
             //
 
             // -----------------------------------------------------------
-            
+
 
             setTimeout(function () {
 
                 var now = new Date().getTime();
                 var countDownDate = new Date(now + gameTime).getTime();
 
+                audio["beep"].play();
+                beeping = setInterval(function () {
                     audio["beep"].play();
-                var beeping = setInterval(function () {
-                    audio["beep"].play();
-                },1000);
+                }, 1000);
 
                 var timing = setInterval(function () {
                     //這裡是分:秒，從5分鐘開始往下數到剩下60秒
@@ -279,12 +279,12 @@ function setBomb(bombDiv, bombType) {
 
             bombText = `
             <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> 
-            <input type="text" id="${bombIdCount}" value="${questions[0]}"
+            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${bombIdCount}" value="${questions[0]}"
              style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
             </div> 
 
             <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> 
-            <input type="text" id="${(bombIdCount + 1)}" value="${questions[1]}"
+            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${(bombIdCount + 1)}" value="${questions[1]}"
              style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
              </div> 
 
@@ -295,9 +295,21 @@ function setBomb(bombDiv, bombType) {
 
             bomb[bombDiv].innerHTML = bombText;
 
+            var bombAudioSet = document.getElementById(`${(bombIdCount)}`)
+            bombAudioSet.addEventListener('input', function () {
+                audioPlay(`keypress${Math.floor(Math.random() * 3) + 1}`);
+            });
+
+            bombAudioSet = document.getElementById(`${(bombIdCount + 1)}`)
+            bombAudioSet.addEventListener('input', function () {
+                audioPlay(`keypress${Math.floor(Math.random() * 3) + 1}`);
+            });
+
             $("#bombbutton" + bombIdCount).bind('click', function () {
                 submitBomb(bombDiv);
             })
+
+
 
             //把 bombIdCount 往前推避免重疊
             bombIdCount += 2;
@@ -366,6 +378,7 @@ function setBomb(bombDiv, bombType) {
             bomb[bombDiv].innerHTML = bombText;
 
             $("#bombbutton" + bombIdCount).bind('click', function () {
+                audioPlay("button1");
                 submitBomb(bombDiv);
             })
 
@@ -473,7 +486,16 @@ function setBomb(bombDiv, bombType) {
             cbl.setData(cblGrid); // 設置打勾
 
             cbl.onClick(function handleCheckboxClick({ x, y }) {
-                cblGrid[y][x] == 1 ? cblGrid[y][x] = 0 : cblGrid[y][x] = 1;
+
+                if (cblGrid[y][x] == 1) {
+                    cblGrid[y][x] = 0;
+                    audioPlay("checkboxoff");
+                }
+                else {
+                    cblGrid[y][x] = 1;
+                    audioPlay("checkboxon");
+                }
+
                 if (cblTrigger >= 2) {
                     cblTrigger--;
                 }
@@ -511,10 +533,12 @@ function submitBomb(bombDivForSolveCheck) {
         //先抓是哪一顆炸彈被觸發解答了
         if (e.whereBomb == bombDivForSolveCheck) {
 
-            // console.log(`題目為:${e.question}`);
-            // console.log(`答案為:${e.answer}`);
+            console.log(`題目為:${e.question}`);
+            console.log(`答案為:${e.answer}`);
             switch (e.bombType) {
                 case 1: {
+                    console.log(`題目為:${e.question[1]}`);
+                    console.log(`答案為:${e.answer[1]}`);
                     if (bombId[e.id].answer == document.getElementById(e.id).value &&
                         bombId[e.id + 1].answer == document.getElementById(e.id + 1).value) {
                         // console.log("答對");
@@ -567,6 +591,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
             }
         });
         //動畫：炸彈被拆除之後掉落
+        audioPlay("moduleDefused");
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
         setStyle(styleSelector, {
             "animation": "bombDrop 1.5s",
@@ -601,6 +626,8 @@ function bombTrigger(correct, bombDivForSolveCheck) {
         });
         setTimeout(function () { setStyle(styleSelector, { "animation": "" }); }, 500);
 
+
+
         if (life == 1) {
             $(".counter").text("XX");
             defusedOrExploded(false);
@@ -633,10 +660,13 @@ function defusedOrExploded(correct) {
     if (correct) {
 
         life = 3;
+        clearInterval(beeping);
+
         $(".clock").css("animation-name", "numberFlashing");
         $(".clock").css("animation-iteration-count", "1");
 
         setTimeout(() => {
+            audioPlay("BombDefused");
             setStyle("divForeground", {
                 'animation': 'bombDefuseShow 10s',
                 'animation-fill-mode': 'forwards',
@@ -646,6 +676,8 @@ function defusedOrExploded(correct) {
 
     }
     else {
+        clearInterval(beeping);
+        audioPlay("explode");
         setStyle("divBomb", { 'visibility': 'hidden' });
         document.body.style = `background-color: rgb(0, 0, 0)`;
 
@@ -659,24 +691,36 @@ function defusedOrExploded(correct) {
     }
 }
 
-function audioLoad(name,src){
-    audio[`${name}`] = new Audio();
-    audio[`${name}`].src = src;
+//音效的名稱定義與位置
+var audioFiles = [
+    "wrong", "./audio/wrong.wav",
+    "beep", "./audio/beep.wav",
+    "button1", "./audio/button1.wav",
+    "keypress1", "./audio/key-press-1.mp3",
+    "keypress2", "./audio/key-press-2.mp3",
+    "keypress3", "./audio/key-press-3.mp3",
+    "keypress4", "./audio/key-press-4.mp3",
+    "checkboxon", "./audio/checkboxon.wav",
+    "checkboxoff", "./audio/checkboxoff.wav",
+    "moduleDefused", "./audio/moduleDefused.wav",
+    "BombDefused", "./audio/tooholy.wav",
+    "explode", "./audio/explode.wav"
+];
+
+//載入音效
+for (var k = 0; k < audioFiles.length; k += 2) {
+    audio[`${audioFiles[k]}`] = new Audio();
+    audio[`${audioFiles[k]}`].src = audioFiles[k + 1];
 }
 
-//設置音效
-$('document').ready(function () {
-    audioLoad("wrong","./audio/wrong.mp3");
-    audioLoad("beep","./audio/beep.wav");
-});
-
-function audioPlay(name){
-    if(audio[name].paused){
+// 播放音效或音樂用的function
+function audioPlay(name) {
+    if (audio[name].paused) {
         audio[name].play();
-        }
-        else{
-            audio[name].currentTime = 0 ;
-        }
+    }
+    else {
+        audio[name].currentTime = 0;
+    }
 }
 
 // 用來生產0~5，但不重複數字的隨機陣列
@@ -709,9 +753,15 @@ setBomb(randomOrder[3], 3);
 // skipIntro();
 
 //讓開始按紐生效
-$(".divInitButton>Button").bind('click', function () {
-    gameStartButton();
+
+$('document').ready(function () {
+    $(".divInitButton>Button").bind('click', function () {
+        audioPlay("checkboxon");
+        gameStartButton();
+    });
 });
+
+
 
 
 
