@@ -220,18 +220,9 @@ function setBomb(bombDiv, bombType) {
                 //答案向下覆蓋
                 var answer = ""; // 否則，將該字串刪除。 優先度 5
 
-                //如果該字串的數字跟字母一樣多 優先度 4
-                var questionNumCounts = questions[k].match(/(1)/g);
-                var questionFontCounts = questions[k].match(/(e|E)/g);
-
-                //如果沒有0或Ee他會null
-                if (questionNumCounts == null) {
-                    questionNumCounts = 0;
-                }
-
-                if (questionFontCounts == null) {
-                    questionFontCounts = 0;
-                }
+                //如果該字串的數字跟字母一樣多 (這會順便將null轉為0) 優先度 4
+                var questionNumCounts = questions[k].match(/(1)/g) || 0;
+                var questionFontCounts = questions[k].match(/(e|E)/g) || 0;
 
                 if (questionNumCounts.length == questionFontCounts.length) {
                     if (questions[k].match(/^(e|E)/)) {
