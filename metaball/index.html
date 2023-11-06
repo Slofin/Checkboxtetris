@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <title>Metaball</title>
     <style>
         body {
@@ -19,6 +20,15 @@
             top: 50%;
             transform: translate(50%, -50%);
         }
+
+        #playButton {
+            position: absolute;
+            height: 60px;
+            width: 60px;
+            right: 50%;
+            top: 80%;
+            transform: translate(50%, -80%);
+        }
     </style>
 </head>
 
@@ -27,7 +37,10 @@
         <img src="./metaorb.png" id="metaorb">
     </div>
 
+    <button id="playButton">Meta</button>
+
     <script>
+        var audio = [];
         var metaHover = 0;
         var metaDeg = 1;
 
@@ -39,14 +52,20 @@
             console.log(metaHover);
         });
 
-        var oven = setInterval(function() {
+        var oven = setInterval(function () {
             if (metaHover == 1) {
-            $("#metaorb").css("transform", `rotateZ(${metaDeg}deg)`);
-                metaDeg+=20;
+                $("#metaorb").css("transform", `rotateZ(${metaDeg}deg)`);
+                metaDeg += 20;
+                audio[`m`].play();
+            }
+            else {
+                audio[`m`].pause();
             }
         }, 10);
 
-        
+        audio[`m`] = new Audio();
+        audio[`m`].src = "./m.m4a";
+        audio[`m`].currentTime = 118.2;
 
     </script>
 
