@@ -334,11 +334,11 @@ function setBomb(bombDiv, bombType) {
              style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
              </div> 
 
-            <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center;"> 
+            <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center; user-select: none;"> 
             <button style="font-size:24px; width:120%" id="bombbutton${bombIdCount}">提交</button> 
             </div>`;
 
-
+            
             bomb[bombDiv].innerHTML = bombText;
 
             var bombAudioSet = document.getElementById(`${(bombIdCount)}`)
