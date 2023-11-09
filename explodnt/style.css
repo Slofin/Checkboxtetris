@@ -187,7 +187,8 @@ body {
     color: red;
     user-select: none;
     background-color: unset;
-
+    
+    font-weight:bold;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     visibility: hidden;

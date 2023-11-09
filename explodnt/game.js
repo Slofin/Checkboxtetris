@@ -13,11 +13,12 @@ var bombTimer = [];     // 當炸彈有時間執行的物件時，會被放在�
 var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
-var life = 2;             // 這是你的命。勝利時，將生命設置成3
-var gameTime = 300 * 1000;    // 計時
+var life = 2;           // 這是生命。勝利時，將生命設置成3
+var gameTime = 180 * 1000;    // 計時
 var audio = {}; // 音效
-var wrongs = 0 // 錯誤次數 小專報告用
+var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
+var musicFlag = -1;
 class bombQuest { // 一個炸彈模塊由以下五個值組合：
     constructor(id, question, answer, whereBomb, bombType) {
         this.id = id;                   // id
@@ -27,6 +28,7 @@ class bombQuest { // 一個炸彈模塊由以下五個值組合：
         this.bombType = bombType;       // 炸彈的類型，只有
     }
 }
+
 
 // 藉由 Id 抓 html 改變 css 樣式的方便代碼
 function setStyle(objId, propertyObject) {
@@ -39,6 +41,7 @@ function setStyle(objId, propertyObject) {
 function skipIntro() {
     // 我不寫這個會可能等Intro等到死掉
 
+    console.log(`[DEBUG] Skipped Intro`);
     setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
@@ -55,12 +58,16 @@ function gameStartButton() {
 
     // 這裡你按下了開始按鈕
     // FACT : animation-fill-mode 只會在動畫執行中有作用，而不是套用以後的動畫
+
+    audioPlay("MusicIntro");
+    audio["MusicIntro"].volume = 0.33;
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 5s', 'animation-fill-mode': 'forwards' });
     setBomb(randomOrder[5], 0);
+
 
     //有延遲的動畫
     setTimeout(function () {
@@ -88,6 +95,15 @@ function setBomb(bombDiv, bombType) {
 
 
             setTimeout(function () {
+                console.log("[Game] Bomb Timer Start");
+                //撥放音樂，這些音樂是同時撥放的
+                musicFlag = 0;
+                MusicStage[0].play();
+                MusicStage[1].play();
+                MusicStage[2].play();
+                MusicStage[0].volume = 0.5;
+                MusicStage[1].volume = 0;
+                MusicStage[2].volume = 0;   
 
                 var now = new Date().getTime();
                 var countDownDate = new Date(now + gameTime).getTime();
@@ -105,10 +121,29 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+                    console.log(minutes,seconds);
                     if (life == 3) {
                         clearInterval(timing);
                     }
+
                     $(".clock").text(`${minutes}:${seconds}`);
+
+                    // 兩分鐘，改變音樂
+                    if (minutes <= 1 && musicFlag == 0) {
+                        console.log("[Audio] musicStage1 Fade Start");
+                        musicFlag = 1;
+                        var musicStage1Fade = setInterval(function () {
+                            if (MusicStage[0].volume <= 0) {
+                                clearInterval(musicStage1Fade);
+                                console.log("[Audio] musicStage1 Fade Done");
+                            }
+                            else {
+                                MusicStage[0].volume = Math.round(MusicStage[0].volume * 1000 - 10) / 1000;
+                                MusicStage[1].volume = Math.round(MusicStage[1].volume * 1000 + 10) / 1000;
+                            }
+                        }, 10);
+
+                    }
                     if (minutes <= 0) {
                         //這裡是剩下60秒之後的情況，會以秒:毫秒的方式計時
                         var timingLessMin = setInterval(function () {
@@ -123,11 +158,25 @@ function setBomb(bombDiv, bombType) {
                             }
                             if (minTime < 30) {
                                 $(".clock").css("animation-name", "numberFlashing");
+
+                                if (musicFlag == 1) {
+                                    console.log("[Audio] musicStage2 Fade Start");
+                                    musicFlag = 2;
+                                    var musicStage2Fade = setInterval(function () {
+                                        if (MusicStage[1].volume <= 0) {
+                                            clearInterval(musicStage2Fade);
+                                            console.log("[Audio] musicStage2 Fade Done");
+                                        }
+                                        else {
+                                            MusicStage[1].volume = Math.floor(MusicStage[1].volume * 1000 - 10) / 1000;
+                                            MusicStage[2].volume = Math.floor(MusicStage[2].volume * 1000 + 10) / 1000;
+                                        }
+                                    }, 10);
+                                }
                             }
                             if (minTime <= 0) {
                                 clearInterval(timingLessMin);
                                 minTime = 0;
-                                $(".clock").css("animation-name", "");
                                 defusedOrExploded(false);
                             }
                         }, 10);
@@ -137,11 +186,12 @@ function setBomb(bombDiv, bombType) {
                     }
 
                 }, 100);
+
             }, 10000);
 
             //要在遊戲開始計時前就把時間顯示好
-            var preTimerMinute = ((gameTime % 3600000) / 60000).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-            var preTimerSecond = ((gameTime % 60000) / 1000).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+            var preTimerMinute = Math.round(((gameTime % 3600000) / 60000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+            var preTimerSecond = Math.round(((gameTime % 60000) / 1000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
 
             bombText =
                 `
@@ -512,6 +562,9 @@ function setBomb(bombDiv, bombType) {
             break;
         }
     }
+
+    console.log(`[Game] Deployed Bomb ${bombType} At Div ${bombDiv}`);
+
     // $(`#${bomb[bombDiv].id}`).html(bombText);
     // bomb[bombDiv].style = "visibility:visible;"
 }
@@ -524,12 +577,12 @@ function submitBomb(bombDivForSolveCheck) {
         //先抓是哪一顆炸彈被觸發解答了
         if (e.whereBomb == bombDivForSolveCheck) {
 
-            console.log(`題目為:${e.question}`);
-            console.log(`答案為:${e.answer}`);
+            console.log(`[Game] Bomb ${e.whereBomb} Is Triggered`)
+
             switch (e.bombType) {
                 case 1: {
-                    console.log(`題目為:${e.question[1]}`);
-                    console.log(`答案為:${e.answer[1]}`);
+                    // console.log(`題目為:${e.question[1]}`);
+                    // console.log(`答案為:${e.answer[1]}`);
                     if (bombId[e.id].answer == document.getElementById(e.id).value &&
                         bombId[e.id + 1].answer == document.getElementById(e.id + 1).value) {
                         // console.log("答對");
@@ -590,12 +643,14 @@ function bombTrigger(correct, bombDivForSolveCheck) {
             "animation-fill-mode": "forwards"
         });
         //刪除掉炸彈
+        console.log(`[Game] Bomb ${bombDivForSolveCheck} Defused`);
         setTimeout(function () {
             bomb[bombDivForSolveCheck].innerHTML = '';
         }, 2000);
     }
     else {  // 回答錯誤
         //重骰該題目
+        console.log(`[Game] Bomb ${bombDivForSolveCheck} Wrong, Replace A New Question`);
         var bombTypeTemp;
 
         bombId.forEach(e => {
@@ -653,6 +708,10 @@ function defusedOrExploded(correct) {
         life = 3;
         clearInterval(beeping);
 
+        MusicStage[0].volume = 0;
+        MusicStage[1].volume = 0;
+        MusicStage[2].volume = 0;
+
         $(".clock").css("animation-name", "numberFlashing");
         $(".clock").css("animation-iteration-count", "1");
 
@@ -667,8 +726,12 @@ function defusedOrExploded(correct) {
 
     }
     else {
+
+        console.log("[Game] Game Over");
+        MusicStage[2].volume = 0;
         clearInterval(beeping);
         audioPlay("explode");
+        $(".clock").css("animation-name", "");
         setStyle("divBomb", { 'visibility': 'hidden' });
         document.body.style = `background-color: rgb(0, 0, 0)`;
 
@@ -695,7 +758,8 @@ var audioFiles = [
     "checkboxoff", "./audio/checkboxoff.wav",
     "moduleDefused", "./audio/moduleDefused.wav",
     "BombDefused", "./audio/tooholy.wav",
-    "explode", "./audio/explode.wav"
+    "explode", "./audio/explode.wav",
+    "MusicIntro", "./audio/MusicIntro.mp3"
 ];
 
 //載入音效
@@ -713,6 +777,7 @@ function audioPlay(name) {
         audio[name].currentTime = 0;
     }
 }
+
 
 // 用來生產0~5，但不重複數字的隨機陣列
 function Bag() {
@@ -733,12 +798,12 @@ function Bag() {
 Bag();
 
 
-
 //放炸彈    
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
 setBomb(randomOrder[3], 3);
+console.log("[Game] Bomb Deploy Done");
 
 //跳過開場
 // skipIntro();
@@ -746,15 +811,32 @@ setBomb(randomOrder[3], 3);
 //讓開始按紐生效
 
 $('document').ready(function () {
+    console.log("[Game] Ready");
     $(".divInitButton>Button").bind('click', function () {
         audioPlay("checkboxon");
         gameStartButton();
+        console.log("[Game] Intro Playing");
     });
 });
 
 
 
+//--音樂迴圈設定----------------
 
+var MusicStage = []
+for (var k = 0; k < 3; k++) {
+    MusicStage[k] = new Audio(`./audio/MusicStage${k + 1}.mp3`);
+}
 
+MusicStage[0].addEventListener('timeupdate', function () {
+    var buffer = .44
+    console.log(this.currentTime);
+    if (this.currentTime > this.duration - buffer) {
+        for (var k = 0; k < 3; k++) {
+            MusicStage[k].currentTime = 0
+            MusicStage[k].play();
+        }
+    }
+});
 
-
+//------------------------------
