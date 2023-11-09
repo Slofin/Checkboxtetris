@@ -1,7 +1,10 @@
 import { Checkboxland } from '../checkboxtetris/checkBox.js';
 
-//簡化這些炸彈
+// -----宣告變數-----
+
+// 簡化這些炸彈
 //就可以 Bomb[0].classList.add("red");
+
 var bomb = [document.getElementById("divBomb1"),
 document.getElementById("divBomb2"),
 document.getElementById("divBomb3"),
@@ -28,7 +31,9 @@ class bombQuest { // 一個炸彈模塊由以下五個值組合：
         this.bombType = bombType;       // 炸彈的類型，只有
     }
 }
+// -----宣告變數-----
 
+// -------功能-------
 
 // 藉由 Id 抓 html 改變 css 樣式的方便代碼
 function setStyle(objId, propertyObject) {
@@ -121,7 +126,7 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-                    console.log(minutes,seconds);
+                    // console.log(minutes,seconds);
                     if (life == 3) {
                         clearInterval(timing);
                     }
@@ -768,7 +773,7 @@ for (var k = 0; k < audioFiles.length; k += 2) {
     audio[`${audioFiles[k]}`].src = audioFiles[k + 1];
 }
 
-// 播放音效或音樂用的function
+// 播放音效用，如果音樂正在撥放的時候重播，
 function audioPlay(name) {
     if (audio[name].paused) {
         audio[name].play();
@@ -777,7 +782,6 @@ function audioPlay(name) {
         audio[name].currentTime = 0;
     }
 }
-
 
 // 用來生產0~5，但不重複數字的隨機陣列
 function Bag() {
@@ -794,22 +798,26 @@ function Bag() {
         ranNums.forEach(e => randomOrder.push(e));
     }
 }
-//生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
+
+// 生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
+
+// -------功能-------
+
+// -------執行-------
+
 Bag();
-
-
-//放炸彈    
+// 放炸彈    
 setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
 setBomb(randomOrder[2], 2);
 setBomb(randomOrder[3], 3);
 console.log("[Game] Bomb Deploy Done");
 
-//跳過開場
+// 跳過開場
+
 // skipIntro();
 
-//讓開始按紐生效
-
+// 讓開始按紐生效
 $('document').ready(function () {
     console.log("[Game] Ready");
     $(".divInitButton>Button").bind('click', function () {
@@ -819,9 +827,9 @@ $('document').ready(function () {
     });
 });
 
+// -------執行-------
 
-
-//--音樂迴圈設定----------------
+// -----音樂設定-----
 
 var MusicStage = []
 for (var k = 0; k < 3; k++) {
@@ -829,8 +837,7 @@ for (var k = 0; k < 3; k++) {
 }
 
 MusicStage[0].addEventListener('timeupdate', function () {
-    var buffer = .44
-    console.log(this.currentTime);
+    var buffer = .7;
     if (this.currentTime > this.duration - buffer) {
         for (var k = 0; k < 3; k++) {
             MusicStage[k].currentTime = 0
@@ -839,4 +846,4 @@ MusicStage[0].addEventListener('timeupdate', function () {
     }
 });
 
-//------------------------------
+// -----音樂設定-----
