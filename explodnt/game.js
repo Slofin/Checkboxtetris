@@ -17,7 +17,7 @@ var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;           // 這是生命。勝利時，將生命設置成3
-var gameTime = 180 * 1000;    // 計時
+var gameTime = 150 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
@@ -65,7 +65,7 @@ function gameStartButton() {
     // FACT : animation-fill-mode 只會在動畫執行中有作用，而不是套用以後的動畫
 
     audioPlay("MusicIntro");
-    audio["MusicIntro"].volume = 0.33;
+    audio["MusicIntro"].volume = 0.66;
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
@@ -106,7 +106,7 @@ function setBomb(bombDiv, bombType) {
                 MusicStage[0].play();
                 MusicStage[1].play();
                 MusicStage[2].play();
-                MusicStage[0].volume = 0.5;
+                MusicStage[0].volume = 0.66;
                 MusicStage[1].volume = 0;
                 MusicStage[2].volume = 0;   
 
@@ -752,16 +752,16 @@ function defusedOrExploded(correct) {
 
 //音效的名稱定義與位置
 var audioFiles = [
-    "wrong", "./audio/wrong.wav",
+    "wrong", "./audio/wrong.mp3",
     "beep", "./audio/beep.wav",
-    "button1", "./audio/button1.wav",
+    "button1", "./audio/button1.mp3",
     "keypress1", "./audio/key-press-1.mp3",
     "keypress2", "./audio/key-press-2.mp3",
     "keypress3", "./audio/key-press-3.mp3",
     "keypress4", "./audio/key-press-4.mp3",
-    "checkboxon", "./audio/checkboxon.wav",
-    "checkboxoff", "./audio/checkboxoff.wav",
-    "moduleDefused", "./audio/moduleDefused.wav",
+    "checkboxon", "./audio/checkboxon.mp3",
+    "checkboxoff", "./audio/checkboxoff.mp3",
+    "moduleDefused", "./audio/moduleDefused.mp3",
     "BombDefused", "./audio/tooholy.wav",
     "explode", "./audio/explode.wav",
     "MusicIntro", "./audio/MusicIntro.mp3"
