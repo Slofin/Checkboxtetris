@@ -17,7 +17,7 @@ var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;           // 這是生命。勝利時，將生命設置成3
-var gameTime = 3599 * 1000;    // 計時
+var gameTime = 150 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
@@ -129,15 +129,15 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-                    // console.log(minutes,seconds);
+                    console.log(minutes,seconds);
                     if (life == 3) {
                         clearInterval(timing);
                     }
 
                     $(".clock").text(`${minutes}:${seconds}`);
 
-                    // 兩分鐘，改變音樂
-                    if (minutes <= 1 && musicFlag == 0) {
+                    // 一分鐘三十秒，改變音樂
+                    if (minutes <= 1 && seconds <= 30 && musicFlag == 0) {
                         console.log("[Audio] musicStage1 Fade Start");
                         musicFlag = 1;
                         var musicStage1Fade = setInterval(function () {
@@ -198,8 +198,8 @@ function setBomb(bombDiv, bombType) {
             }, 10000);
 
             //要在遊戲開始計時前就把時間顯示好
-            var preTimerMinute = Math.round(((gameTime % 3600000) / 60000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-            var preTimerSecond = Math.round(((gameTime % 60000) / 1000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+            var preTimerMinute = Math.floor(((gameTime % 3600000) / 60000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
+            var preTimerSecond = Math.floor(((gameTime % 60000) / 1000)).toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
 
             bombText =
                 `
@@ -711,7 +711,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
     });
 
     if (allBombsAreDefused) {
-        console.log("a");
+        console.log("[Game] All Bombs Are Defused");
         defusedOrExploded(true);
     }
 }
@@ -809,14 +809,6 @@ document.addEventListener('gestureend', function (e) {
     document.body.style.zoom = 0.99;
 });
 
-// 當使用者從手機模式改變視窗大小至電腦模式時，需要將視窗重置這樣才不會卡在底下
-addEventListener("resize", (event) => {
-    if (window.innerWidth > 800) {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    }
-});
-
 // ------瀏覽器------
 
 // -----音效設定-----
@@ -879,17 +871,15 @@ console.log("[Game] Bomb Deploy Done");
 
 // 讓開始按紐生效
 $('document').ready(function () {
-    console.log("[Game] Ready");
     $(".divInitButton>Button").bind('click', function () {
         audioPlay("checkboxon");
         gameStartButton();
         console.log("[Game] Intro Playing");
     });
+    console.log("[Game] Ready");
 });
 
 // -------執行-------
-
-
 
 
 

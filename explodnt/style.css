@@ -1,6 +1,6 @@
 :root {
     --font-size: 30px;
-    --countertext: 1.4;
+    --countertext: 1.6;
 }
 
 #checkboxland>div>input {
@@ -111,7 +111,7 @@ body {
     width: 100vw;
     height: 100vh;
     background-image: url(./logo.png);
-    position: absolute;
+    position: fixed;
     background-position: 50% 50%;
     transform: translateY(-112px);
     background-repeat: no-repeat;
@@ -246,14 +246,6 @@ body {
     /* animation-name: numberFlashing; */
 }
 
-.clockbg {
-    transform: scaleY(1.3);
-    font-family: DSEG7;
-    color: rgba(194, 206, 206, 0.12);
-    font-size: calc(var(--font-size) * var(--countertext));
-    position: absolute;
-    user-select: none;
-}
 
 .clockout {
     position: relative;
@@ -280,6 +272,14 @@ body {
     /* animation-name: numberFlashing; */
 }
 
+.clockbg {
+    transform: scaleY(1.3);
+    font-family: DSEG7;
+    color: rgba(194, 206, 206, 0.12);
+    font-size: calc(var(--font-size) * var(--countertext));
+    position: absolute;
+    user-select: none;
+}
 
 
 .counter {
@@ -321,9 +321,9 @@ body {
 
 #versionText {
     position: fixed;
-    bottom: -1.6%;
-    left: 0px;
-    font-size: calc(var(--font-size) * 0.5);
+    bottom: -8px;
+    left: 8px;
+    font-size: 12px;
     color: rgb(80, 80, 105);
     user-select: none;
 }
@@ -334,7 +334,8 @@ body {
 
     html,
     body {
-        overflow:auto;
+        overflow-y:auto;
+        overflow-x:hidden;
     }
 
     :root {
@@ -385,12 +386,12 @@ body {
 
 
     :root {
-        --font-size: 20px;
+        --font-size: 32px;
     }
 
     #checkboxland>div>input {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
     }
 
     .divBomb {
@@ -408,7 +409,7 @@ body {
             0 50px 0px 0px rgb(50, 50, 50),
             0 0px 0px 2px rgb(64, 64, 64),
             0 50px 0px 2px rgb(64, 64, 64);
-        width: 60%;
+        width: 90%;
         height: 70%;
     }
 
@@ -435,12 +436,12 @@ body {
     }
 
     :root {
-        --font-size: 30px;
+        --font-size: 38px;
     }
 
     #checkboxland>div>input {
-        width: 30px;
-        height: 30px;
+        width: 33px;
+        height: 33px;
     }
 
     .divBomb {
@@ -450,6 +451,10 @@ body {
         height: 47%;
     }
 
+    .divMiddle {
+        width: 80%;
+        height: 70%;
+    }
 
 }
 
@@ -461,7 +466,7 @@ body {
     }
 
     :root {
-        --font-size: 40px;
+        --font-size: 48px;
     }
 
     #checkboxland>div>input {
@@ -476,6 +481,10 @@ body {
         height: 47%;
     }
 
+    .divMiddle {
+        width: 70%;
+        height: 70%;
+    }
 
 }
 
@@ -502,6 +511,10 @@ body {
         height: 47%;
     }
 
+    .divMiddle {
+        width: 60%;
+        height: 70%;
+    }
 
 }
 
