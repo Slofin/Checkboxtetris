@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="./game.js" type="module"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
     <title>Explodnt</title>
@@ -14,7 +15,7 @@
 
 <body>
 
-    <script src="./game.js" type="module"></script>
+
 
     <!-- 背景，會淡出 -->
     <div id="divBackground"></div>
@@ -24,8 +25,7 @@
 
     <!-- 右下的上一頁按鈕 -->
     <a href="../" id="divRightBottomButton"></a>
-    <!-- <button id="divRightBottomButton" onclick="skipIntro()" style="background-color:rgba(255, 255, 255, 0);"></button> -->
-    <div id="divRightBottomButtonText" style="user-select: none;">回到首頁</div>
+    <div id="divRightBottomButtonText">回到首頁</div>
 
     <!-- 開始遊戲按鈕 -->
     <div class="divInitButton" id="initButton">
@@ -36,10 +36,9 @@
     <div id="startText">
         警告：<br>拆彈助手不可以看到這個畫面
     </div>
-    
 
     <p id="versionText">
-        version 0.85.3 - 小專報告版
+        version 0.85.4 - 小專報告版
     </p>
 
     <!-- 這是炸彈 -->
@@ -54,4 +53,5 @@
 
 
 </body>
+
 </html>

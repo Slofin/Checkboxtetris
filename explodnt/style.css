@@ -144,6 +144,7 @@ body {
 }
 
 #divRightBottomButton:hover~#divRightBottomButtonText {
+    user-select: none;
     position: fixed;
     width: 100px;
     height: 20px;

@@ -91,7 +91,7 @@ function setBomb(bombDiv, bombType) {
     var bombText = "";
     switch (bombType) {
 
-        case 0: {//炸彈模塊【計時器】 TODO
+        case 0: {//炸彈模塊【計時器】
             // -----------------------------------------------------------
 
             //
@@ -434,7 +434,7 @@ function setBomb(bombDiv, bombType) {
             break;
         }
 
-        case 3: {//炸彈模塊【打勾方塊】 TODO
+        case 3: {//炸彈模塊【打勾方塊】
 
             // -----------------------------------------------------------
 
@@ -694,10 +694,10 @@ function bombTrigger(correct, bombDivForSolveCheck) {
             defusedOrExploded(false);
         }
         else {
-            // life--;
-            // $(".counter").text("X!");
-            wrongs++;
-            $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
+            life--;
+            $(".counter").text("X!");
+            // wrongs++;
+            // $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
             audioPlay("wrong");
         }
 
