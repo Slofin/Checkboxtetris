@@ -48,6 +48,7 @@ function skipIntro() {
 
     console.log(`[DEBUG] Skipped Intro`);
     setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
@@ -68,6 +69,7 @@ function gameStartButton() {
     audioPlay("MusicIntro");
     audio["MusicIntro"].volume = 0.66;
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
+    setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
