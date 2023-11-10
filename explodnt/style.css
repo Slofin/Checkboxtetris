@@ -1,7 +1,7 @@
-html,
+/* html,
 body {
     overflow: hidden;
-}
+} */
 
 :root {
     --font-size: 30px;
@@ -13,38 +13,7 @@ body {
     height: 24px;
 }
 
-@media (min-width: 1100px) {
-    :root {
-        --font-size: 32px;
-    }
 
-    #checkboxland>div>input {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-@media (min-width: 1430px) {
-    :root {
-        --font-size: 40px;
-    }
-
-    #checkboxland>div>input {
-        width: 36px;
-        height: 36px;
-    }
-}
-
-@media (min-width: 1700px) {
-    :root {
-        --font-size: 48px;
-    }
-
-    #checkboxland>div>input {
-        width: 40px;
-        height: 40px;
-    }
-}
 
 
 
@@ -87,8 +56,8 @@ body {
     visibility: hidden;
     display: flex;
     flex-wrap: wrap;
+    position: absolute;
     gap: 3px 0px;
-    position: fixed;
     width: 60%;
     height: 70%;
     top: 50%;
@@ -108,12 +77,12 @@ body {
 }
 
 .divBomb {
-    background-color: darkgray;
     /* visibility: hidden; */
     display: inline-block;
+    background-color: darkgray;
     margin: 0.5% 0.5% 0.5% 0.5%;
-    padding: 0px;
     width: 32%;
+    padding: 0px;
     height: 47%;
     border: 1px rgb(255, 255, 255) solid;
 }
@@ -131,7 +100,7 @@ body {
 }
 
 .divInsidebomb>input {
-    font-size: calc(var(--font-size) * 0.8) ;
+    font-size: calc(var(--font-size) * 0.8);
     width: 100%;
     height: 100%;
     text-align: center;
@@ -139,7 +108,7 @@ body {
 
 
 .divInsidebomb>button {
-    font-size: calc(var(--font-size) * 0.8) ;
+    font-size: calc(var(--font-size) * 0.8);
     width: 120%
 }
 
@@ -200,7 +169,7 @@ body {
     border: none;
     font-weight: bold;
     padding: 5px;
-    font-size: calc(var(--font-size) * 0.75);
+    font-size: calc(var(--font-size) * 0.7);
     height: 58%;
     width: 48%;
     box-shadow: 0 6px 4px darkslategray;
@@ -246,25 +215,29 @@ body {
 }
 
 #startText {
-    width: 100%;
-    height: 15%;
+    width: 90%;
+    height: 10%;
     font-size: calc(var(--font-size) * 1.5);
     color: red;
     user-select: none;
     background-color: unset;
 
     font-weight: bold;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+
     visibility: hidden;
     display: flex;
+    word-break: break-all;
     flex-wrap: wrap;
+    
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     justify-content: center;
-    line-height: 0%;
+    /* line-height: 0%; */
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    /* border: 1px solid white; */
 }
 
 
@@ -298,7 +271,7 @@ body {
     justify-content: center;
     align-items: center;
     background: rgb(0, 0, 0);
-    border: 3px solid rgb(100, 100, var(--countertext));
+    border: 3px solid rgb(100, 100, 100);
     top: 12%;
     left: 8%;
     user-select: none;
@@ -356,11 +329,155 @@ body {
 
 .versionText {
     position: fixed;
-    bottom: 0%;
+    bottom: -1.6%;
     left: 0px;
+    font-size: calc(var(--font-size) * 0.5);
     color: rgb(80, 80, 105);
     user-select: none;
 }
+
+
+
+@media (min-width: 0px) {
+
+    html,
+    body {
+        overflow: visible;
+    }
+
+    :root {
+        --font-size: 16px;
+    }
+
+    #checkboxland>div>input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 100%;
+        height: 150px;
+    }
+
+    .divMiddle {
+        background-color: rgba(0, 0, 0, 0);
+        box-shadow: unset;
+    }
+}
+
+@media (min-width: 800px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+
+    :root {
+        --font-size: 20px;
+    }
+
+    #checkboxland>div>input {
+        width: 24px;
+        height: 24px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        height: 25%;
+        width: 30%;
+        height: 47%;
+    }
+
+    .divMiddle {
+        background-color: dimgray;
+        box-shadow:
+            0 0px 0px 2px rgb(64, 64, 64),
+            0 50px 0px 0px rgb(50, 50, 50),
+            0 0px 0px 2px rgb(64, 64, 64),
+            0 50px 0px 2px rgb(64, 64, 64);
+    }
+}
+
+@media (min-width: 1100px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 30px;
+    }
+
+    #checkboxland>div>input {
+        width: 30px;
+        height: 30px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 31%;
+        height: 47%;
+    }
+}
+
+@media (min-width: 1400px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 40px;
+    }
+
+    #checkboxland>div>input {
+        width: 36px;
+        height: 36px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 32%;
+        height: 47%;
+    }
+
+
+}
+
+@media (min-width: 1700px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 48px;
+    }
+
+    #checkboxland>div>input {
+        width: 40px;
+        height: 40px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 32%;
+        height: 47%;
+    }
+
+
+}
+
 
 @keyframes numberFlashing {
     0% {
