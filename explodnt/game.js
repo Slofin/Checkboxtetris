@@ -640,19 +640,28 @@ function bombTrigger(correct, bombDivForSolveCheck) {
                 bombId[e.id].whereBomb = -1;
             }
         });
+
+        console.log(`[Game] Bomb ${bombDivForSolveCheck} Defused`);
+
         //動畫：炸彈被拆除之後掉落
+
         audioPlay("moduleDefused");
         var styleSelector = "divBomb" + (bombDivForSolveCheck + 1).toString();
+
         setStyle(styleSelector, {
             "animation": "bombDrop 1.5s",
             "pointer-events": "none",
-            "animation-fill-mode": "forwards"
+            // "animation-fill-mode": "forwards"
         });
         //刪除掉炸彈
-        console.log(`[Game] Bomb ${bombDivForSolveCheck} Defused`);
+
         setTimeout(function () {
+            setStyle(styleSelector, {
+                "visibility": "hidden"
+            });
             bomb[bombDivForSolveCheck].innerHTML = '';
-        }, 2000);
+        }, 1500);
+
     }
     else {  // 回答錯誤
         //重骰該題目
@@ -751,29 +760,6 @@ function defusedOrExploded(correct) {
     }
 }
 
-//音效的名稱定義與位置
-var audioFiles = [
-    "wrong", "./audio/wrong.mp3",
-    "beep", "./audio/beep.wav",
-    "button1", "./audio/button1.mp3",
-    "keypress1", "./audio/key-press-1.mp3",
-    "keypress2", "./audio/key-press-2.mp3",
-    "keypress3", "./audio/key-press-3.mp3",
-    "keypress4", "./audio/key-press-4.mp3",
-    "checkboxon", "./audio/checkboxon.mp3",
-    "checkboxoff", "./audio/checkboxoff.mp3",
-    "moduleDefused", "./audio/moduleDefused.mp3",
-    "BombDefused", "./audio/tooholy.wav",
-    "explode", "./audio/explode.wav",
-    "MusicIntro", "./audio/MusicIntro.mp3"
-];
-
-//載入音效
-for (var k = 0; k < audioFiles.length; k += 2) {
-    audio[`${audioFiles[k]}`] = new Audio();
-    audio[`${audioFiles[k]}`].src = audioFiles[k + 1];
-}
-
 // 播放音效用，如果音樂正在撥放的時候重播，
 function audioPlay(name) {
     if (audio[name].paused) {
@@ -800,37 +786,63 @@ function Bag() {
     }
 }
 
-// 生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
-
 // -------功能-------
 
-// -------執行-------
+// ------瀏覽器------
 
-Bag();
-// 放炸彈    
-setBomb(randomOrder[0], 1);
-setBomb(randomOrder[1], 2);
-setBomb(randomOrder[2], 2);
-setBomb(randomOrder[3], 3);
-console.log("[Game] Bomb Deploy Done");
-
-// 跳過開場
-
-// skipIntro();
-
-// 讓開始按紐生效
-$('document').ready(function () {
-    console.log("[Game] Ready");
-    $(".divInitButton>Button").bind('click', function () {
-        audioPlay("checkboxon");
-        gameStartButton();
-        console.log("[Game] Intro Playing");
-    });
+// 取消掉一些手機手勢
+document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+    // special hack to prevent zoom-to-tabs gesture in safari
+    document.body.style.zoom = 0.99;
 });
 
-// -------執行-------
+document.addEventListener('gesturechange', function (e) {
+    e.preventDefault();
+    // special hack to prevent zoom-to-tabs gesture in safari
+    document.body.style.zoom = 0.99;
+});
 
-// -----音樂設定-----
+document.addEventListener('gestureend', function (e) {
+    e.preventDefault();
+    // special hack to prevent zoom-to-tabs gesture in safari
+    document.body.style.zoom = 0.99;
+});
+
+// 當使用者從手機模式改變視窗大小至電腦模式時，需要將視窗重置這樣才不會卡在底下
+addEventListener("resize", (event) => {
+    if (window.innerWidth > 800) {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+});
+
+// ------瀏覽器------
+
+// -----音效設定-----
+
+//音效的名稱定義與位置
+var audioFiles = [
+    "wrong", "./audio/wrong.mp3",
+    "beep", "./audio/beep.wav",
+    "button1", "./audio/button1.mp3",
+    "keypress1", "./audio/key-press-1.mp3",
+    "keypress2", "./audio/key-press-2.mp3",
+    "keypress3", "./audio/key-press-3.mp3",
+    "keypress4", "./audio/key-press-4.mp3",
+    "checkboxon", "./audio/checkboxon.mp3",
+    "checkboxoff", "./audio/checkboxoff.mp3",
+    "moduleDefused", "./audio/moduleDefused.mp3",
+    "BombDefused", "./audio/tooholy.wav",
+    "explode", "./audio/explode.wav",
+    "MusicIntro", "./audio/MusicIntro.mp3"
+];
+
+//載入音效
+for (var k = 0; k < audioFiles.length; k += 2) {
+    audio[`${audioFiles[k]}`] = new Audio();
+    audio[`${audioFiles[k]}`].src = audioFiles[k + 1];
+}
 
 var MusicStage = []
 for (var k = 0; k < 3; k++) {
@@ -848,3 +860,36 @@ MusicStage[0].addEventListener('timeupdate', function () {
 });
 
 // -----音樂設定-----
+
+// -------執行-------
+
+// 生產0~5，不重複數字的隨機陣列，用來擺放不重複位置的炸彈
+Bag();
+
+// 放炸彈    
+setBomb(randomOrder[0], 1);
+setBomb(randomOrder[1], 2);
+setBomb(randomOrder[2], 2);
+setBomb(randomOrder[3], 3);
+console.log("[Game] Bomb Deploy Done");
+
+// 註解掉下面這行跳過開場
+
+// skipIntro();
+
+// 讓開始按紐生效
+$('document').ready(function () {
+    console.log("[Game] Ready");
+    $(".divInitButton>Button").bind('click', function () {
+        audioPlay("checkboxon");
+        gameStartButton();
+        console.log("[Game] Intro Playing");
+    });
+});
+
+// -------執行-------
+
+
+
+
+

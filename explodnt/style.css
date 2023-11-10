@@ -95,7 +95,7 @@ body {
 }
 
 .divInsidebomb>input {
-    font-size: calc(var(--font-size) * 0.8);
+    font-size: calc(var(--font-size) * 0.75);
     width: 100%;
     height: 100%;
     text-align: center;
@@ -103,7 +103,7 @@ body {
 
 
 .divInsidebomb>button {
-    font-size: calc(var(--font-size) * 0.8);
+    font-size: calc(var(--font-size) * 0.75);
     width: 120%
 }
 
@@ -586,6 +586,7 @@ body {
 @keyframes bombDrop {
 
     0% {
+        opacity: 1;
         z-index: 20;
         transform: rotate(0deg);
     }
@@ -596,8 +597,10 @@ body {
     }
 
     100% {
+        opacity: 0;
+        visibility: hidden;
         z-index: 20;
-        transform: rotate(5deg) translateX(30px) translateY(300%);
+        transform: rotate(5deg) translateX(140px) translateY(700%);
     }
 }
 
