@@ -1,4 +1,4 @@
-import { Checkboxland } from '../checkboxtetris/checkBox.js';
+import { Checkboxland } from './checkBox.js';
 
 // -----宣告變數-----
 
@@ -62,6 +62,7 @@ function skipIntro() {
 function gameStartButton() {
 
     // 這裡你按下了開始按鈕
+
     // FACT : animation-fill-mode 只會在動畫執行中有作用，而不是套用以後的動畫
 
     audioPlay("MusicIntro");
@@ -108,7 +109,7 @@ function setBomb(bombDiv, bombType) {
                 MusicStage[2].play();
                 MusicStage[0].volume = 0.66;
                 MusicStage[1].volume = 0;
-                MusicStage[2].volume = 0;   
+                MusicStage[2].volume = 0;
 
                 var now = new Date().getTime();
                 var countDownDate = new Date(now + gameTime).getTime();
@@ -325,20 +326,18 @@ function setBomb(bombDiv, bombType) {
 
             bombText = `
             <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> 
-            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${bombIdCount}" value="${questions[0]}"
-             style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
+            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${bombIdCount}" value="${questions[0]}"> 
             </div> 
 
             <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> 
-            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${(bombIdCount + 1)}" value="${questions[1]}"
-             style="font-size: 20px;width:100%;height: 100%;text-align: center;"> 
+            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${(bombIdCount + 1)}" value="${questions[1]}"> 
              </div> 
 
             <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center; user-select: none;"> 
-            <button style="font-size:24px; width:120%" id="bombbutton${bombIdCount}">提交</button> 
+            <button  id="bombbutton${bombIdCount}">提交</button> 
             </div>`;
 
-            
+
             bomb[bombDiv].innerHTML = bombText;
 
             var bombAudioSet = document.getElementById(`${(bombIdCount)}`)
