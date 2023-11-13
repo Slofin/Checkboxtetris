@@ -37,6 +37,7 @@ body {
     transform: translate(-50%, -50%);
     /* border: 3px rgb(255, 255, 255) solid; */
     justify-content: center;
+    transition: 0.5s all;
     color: white;
 }
 
@@ -143,7 +144,38 @@ body {
     background-position: center;
 }
 
+#buttonToPDF {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: -5%;
+    bottom: 5%;
+    border: none;
+    font-weight: bold;
+    font-size: calc(var(--font-size) * 0.9);
+    height: 20vh;
+    width: 35vh;
+    text-decoration:none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 0% 99em 99em 0%;
+    user-select: none;
+    transition: left 0.5s;
+    animation: bombShake 1s;
+}
+
+#buttonToPDF:hover {
+    left: 0%;
+}
+
+#divRightBottomButtonText{
+    visibility: hidden;
+}
+
 #divRightBottomButton:hover~#divRightBottomButtonText {
+    visibility: visible;
     user-select: none;
     position: fixed;
     width: 100px;
@@ -156,6 +188,8 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+
 
 .roundButton {
 

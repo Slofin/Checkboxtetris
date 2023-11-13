@@ -47,8 +47,9 @@ function skipIntro() {
     // 我不寫這個會可能等Intro等到死掉
 
     console.log(`[DEBUG] Skipped Intro`);
+    // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
-    setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    setStyle("buttonToPDF", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
@@ -68,8 +69,9 @@ function gameStartButton() {
 
     audioPlay("MusicIntro");
     audio["MusicIntro"].volume = 0.66;
+    // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
-    setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    setStyle("buttonToPDF", { 'animation': 'fade-out 0.2s', 'animation-fill-mode': 'forwards' });
     setStyle("divRightBottomButton", { 'visibility': 'hidden' });
     setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
@@ -129,7 +131,7 @@ function setBomb(bombDiv, bombType) {
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     minutes = minutes.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
                     seconds = seconds.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false });
-                    console.log(minutes,seconds);
+                    // console.log(minutes,seconds);
                     if (life == 3) {
                         clearInterval(timing);
                     }
@@ -687,17 +689,19 @@ function bombTrigger(correct, bombDivForSolveCheck) {
         });
         setTimeout(function () { setStyle(styleSelector, { "animation": "" }); }, 500);
 
-
-
         if (life == 1) {
             $(".counter").text("XX");
             defusedOrExploded(false);
         }
         else {
-            life--;
-            $(".counter").text("X!");
-            // wrongs++;
-            // $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
+
+
+            // life--;
+            // $(".counter").text("X!");
+            
+            wrongs++;
+            $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
+
             audioPlay("wrong");
         }
 
