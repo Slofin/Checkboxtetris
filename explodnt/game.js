@@ -186,7 +186,7 @@ function setBomb(bombDiv, bombType) {
                                 }
                             }
                             if (minTime <= 0) {
-                                setStyle("QRCode", { 'visibility': 'hidden'});
+                                // setStyle("QRCode", { 'visibility': 'hidden'});
                                 clearInterval(timingLessMin);
                                 minTime = 0;
                                 defusedOrExploded(false);
