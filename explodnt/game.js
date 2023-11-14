@@ -82,6 +82,7 @@ function gameStartButton() {
     //有延遲的動畫
     setTimeout(function () {
         setStyle("divBomb", { 'animation': 'fade-in 5s', 'visibility': 'visible' });
+
     }, 4000);
 
 
@@ -185,6 +186,7 @@ function setBomb(bombDiv, bombType) {
                                 }
                             }
                             if (minTime <= 0) {
+                                setStyle("QRCode", { 'visibility': 'hidden'});
                                 clearInterval(timingLessMin);
                                 minTime = 0;
                                 defusedOrExploded(false);
