@@ -17,7 +17,7 @@ var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;           // 這是生命。勝利時，將生命設置成3
-var gameTime = 150 * 1000;    // 計時
+var gameTime = 10 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
@@ -28,7 +28,7 @@ class bombQuest { // 一個炸彈模塊由以下五個值組合：
         this.question = question;       // 問題
         this.answer = answer;           // 答案
         this.whereBomb = whereBomb;     // 炸彈的位置
-        this.bombType = bombType;       // 炸彈的類型，只有
+        this.bombType = bombType;       // 炸彈的類型
     }
 }
 // -----宣告變數-----
@@ -48,10 +48,10 @@ function skipIntro() {
 
     console.log(`[DEBUG] Skipped Intro`);
     // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("buttonToPDF", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("divRightBottomButton", { 'visibility': 'hidden' });
+    // setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
-    setStyle("buttonToPDF", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
-    setStyle("divRightBottomButton", { 'visibility': 'hidden' });
-    setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 0.0001s', 'animation-fill-mode': 'forwards' });
     setBomb(randomOrder[5], 0);
@@ -70,10 +70,10 @@ function gameStartButton() {
     audioPlay("MusicIntro");
     audio["MusicIntro"].volume = 0.66;
     // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("buttonToPDF", { 'animation': 'fade-out 0.2s', 'animation-fill-mode': 'forwards' });
+    // setStyle("divRightBottomButton", { 'visibility': 'hidden' });
+    // setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
-    setStyle("buttonToPDF", { 'animation': 'fade-out 0.2s', 'animation-fill-mode': 'forwards' });
-    setStyle("divRightBottomButton", { 'visibility': 'hidden' });
-    setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 5s', 'animation-fill-mode': 'forwards' });
     setBomb(randomOrder[5], 0);
