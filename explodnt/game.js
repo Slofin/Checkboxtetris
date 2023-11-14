@@ -329,15 +329,15 @@ function setBomb(bombDiv, bombType) {
             // bombId.push(new bombQuest(bombIdCount + 2, questions[2], answers[2], bombDiv, bombType));
 
             bombText = `
-            <div class="divInsidebomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> 
+            <div class="divTextbomb" style="left:9%; top:20%; width:80%; height: 10%; text-align: center;"> 
             <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${bombIdCount}" value="${questions[0]}"> 
             </div> 
 
-            <div class="divInsidebomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> 
+            <div class="divTextbomb" style="left:9%; top:28%; width:80%; height: 10%; text-align: center;"> 
             <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="${(bombIdCount + 1)}" value="${questions[1]}"> 
              </div> 
 
-            <div class="divInsidebomb" style="left:33%; top:45%; width:29%; text-align: center; user-select: none;"> 
+            <div class="divTextbomb" style="left:33%; top:45%; width:29%; text-align: center; user-select: none;"> 
             <button  id="bombbutton${bombIdCount}">提交</button> 
             </div>`;
 
@@ -698,7 +698,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
 
             // life--;
             // $(".counter").text("X!");
-            
+
             wrongs++;
             $(".counter").text(wrongs.toLocaleString('en', { minimumIntegerDigits: 2, useGrouping: false }));
 
@@ -840,6 +840,7 @@ for (var k = 0; k < audioFiles.length; k += 2) {
     audio[`${audioFiles[k]}`].src = audioFiles[k + 1];
 }
 
+//載入音樂
 var MusicStage = []
 for (var k = 0; k < 3; k++) {
     MusicStage[k] = new Audio(`./audio/MusicStage${k + 1}.mp3`);
