@@ -1,0 +1,788 @@
+:root {
+    --font-size: 30px;
+    --countertext: 1.6;
+}
+
+body {
+    background-color: rgb(20, 20, 35);
+}
+
+/* 字體 */
+@font-face {
+    font-family: DSEG7;
+    src: url(./font/DSEG7Modern-Bold.woff)
+}
+
+@font-face {
+    font-family: DSEG14;
+    src: url(./font/DSEG14Modern-Bold.woff)
+}
+
+/* 字體 */
+
+/* 主要介面 */
+.divInitButton {
+    display: flex;
+    position: fixed;
+    width: 20%;
+    height: 10%;
+    top: 50%;
+    left: 50%;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    /* border: 3px rgb(255, 255, 255) solid; */
+    justify-content: center;
+    transition: 0.5s all;
+    color: white;
+}
+
+.divInitButton>button {
+    width: 100%;
+    font-size: var(--font-size);
+}
+
+#startText {
+    width: 90%;
+    height: 30%;
+    color: red;
+    user-select: none;
+    background-color: unset;
+    font-weight: bold;
+    visibility: hidden;
+    display: flex;
+    word-break: break-all;
+    flex-wrap: wrap;
+    font-size: calc(var(--font-size) * 1.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    text-align: center;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    /* border: 1px solid white; */
+}
+
+.divMiddle {
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    visibility: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    gap: 3px 0px;
+    width: 60%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    color: white;
+    line-height: 0%;
+    background-color: dimgray;
+    box-shadow:
+        0 0px 0px 2px rgb(64, 64, 64),
+        0 50px 0px 0px rgb(50, 50, 50),
+        0 0px 0px 2px rgb(64, 64, 64),
+        0 50px 0px 2px rgb(64, 64, 64);
+    /* font-size: var(--font-size); */
+    /* border: 1px rgb(255, 255, 255) solid; */
+}
+
+.divBomb {
+    /* visibility: hidden; */
+    display: inline-block;
+    background-color: darkgray;
+    margin: 0.5% 0.5% 0.5% 0.5%;
+    width: 32%;
+    padding: 0px;
+    height: 47%;
+    border: 1px rgb(255, 255, 255) solid;
+}
+
+#divRightBottomButton {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    bottom: 0px;
+    right: 0px;
+    background-image: url(../img/car.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#buttonToPDF {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: -5%;
+    bottom: 5%;
+    border: none;
+    font-weight: bold;
+    font-size: calc(var(--font-size) * 0.9);
+    height: 15vh;
+    width: 40vh;
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 0% 99em 99em 0%;
+    user-select: none;
+    transition: left 0.5s;
+    animation: bombShake 1s;
+}
+
+#buttonToPDF:hover {
+    left: 0%;
+}
+
+#versionText {
+    position: fixed;
+    bottom: -8px;
+    left: 8px;
+    font-size: 12px;
+    color: rgb(80, 80, 105);
+    user-select: none;
+}
+
+#divRightBottomButtonText {
+    visibility: hidden;
+}
+
+#divRightBottomButton:hover~#divRightBottomButtonText {
+    visibility: visible;
+    user-select: none;
+    position: fixed;
+    width: 100px;
+    height: 20px;
+    bottom: 87px;
+    right: 0px;
+    text-align: center;
+    color: white;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#divBackground {
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./logo.png);
+    position: fixed;
+    background-position: 50% 50%;
+    transform: translateY(-112px);
+    background-repeat: no-repeat;
+}
+
+#divForeground {
+    width: 100%;
+    height: 100vh;
+    opacity: 0%;
+    background-image: unset;
+    visibility: hidden;
+    position: absolute;
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: translateY(-70px);
+    z-index: 50;
+}
+
+#QRCode {
+    visibility: visible;
+    position: fixed;
+    left: 90%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.5) ;
+    pointer-events: none;
+    user-select: none;
+    /* visibility: hidden; */
+    /* transition: opacity 2s; */
+}
+
+#QRCodeGame {
+    z-index: 100;
+    visibility: none;
+    position: fixed;
+    opacity: 0;
+    left: 10%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    pointer-events: none;
+    user-select: none;
+    /* visibility: hidden; */
+    transition: opacity 1s;
+}
+
+/* 主要介面 */
+
+/* 文字方塊 */
+.divTextbomb {
+    display: block;
+    position: relative;
+    width: 5%;
+    height: 5%;
+    font-size: var(--font-size);
+    justify-content: center;
+    color: white;
+
+    /* border: 1px red solid; */
+}
+
+.divTextbomb>input {
+    font-size: calc(var(--font-size) * 0.75);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.divTextbomb>button {
+    font-size: calc(var(--font-size) * 0.75);
+    width: 120%
+}
+
+/* 文字方塊 */
+
+
+/* 圓形按鈕 */
+.roundButton {
+
+    position: relative;
+    left: 25%;
+    top: 20%;
+    border: none;
+    font-weight: bold;
+    padding: 5px;
+    font-size: calc(var(--font-size) * 0.7);
+    height: 58%;
+    width: 48%;
+    box-shadow: 0 6px 4px darkslategray;
+    cursor: pointer;
+    border-radius: 70%;
+    user-select: none;
+}
+
+.roundButton:active {
+    box-shadow: 0 0 4px darkslategray;
+    transform: translateY(6px);
+}
+
+.roundButtonBlue {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.roundButtonRed {
+    background-color: red;
+    color: white;
+}
+
+.roundButtonGreen {
+    background-color: forestgreen;
+    color: white;
+}
+
+.roundButtonYellow {
+    background-color: yellow;
+    color: black;
+}
+
+/* 圓形按鈕 */
+
+/* 打勾方塊 */
+#checkboxland>div>input {
+    width: 24px;
+    height: 24px;
+    transition: width 0.5s, height 0.5s;
+}
+
+.checkboxlandBox {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* transition: width 1s, height 1s; */
+}
+
+/* 打勾方塊 */
+
+/* 倒數計時器 */
+.clock {
+    transform: scaleY(1.3);
+    font-family: DSEG7;
+    color: red;
+    font-size: calc(var(--font-size) * 1.4);
+    position: absolute;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    user-select: none;
+    /* animation-name: numberFlashing; */
+}
+
+.clockout {
+    position: relative;
+    display: flex;
+    width: 80%;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
+    background: rgb(0, 0, 0);
+    border: 3px solid rgb(100, 100, 100);
+    top: 12%;
+    left: 8%;
+    user-select: none;
+}
+
+.clock {
+    font-family: DSEG7;
+    color: red;
+    font-size: calc(var(--font-size) * var(--countertext));
+    position: absolute;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    user-select: none;
+    /* animation-name: numberFlashing; */
+}
+
+.clockbg {
+    transform: scaleY(1.3);
+    font-family: DSEG7;
+    color: rgba(194, 206, 206, 0.12);
+    font-size: calc(var(--font-size) * var(--countertext));
+    position: absolute;
+    user-select: none;
+}
+
+/* 倒數計時器 */
+
+/* 錯誤計數器 */
+.counter {
+    letter-spacing: -9px;
+    font-family: DSEG14;
+    color: red;
+    font-size: calc(var(--font-size) * 1);
+    position: absolute;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    transform: translateX(-4px);
+    user-select: none;
+    /* animation-nam8e: numberFlashing; */
+}
+
+.counterbg {
+    letter-spacing: -9px;
+    font-family: DSEG14;
+    color: rgba(194, 206, 206, 0.12);
+    font-size: calc(var(--font-size) * 1);
+    position: absolute;
+    transform: translateX(-4px);
+    user-select: none;
+}
+
+.counterout {
+    position: relative;
+    display: flex;
+    width: 20%;
+    height: 20%;
+    justify-content: center;
+    align-items: center;
+    background: rgb(0, 0, 0);
+    border: 3px solid rgb(100, 100, 100);
+    top: 16%;
+    left: 40%;
+    user-select: none;
+}
+
+/* 錯誤計數器 */
+
+/* RWD */
+@media (min-width: 0px) {
+
+    html,
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    :root {
+        --font-size: 48px;
+    }
+
+    #checkboxland>div>input {
+        width: 40px;
+        height: 40px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 100%;
+        height: 300px;
+    }
+
+    .divMiddle {
+        background-color: rgba(0, 0, 0, 0);
+        box-shadow: unset;
+        width: 90%;
+        height: 95%;
+        transition: all 0.05s;
+    }
+
+    #startText {
+        font-size: 48px;
+    }
+
+    .divInitButton {
+        width: 50%;
+        height: 10%;
+    }
+
+    #divBackground {
+
+        background-size: 100vw 100vw;
+    }
+
+    #QRCode {
+        visibility: hidden;
+    }
+
+}
+
+@media (min-width: 800px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+
+    :root {
+        --font-size: 32px;
+    }
+
+    #checkboxland>div>input {
+        width: 28px;
+        height: 28px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        height: 25%;
+        width: 30%;
+        height: 47%;
+    }
+
+    .divMiddle {
+        background-color: dimgray;
+        box-shadow:
+            0 0px 0px 2px rgb(64, 64, 64),
+            0 50px 0px 0px rgb(50, 50, 50),
+            0 0px 0px 2px rgb(64, 64, 64),
+            0 50px 0px 2px rgb(64, 64, 64);
+        width: 90%;
+        height: 70%;
+    }
+
+    #startText {
+        font-size: calc(var(--font-size) * 1.5);
+    }
+
+    .divInitButton {
+        width: 20%;
+        height: 10%;
+    }
+
+    #divBackground {
+
+        background-size: auto;
+    }
+
+    #QRCode {
+        visibility: hidden;
+    }
+}
+
+@media (min-width: 1100px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 38px;
+    }
+
+    #checkboxland>div>input {
+        width: 33px;
+        height: 33px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 31%;
+        height: 47%;
+    }
+
+    .divMiddle {
+        width: 80%;
+        height: 70%;
+    }
+
+    #QRCode {
+        visibility: hidden;
+    }
+
+}
+
+@media (min-width: 1400px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 48px;
+    }
+
+    #checkboxland>div>input {
+        width: 36px;
+        height: 36px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 32%;
+        height: 47%;
+    }
+
+    .divMiddle {
+        width: 70%;
+        height: 70%;
+    }
+
+    #QRCode {
+        visibility: hidden;
+    }
+
+}
+
+@media (min-width: 1700px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    :root {
+        --font-size: 48px;
+    }
+
+    #checkboxland>div>input {
+        width: 40px;
+        height: 40px;
+    }
+
+    .divBomb {
+        background-color: darkgray;
+        margin: 0.5% 0.5% 0.5% 0.5%;
+        width: 32%;
+        height: 47%;
+    }
+
+    .divMiddle {
+        width: 60%;
+        height: 70%;
+    }
+
+    #QRCode {
+        visibility: visible;
+    }
+
+}
+
+/* RWD */
+
+/* 動畫 */
+@keyframes numberFlashing {
+    0% {
+        color: rgba(0, 0, 0, 0);
+    }
+
+    24.999999% {
+        color: rgba(0, 0, 0, 0);
+    }
+
+    25% {
+        color: red;
+    }
+
+    100% {
+        color: red;
+    }
+}
+
+@keyframes fadeInAndOut {
+    0% {
+        opacity: 0;
+        visibility: visible;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+}
+
+@keyframes fade-in {
+
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    99.999999% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        visibility: visible;
+    }
+
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    99.99999% {
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes bombDrop {
+
+    0% {
+        opacity: 1;
+        z-index: 20;
+        transform: rotate(0deg);
+    }
+
+    25% {
+        z-index: 20;
+        transform: rotate(5deg);
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        z-index: 20;
+        transform: rotate(5deg) translateX(140px) translateY(700%);
+    }
+}
+
+@keyframes bombShake {
+
+    0% {
+        transform: translateX(2px);
+    }
+
+    20% {
+        transform: translateX(-2px);
+    }
+
+    30% {
+        transform: translateX(2px);
+    }
+
+    40% {
+        transform: translateX(-2px);
+    }
+
+    50% {
+        transform: translateX(2px);
+    }
+
+    60% {
+        transform: translateX(-2px);
+    }
+
+    70% {
+        transform: translateX(2px);
+    }
+
+    80% {
+        transform: translateX(-2px);
+    }
+
+    90% {
+        transform: translateX(2px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+
+}
+
+@keyframes bombDefuseShow {
+    0% {
+        filter: brightness(100%);
+    }
+
+    0.00001% {
+        visibility: visible;
+    }
+
+    15% {
+        opacity: 100%;
+        filter: brightness(500%);
+    }
+
+    30% {
+        filter: brightness(100%);
+        opacity: 100%;
+    }
+
+    70% {
+        opacity: 100%;
+    }
+
+    100% {
+        filter: brightness(100%);
+        visibility: visible;
+        opacity: 0%;
+    }
+}
+
+/* 動畫 */
