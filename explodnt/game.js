@@ -874,7 +874,7 @@ console.log("[Game] Bomb Deploy Done");
 
 // 註解掉下面這行跳過開場
 
-skipIntro();
+// skipIntro();
 
 // 讓開始按紐生效
 $('document').ready(function () {
