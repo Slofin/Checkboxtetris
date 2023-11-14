@@ -17,7 +17,7 @@ var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;           // 這是生命。勝利時，將生命設置成3
-var gameTime = 10 * 1000;    // 計時
+var gameTime = 180 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
@@ -186,7 +186,7 @@ function setBomb(bombDiv, bombType) {
                                 }
                             }
                             if (minTime <= 0) {
-                                setStyle("QRCode", { 'visibility': 'hidden'});
+                                
                                 clearInterval(timingLessMin);
                                 minTime = 0;
                                 defusedOrExploded(false);
@@ -664,7 +664,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
                 "visibility": "hidden"
             });
             bomb[bombDivForSolveCheck].innerHTML = '';
-        }, 1500);
+        }, 1400);
 
     }
     else {  // 回答錯誤
@@ -724,15 +724,20 @@ function bombTrigger(correct, bombDivForSolveCheck) {
 
 // 觸發炸彈，或者是拆掉炸彈
 function defusedOrExploded(correct) {
+    
+    MusicStage[0].volume = 0;
+    MusicStage[1].volume = 0;
+    MusicStage[2].volume = 0;
+    clearInterval(beeping);
+    setStyle("QRCode", { 'visibility': 'hidden'});
+    setTimeout(() => {
+        setStyle("QRCodeGame", { 'visibility': 'visible','opacity': '1'});
+    }, 6000);
+    
     if (correct) {
 
         life = 3;
-        clearInterval(beeping);
-
-        MusicStage[0].volume = 0;
-        MusicStage[1].volume = 0;
-        MusicStage[2].volume = 0;
-
+        
         $(".clock").css("animation-name", "numberFlashing");
         $(".clock").css("animation-iteration-count", "1");
 
@@ -749,18 +754,18 @@ function defusedOrExploded(correct) {
     else {
 
         console.log("[Game] Game Over");
-        MusicStage[2].volume = 0;
-        clearInterval(beeping);
         audioPlay("explode");
         $(".clock").css("animation-name", "");
         setStyle("divBomb", { 'visibility': 'hidden' });
         document.body.style = `background-color: rgb(0, 0, 0)`;
-
+        setStyle("QRCodeGame", { 'left': '50%'});
         setStyle("divForeground", {
             'animation': 'fadeInAndOut 10s',
             'animation-fill-mode': 'forwards',
             'background-image': 'url(./img/youdied.png)'
         });
+        
+
 
         // 滿 滿 的 動 畫
     }
@@ -866,10 +871,10 @@ MusicStage[0].addEventListener('timeupdate', function () {
 Bag();
 
 // 放炸彈    
-setBomb(randomOrder[0], 1);
+// setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
-setBomb(randomOrder[2], 2);
-setBomb(randomOrder[3], 3);
+// setBomb(randomOrder[2], 2);
+// setBomb(randomOrder[3], 3);
 console.log("[Game] Bomb Deploy Done");
 
 // 註解掉下面這行跳過開場
