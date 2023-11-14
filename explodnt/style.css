@@ -194,27 +194,13 @@ body {
 #QRCode {
     visibility: visible;
     position: fixed;
-    left: 90%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1.5) ;
+    right: 2%;
+    bottom: 60vh;
+    transform: scale(1.3);
     pointer-events: none;
     user-select: none;
     /* visibility: hidden; */
     /* transition: opacity 2s; */
-}
-
-#QRCodeGame {
-    z-index: 100;
-    visibility: none;
-    position: fixed;
-    opacity: 0;
-    left: 10%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1.5);
-    pointer-events: none;
-    user-select: none;
-    /* visibility: hidden; */
-    transition: opacity 1s;
 }
 
 /* 主要介面 */
