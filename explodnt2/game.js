@@ -229,7 +229,7 @@ function setBomb(bombDiv, bombType) {
                 var leftPos = element[0].getBoundingClientRect().left + window.scrollX;
                 $(".clockscreen").css({ left: leftPos + 'px', top: topPos + 'px' });
                 $(".clockscreen").text(`${preTimerMinute}:${preTimerSecond}`);
-            }, 100);
+            }, 500);
 
 
             //隱藏沒有炸彈的方格
