@@ -140,6 +140,7 @@ body {
 }
 
 #versionText {
+    z-index: 50;
     position: fixed;
     bottom: -8px;
     left: 8px;
