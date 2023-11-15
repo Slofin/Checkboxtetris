@@ -192,11 +192,12 @@ body {
 }
 
 #QRCode {
+    z-index: 100;
     visibility: visible;
     position: fixed;
     left: 90%;
     top: 50%;
-    transform: translate(-50%, -50%) scale(1.5) ;
+    transform: translate(-50%, -50%) scale(1.5);
     pointer-events: none;
     user-select: none;
     /* visibility: hidden; */
@@ -215,6 +216,24 @@ body {
     user-select: none;
     /* visibility: hidden; */
     transition: opacity 1s;
+}
+
+#flashlight {
+    /* left: 50%;
+    top: 50%; */
+    width: 200vw;
+    height: 200vh;
+    opacity: 100%;
+    background-image: unset;
+    visibility: visible;
+    position: absolute;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 30;
+    background-image: url(./img/light.png);
+    background: radial-gradient(circle at ' + x + ' px ' + y + ' px, transparent, #000 30%);
+    pointer-events: none;
 }
 
 /* 主要介面 */
@@ -313,10 +332,12 @@ body {
 
 /* 倒數計時器 */
 .clock {
+    visibility: hidden;
+    z-index: 50;
     transform: scaleY(1.3);
     font-family: DSEG7;
     color: red;
-    font-size: calc(var(--font-size) * 1.4);
+    font-size: calc(var(--font-size) * var(--countertext));
     position: absolute;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -338,17 +359,6 @@ body {
     user-select: none;
 }
 
-.clock {
-    font-family: DSEG7;
-    color: red;
-    font-size: calc(var(--font-size) * var(--countertext));
-    position: absolute;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    user-select: none;
-    /* animation-name: numberFlashing; */
-}
-
 .clockbg {
     transform: scaleY(1.3);
     font-family: DSEG7;
@@ -358,10 +368,25 @@ body {
     user-select: none;
 }
 
+.clockscreen {
+    visibility: hidden;
+    font-family: DSEG7;
+    color: red;
+    font-size: calc(var(--font-size) * var(--countertext));
+    position: absolute;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+    user-select: none;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -50%) scaleY(1.3);
+}
+
 /* 倒數計時器 */
 
 /* 錯誤計數器 */
 .counter {
+    z-index: 50;
     letter-spacing: -9px;
     font-family: DSEG14;
     color: red;
@@ -434,6 +459,7 @@ body {
     }
 
     #startText {
+        z-index: 50;
         font-size: 48px;
     }
 
