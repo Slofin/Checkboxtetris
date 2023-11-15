@@ -184,7 +184,7 @@ function setBomb(bombDiv, bombType) {
                                             MusicStage[1].volume = Math.floor(MusicStage[1].volume * 1000 - 10) / 1000;
                                             MusicStage[2].volume = Math.floor(MusicStage[2].volume * 1000 + 10) / 1000;
                                         }
-                                    }, 10);
+                                    }, 100);
                                 }
                             }
                             if (minTime <= 0) {
@@ -814,20 +814,26 @@ function Bag() {
     }
 }
 
-// 黑幕跟著滑鼠
+// 讓黑幕跟著滑鼠
+
 jQuery(document).ready(function () {
 
     var mouseX = 0, mouseY = 0;
     var xp = 0, yp = 0;
 
     $(document).mousemove(function (e) {
+
+        if($("#flashlightinit").css("visibility") == "visible"){
+            setStyle("flashlightinit", { 'animation': 'fade-out .5s', 'animation-fill-mode': 'forwards' });
+        }
+
         mouseX = e.pageX - $(window).width();
         mouseY = e.pageY - $(window).height();
     });
 
     setInterval(function () {
-        xp += ((mouseX - xp) / 2);
-        yp += ((mouseY - yp) / 2);
+        xp += ((mouseX - xp) / 10);
+        yp += ((mouseY - yp) / 10);
         $("#flashlight").css({ left: xp + 'px', top: yp + 'px' });
     }, 20);
 

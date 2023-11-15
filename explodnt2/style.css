@@ -236,6 +236,31 @@ body {
     pointer-events: none;
 }
 
+#flashlightinit{
+        z-index: 50;
+        content: "oven";
+        width: 90%;
+        height: 30%;
+        color: white;
+        user-select: none;
+        background-color: unset;
+        font-weight: bold;
+        visibility: visible;
+        display :   block;
+        word-break: break-all;
+        flex-wrap: wrap;
+        font-size: calc(var(--font-size) * 1.5);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        justify-content: center;
+        text-align: center;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        /* border: 1px solid white; */
+}
+
 /* 主要介面 */
 
 /* 文字方塊 */
