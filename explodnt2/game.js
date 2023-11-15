@@ -436,7 +436,8 @@ function setBomb(bombDiv, bombType) {
             }
 
             //設定這個炸彈的數值與答案
-            bombText += `<button id="bombbutton${bombIdCount}" class="roundButton roundButton${questions[1]}">${questions[0]}</button>`;
+            bombText += `<button id="bombbutton${bombIdCount}" 
+            class="roundButton roundButton${questions[1]}">${questions[0]}</button>`;
             bombId.push(new bombQuest(bombIdCount, questions[0], answer, bombDiv, bombType));
             bombId.push(new bombQuest(bombIdCount + 1, questions[1], 0, bombDiv, -1));
 
@@ -917,10 +918,10 @@ MusicStage[0].addEventListener('timeupdate', function () {
 Bag();
 
 // 放炸彈    
-// setBomb(randomOrder[0], 1);
+setBomb(randomOrder[0], 1);
 setBomb(randomOrder[1], 2);
-// setBomb(randomOrder[2], 2);
-// setBomb(randomOrder[3], 3);
+setBomb(randomOrder[2], 2);
+setBomb(randomOrder[3], 3);
 console.log("[Game] Bomb Deploy Done");
 
 // 註解掉下面這行跳過開場
