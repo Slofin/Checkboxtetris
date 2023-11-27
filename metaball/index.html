@@ -49,6 +49,8 @@
         var audio = [];
         var metaHover = 0;
         var metaDeg = 1;
+        var metaid = 1;
+        var metaclonetimer = 0;
 
         $(".metaorb").hover(function () {
             metaHover = 1;
@@ -62,10 +64,14 @@
                 metaDeg += 20;
                 audio[`m`].play();
                 console.log(audio[`m`].currentTime);
-                $("body").append(`<div class="divmeta metaclone">  <img src="./metaorb.png" class="metaorb"> </div>`);
+                if(metaclonetimer == 3){
+                $("body").append(`<div id="meta${metaid}" class="divmeta metaclone">  <img src="./metaorb.png" class="metaorb"> </div>`);
                 var newq = makeNewPosition();
-                $('.metaclone').animate({ top: newq[0], left: newq[1] });
-
+                $(`#meta${metaid}`).animate({ top: newq[0], left: newq[1] });
+                metaid++;
+                metaclonetimer=0;
+                }
+                else metaclonetimer++;
             }
             else {
                 audio[`m`].pause();
