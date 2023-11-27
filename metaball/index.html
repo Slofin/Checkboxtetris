@@ -10,15 +10,21 @@
     <style>
         body {
             background-color: gray;
+            overflow: hidden;
         }
 
-        #divmeta {
+        .divmeta {
             position: absolute;
             height: 200px;
             width: 200px;
             right: 50%;
             top: 50%;
             transform: translate(50%, -50%);
+        }
+
+        .metaclone {
+            pointer-events: none;
+            animation: metamove 2s;
         }
 
         #playButton {
@@ -33,8 +39,8 @@
 </head>
 
 <body>
-    <div id="divmeta">
-        <img src="./metaorb.png" id="metaorb">
+    <div class="divmeta">
+        <img src="./metaorb.png" class="metaorb">
     </div>
 
     <button id="playButton">Meta</button>
@@ -44,28 +50,52 @@
         var metaHover = 0;
         var metaDeg = 1;
 
-        $("#metaorb").hover(function () {
+        $(".metaorb").hover(function () {
             metaHover = 1;
-            console.log(metaHover);
         }, function () {
             metaHover = 0;
-            console.log(metaHover);
         });
 
         var oven = setInterval(function () {
             if (metaHover == 1) {
-                $("#metaorb").css("transform", `rotateZ(${metaDeg}deg)`);
+                $(".metaorb").css("transform", `rotateZ(${metaDeg}deg)`);
                 metaDeg += 20;
                 audio[`m`].play();
+                console.log(audio[`m`].currentTime);
+                $("body").append(`<div class="divmeta metaclone">  <img src="./metaorb.png" class="metaorb"> </div>`);
+                var newq = makeNewPosition();
+                $('.metaclone').animate({ top: newq[0], left: newq[1] });
+
             }
             else {
                 audio[`m`].pause();
             }
         }, 10);
 
+        // $("body").append(`<div class="divmeta metaclone">  <img src="./metaorb.png" class="metaorb"> </div>`);
+        // var newq = makeNewPosition();
+        // $('.metaclone').animate({ top: newq[0], left: newq[1] });
+
+
         audio[`m`] = new Audio();
         audio[`m`].src = "./m.m4a";
         audio[`m`].currentTime = 118.2;
+
+        function makeNewPosition() {
+
+            // Get viewport dimensions (remove the dimension of the div)
+            var h = $(window).height();
+            var w = $(window).width();
+
+            var nh = Math.floor(Math.random() * h);
+            var nw = Math.floor(Math.random() * w);
+
+            return [nh, nw];
+
+        }
+
+
+
 
     </script>
 
