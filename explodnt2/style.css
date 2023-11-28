@@ -235,7 +235,7 @@ body {
     background-image: url(./img/light.png);
     background: radial-gradient(circle at ' + x + ' px ' + y + ' px, transparent, #000 30%);
     pointer-events: none;
-    overflow: none;
+    /* overflow: none; */
 }
 
 #flashlightinit {
