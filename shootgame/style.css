@@ -1,34 +1,71 @@
-body{
+body {
     background: #222;
-    cursor:none; 
+    /* cursor: none; */
 }
 
-#square{
-    top:50%;
-    left:50%;
+#square {
+    top: 50%;
+    left: 50%;
     position: absolute;
     width: 800px;
-    height:600px;
+    height: 600px;
     border: white 1px solid;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     overflow: hidden;
 }
 
-#meta{
-    width: 50px;
-    height: 50px;
+#meta {
+
+    width: 40px;
+    height: 40px;
     display: block;
     position: fixed;
     background-image: url(./metaorb.png);
     background-size: 100px 100px;
-   top: 80%;
-    left: 50%;
+    top: 80%;
+    left: 52.5%;
     transform: translate(-50%, -50%);
     /* border: white 1px solid; */
+    border-radius: 100%;
+    
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
     pointer-events: none;
-    
+
     overflow: none;
+}
+
+.bullet{
+
+    top: 200%;
+    left: 200%;
+    /* border: white 1px solid; */
+    width: 10px;
+    height: 10px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    /* box-shadow : inset 0px 0px 8px 1px rgb(255, 100, 0); */
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* border: white 1px solid; */
+    z-index: 1;
+}
+
+#startbutton{
+
+    top: 200%;
+    left: 200%;
+
+    width: 50px;
+    height: 50px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
 }
