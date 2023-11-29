@@ -5,16 +5,8 @@ var metaSpeed;
 var screenX, screenY;
 var meta;
 var bulletID = 0;
-var bullets = {};
-
-var NearestOpts = {
-    includeSelf: false,
-    sameX: false,
-    sameY: false,
-    showGuides: true,
-    tolerance: 1
-};
-
+var rotate = 0;
+var audio = [];
 
 var rotateVector = function (vec, ang) {
     ang = -ang * (Math.PI / 180);
@@ -32,52 +24,43 @@ class Meta {
 
 class bullet {
 
-    constructor(x, y, speed, angle, radius, boxShadow, picture) {
-
-
-
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.angle = angle - 180;
-        this.radius = radius;
+    constructor(startx, starty, endx, endy, speed, radius, boxShadow, picture) {
 
         var thisbulletID = bulletID;
 
         typeof boxShadow !== "undefined" ? this.boxShadow = boxShadow : this.boxShadow = "inset 0px 0px 8px 1px rgba(0, 255, 0, 255)";
-        typeof picture !== "undefined" ? this.picture = picture : this.picture = "./morgan.png";
-
-        var bulletMoveXY = [];
-        bulletMoveXY = rotateVector([0, speed], angle);
 
         $("#square").append(`
             <div id="bullet${thisbulletID}" class="bullet"
             style="
             width: ${radius}px;
             height: ${radius}px;
-            top: ${y}px;
-            left: ${x}px;
-            box-shadow : ${boxShadow};">
+            top: ${starty}px;
+            left: ${startx}px;
+            transition : left ${speed}s linear, top ${speed}s linear;
+            box-shadow : ${this.boxShadow};">
             </div>`
         );
 
-        $(`#bullet${thisbulletID}`).css('background-image', 'url(' + picture + ')');
+        var move = setTimeout(() => {
+            $(`#bullet${thisbulletID}`).css("left", endx);
+            $(`#bullet${thisbulletID}`).css("top", endy);
+        }, 20);
 
-        var bulletMove = setInterval(function () {
-            if ((x > -50 && x < $("#square").width() + 50) && (y > -50 && y < $("#square").height() + 50)) {
+        var close = setTimeout(() => {
+            $(`#bullet${thisbulletID}`).remove();
+        }, speed * 1000 + 20);
 
-                x += bulletMoveXY[0];
-                y += bulletMoveXY[1];
+        if (typeof picture == "undefined") {
+            this.picture = "none";
+        }
+        else {
+            this.picture = picture;
+            $(`#bullet${thisbulletID}`).css('background-image', `url(${picture})`);
+        }
 
-                $(`#bullet${thisbulletID}`).css({ "left": x + 'px', "top": y + 'px' });
-                delete this;
-            }
-            else {
-                clearInterval(bulletMove);
-                $(`#bullet${thisbulletID}`).remove();
-            }
-        }, 16);
         bulletID++;
+        delete this;
     }
 }
 
@@ -90,7 +73,8 @@ jQuery(document).ready(function () {
     screenX = $("#square").position().left;
     screenY = $("#square").position().top;
 
-    meta = new Meta(($("#meta").position().left - $("#square").position().left), ($("#meta").position().top - $("#square").position().top));
+    meta = new Meta(($("#meta").position().left - $("#square").position().left),
+        ($("#meta").position().top - $("#square").position().top));
 
     meta.x = $("#meta").position().left - $("#square").position().left;
     meta.y = $("#meta").position().top - $("#square").position().top;
@@ -103,14 +87,21 @@ jQuery(document).ready(function () {
         keyboardInput[e.key] = e.type == 'keydown';
         // console.log(keyboardInput);
     }
+
     $("#startbutton").click(function () {
         // $("body").css({ "cursor": "none" });
         $("#startbutton").css({ "display": "none" });
-        GameInterval = setInterval(game, 16);
+        GameInterval = setInterval(game, 16.67);
 
-        for (let index = -30; index < 40; index += 10) {
-            new bullet(400, 50, 2, 1 * index, 40, "none", "./morgan.png");
-        }
+        $("#square").append(`<div id="premovetext">Use Arrow Keys to move</div>`);
+        
+        
+
+        audio[`m`] = new Audio();
+        audio[`m`].src = "./m.m4a";
+        audio[`m`].currentTime = 118.2;
+
+        bullets();
 
     });
 
@@ -124,8 +115,14 @@ function game() {
 
 }
 
-function keyboard() {
+function bulletVector(startXY,distance,angle,time,radius){
 
+    var rotated = rotateVector([distance,0],angle-180);
+
+    new bullet(startXY[0],startXY[1],startXY[0]+rotated[0],startXY[1]+rotated[1],time,radius, "inset 0px 0px 4px 1px rgb(255, 255, 255)");
+}
+
+function keyboard() {
 
     if (keyboardInput["ArrowUp"]) {
         metaMoveKeyboard(0, -metaSpeed);
@@ -162,6 +159,8 @@ function keyboard() {
 }
 
 function metaMoveKeyboard(x, y) {
+
+    $("#premovetext").remove();     
 
     if ((meta.x > 20 && x < 0) || (meta.x < $("#square").width() - 20 && x > 0)) {
         meta.x += x;
@@ -200,25 +199,51 @@ function metaMoveWall() {
 
 function metaHitbox() {
 
+    var nearest = $("#meta").nearest($(".bullet"), { tolerance: 0 });
+    // console.log(nearest);
+    if (typeof nearest[0] !== "undefined") {
+        var bX = nearest.position().left + (nearest.width() / 2) - $("#square").position().left;
+        var bY = nearest.position().top + (nearest.height() / 2) - $("#square").position().top;
+
+        var dist = Math.hypot(meta.x - bX, meta.y - bY);
 
 
-    var nearest = $("#meta").nearest($(".bullet"),{tolerance: 0});
-    if(typeof nearest[0] !== "undefined"){
-
-    var mX = $("#meta").position().left+20;
-    var mY = $("#meta").position().top+20;
-
-    var bX = nearest.position().left + (nearest.width() / 2);
-    var bY = nearest.position().top + (nearest.height() / 2);
-
-    var dist = Math.hypot(mX-bX,mY-bY);
-
-    if(dist < nearest.width()*0.95){
-        console.log("Meta : AAAAAAAAAAA");
-    }  
+        if (dist < nearest.width() / 2 * 0.9 + 20) {
+            rotate += 60;
+        }
+        else {
+            rotate = 0;
+        }
+        $("#meta").css(`transform`, `translate(-50%, -50%) rotate(${rotate}deg)`);
     }
 
+}
 
+function bullets(){
 
+    var Snowing = setInterval(() => {
+        var a = Math.random() * $("#square").width();
+        var b = a + (50 - Math.random() * 100);
+        new bullet(a, -20, b, 600, 5, 10, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
+    }, 250);
+    
+        // var a = Math.random() * 800;
+        // var b = a + (50 - Math.random() * 100);
+
+        // new bullet(a, -20, b, 590, 2, 10, "inset 0px 0px 4px 1px rgb(255, 0, 0)");
+        // bulletVector([400,200],500,b+270,2,20);
+        // bulletVector([400,200],500,b+180,2,20);
+        // bulletVector([400,200],500,b+90,2,20);
+
+        // bulletVector([400,200],400,a,2,5);
+        // c+=15;
+
+    // setInterval(() => {
+
+    //     var a = Math.random() * 800;
+
+    //     new bullet(a, -20,  meta.x - 20,  meta.y - 20, 5, 40, "none","./morgan.png");
+
+    // }, 200);
 
 }

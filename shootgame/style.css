@@ -1,3 +1,9 @@
+html{
+    backface-visibility: hidden;
+    perspective: 1000;
+    overflow: hidden;
+}
+
 body {
     background: #222;
     /* cursor: none; */
@@ -24,7 +30,7 @@ body {
     background-size: 100px 100px;
     top: 80%;
     left: 52.5%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(0deg);
     /* border: white 1px solid; */
     border-radius: 100%;
     
@@ -38,22 +44,21 @@ body {
 
 .bullet{
 
-    top: 200%;
-    left: 200%;
+    /* top: 200%;
+    left: 200%; */
     /* border: white 1px solid; */
     width: 10px;
     height: 10px;
     display: block;
     position: fixed;
-    transform: translate(-50%, -50%);
+    transform: translateZ(0);
     border-radius: 100%;
     /* box-shadow : inset 0px 0px 8px 1px rgb(255, 100, 0); */
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
-
     /* border: white 1px solid; */
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 #startbutton{
@@ -68,4 +73,18 @@ body {
     transform: translate(-50%, -50%);
     z-index: 1;
 
+}
+
+#premovetext{
+    top: 70%;
+    left: 50%;
+    /* border: 1px solid white; */
+    text-align: center;
+    color:white;
+    width: 400px;
+    height: 50px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
