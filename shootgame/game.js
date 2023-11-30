@@ -81,6 +81,14 @@ var lynics = [
     ``
 ];
 
+var nextLynicsBeatTime= [
+    21 , 31 , 41 , 51 , 59 , 69 , 81 , 94 , 110, 120, 120, 134,
+    138, 145, 154, 161, 169, 177, 185, 193, 201, 209, 217, 225,
+    241, 249, 257, 266, 273, 281, 289, 298, 305, 313, 321, 329,
+    336, 337, 354, 362, 369, 379, 385, 395, 403, 409, 417, 425,
+    433, 442, 449, 457, 465, 473, 480, 481, 493, 498, 505, 513,
+    529, 545, 561, 573];
+
 var lynicsidx = 0;
 
 
@@ -204,14 +212,18 @@ jQuery(document).ready(function () {
         $("#startbutton").css({ "display": "none" });
         var GameInterval = setInterval(game, 16.67);
         var MusicInterval = setInterval(musicBullets, 1);
-        $("#square").append(`<div id="premovetext">Use Arrow Keys to move<br>Use Shift to slow</div>`);
+        $("#square").append(`<div id="premovetext">Use Arrow Keys to move<br>Use Shift to focus</div>`);
         $("#squareout").append(`<div id="lynics"></div>`);
 
-        audio[`m`].currentTime = 50;
+        audio[`m`].currentTime = 79;
 
         while (beatTimes[nextBeatTime] <= audio["m"].currentTime || beatTimes[nextBeatTime] - audio["m"].currentTime < 0.0166) {
             nextBeatTime++;
+            if(nextLynicsBeatTime.indexOf(nextBeatTime)!=-1){
+                nextLynics();
+            }
         }
+
 
         // test bullet
         // new bullet(400, 300, 400, 300, 120, 20, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
@@ -363,72 +375,8 @@ function musicBullets() {
 
     if (beatTimes[nextBeatTime] <= audio["m"].currentTime || beatTimes[nextBeatTime] - audio["m"].currentTime < 0.0166) {
         nextBeatTime++;
-
-
-        if (nextBeatTime == 21 ||
-            nextBeatTime == 31 ||
-            nextBeatTime == 41 ||
-            nextBeatTime == 51 ||
-            nextBeatTime == 59 ||
-            nextBeatTime == 69 ||
-            nextBeatTime == 81 ||
-            nextBeatTime == 94 ||
-            nextBeatTime == 110 ||
-            nextBeatTime == 120 ||
-            nextBeatTime == 120 ||
-            nextBeatTime == 134 ||
-            nextBeatTime == 138 ||
-            nextBeatTime == 145 ||
-            nextBeatTime == 154 ||
-            nextBeatTime == 161 ||
-            nextBeatTime == 169 ||
-            nextBeatTime == 177 ||
-            nextBeatTime == 185 ||
-            nextBeatTime == 193 ||
-            nextBeatTime == 201 ||
-            nextBeatTime == 209 ||
-            nextBeatTime == 217 ||
-            nextBeatTime == 225 ||
-            nextBeatTime == 241 ||
-            nextBeatTime == 249 ||
-            nextBeatTime == 257 ||
-            nextBeatTime == 266 ||
-            nextBeatTime == 273 ||
-            nextBeatTime == 281 ||
-            nextBeatTime == 289 ||
-            nextBeatTime == 298 ||
-            nextBeatTime == 305 ||
-            nextBeatTime == 313 ||
-            nextBeatTime == 321 ||
-            nextBeatTime == 329 ||
-            nextBeatTime == 336 ||
-            nextBeatTime == 337 ||
-            nextBeatTime == 354 ||
-            nextBeatTime == 362 ||
-            nextBeatTime == 369 ||
-            nextBeatTime == 379 ||
-            nextBeatTime == 385 ||
-            nextBeatTime == 395 ||
-            nextBeatTime == 403 ||
-            nextBeatTime == 409 ||
-            nextBeatTime == 417 ||
-            nextBeatTime == 425 ||
-            nextBeatTime == 433 ||
-            nextBeatTime == 442 ||
-            nextBeatTime == 449 ||
-            nextBeatTime == 457 ||
-            nextBeatTime == 465 ||
-            nextBeatTime == 473 ||
-            nextBeatTime == 480 ||
-            nextBeatTime == 481 ||
-            nextBeatTime == 493 ||
-            nextBeatTime == 498 ||
-            nextBeatTime == 505 ||
-            nextBeatTime == 513 ||
-            nextBeatTime == 529 ||
-            nextBeatTime == 545 ||
-            nextBeatTime == 561 ||
-            nextBeatTime == 573 || 0) {
+        
+        if(nextLynicsBeatTime.indexOf(nextBeatTime)!=-1){
             nextLynics();
         }
 
@@ -443,7 +391,7 @@ function musicBullets() {
         if (nextBeatTime <= 13) {
             var a = Math.random() * $("#square").width();
             var b = a + (50 - Math.random() * 100);
-            new bullet(a, -10, b, 600, 5, 20, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
+            new bullet(a, -10, b, 600, 5, 20, "inset 0px 0px 10px 2px rgb(255, 255, 255)");
         }
 
         if (nextBeatTime == 18) {
@@ -453,7 +401,7 @@ function musicBullets() {
                 }
                 var a = -50 + Math.random() * ($("#square").width() + 100);
                 var b = a + (50 - Math.random() * 100);
-                new bullet(a, -20, b, 600, 5, 10, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
+                new bullet(a, -20, b, 600, 5, 10, "inset 0px 0px 10px 2px rgb(255, 255, 255)");
             }, 200);
         }
 
@@ -463,10 +411,14 @@ function musicBullets() {
             nextBeatTime == 70 ||
             nextBeatTime == 80 ||
             nextBeatTime == 93) {
-            for (var i = -400 + Math.random() * 50; i <= $("#square").width() + 400; i += 200) {
-                new bullet(i, - 10, i + (20 - Math.random() * 40) - 100, 600, 5, 20, "inset 0px 0px 5px 2px rgb(255, 0, 0)");
-                new bullet(i + 100, -10, i + (20 - Math.random() * 40) + 200, 600, 5, 20, "inset 0px 0px 5px 2px rgb(0, 255, 0)");
+            // for (var i = -400 + Math.random() * 50; i <= $("#square").width() + 400; i += 200) {
+            //     new bullet(i, - 10, i + (20 - Math.random() * 40) - 100, 600, 5, 20, "inset 0px 0px 10px 2px rgb(255, 0, 0)");
+            //     new bullet(i + 100, -10, i + (20 - Math.random() * 40) + 200, 600, 5, 20, "inset 0px 0px 10px 2px rgb(0, 255, 0)");
+            // }
+            for (var i = 1 ; i <= 100 ; i++ ) {
+                bulletVector([600, 50], 800, Math.random()*360 , (Math.random()*3)+3, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
             }
+
         }
 
         if (nextBeatTime == 30 ||
@@ -475,9 +427,8 @@ function musicBullets() {
             nextBeatTime == 76 ||
             nextBeatTime == 85 ||
             nextBeatTime == 100) {
-            for (var i = -400 + Math.random() * 200; i <= $("#square").width() + 400; i += 200) {
-                new bullet(i, - 10, i + (20 - Math.random() * 40) - 100, 600, 5, 20, "inset 0px 0px 5px 2px rgb(0, 255, 0)");
-                new bullet(i + 100, -10, i + (20 - Math.random() * 40) + 200, 600, 5, 20, "inset 0px 0px 5px 2px rgb(255, 0, 0)");
+            for (var i = 1 ; i <= 100 ; i++ ) {
+                bulletVector([200, 50], 800, Math.random()*360 , (Math.random()*3)+3, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
             }
         }
 
@@ -540,27 +491,26 @@ function musicBullets() {
 
             var a=0,b=0;
             Snowing[0] = setInterval((c = 50) => {
-                if (nextBeatTime >= beatTimes.length) {
+                if (nextBeatTime>=169) {
                     clearInterval(Snowing[0]);
                 }
                 a>800 ? a-=800-(Math.random()*10) : a+=144;
                 b = a + (10 - Math.random() * 20);
-                new bullet(a, -20, b, 600, 3, 10, "inset 0px 0px 5px 2px rgb(255, 0, 0)");
+                new bullet(a, -20, b, 600, 3, 10, "inset 0px 0px 10px 2px rgb(255, 0, 0)");
             }, 100);
 
             Snowing[1] = setInterval(() => {
-                if (nextBeatTime >= beatTimes.length) {
+                if (nextBeatTime>=169) {
                     clearInterval(Snowing[1]);
                 }
                 a>800 ? a-=800-(Math.random()*10) : a+=144;
                 b = a + (10 - Math.random() * 20);
-                new bullet(a, -20, b, 600, 3, 10, "inset 0px 0px 5px 2px rgb(0, 255, 0)");
+                new bullet(a, -20, b, 600, 3, 10, "inset 0px 0px 10px 2px rgb(0, 255, 0)");
             }, 100);
         }
 
         
-        if(nextBeatTime>=139 && nextBeatTime%2 == 1){
-            
+        if(nextBeatTime>=139 && (nextBeatTime%2 == 1) && nextBeatTime<=169){
             
 
             for (var i = 0 + (nextBeatTime-139)/2; i <= 15 + (nextBeatTime-139)/2; i++) {
@@ -570,6 +520,26 @@ function musicBullets() {
             }
             
         }
+
+        if(nextBeatTime>=171 && (nextBeatTime%2 == 1) && nextBeatTime<=199){
+            
+                for (var i = 0 + (nextBeatTime-171)/2; i <= 15 + (nextBeatTime-171)/2; i++) {
+                    var degree = (nextBeatTime-171)/2*8 + (i * 22.5);
+                    var forward = rotateVector([0,162],30 + degree);
+                    if(nextBeatTime%4==3){
+                        bulletVector([700+forward[0],-50+forward[1]] , 800, -90 , 3, 40, "none", "./morgan.png");
+                        bulletVector([100+forward[0],-50+forward[1]] , 800, -90 , 3, 40, "none", "./morgan.png");
+                       
+                    }
+                    else{
+                        bulletVector([400+forward[0],-50+forward[1]] , 800, -90 , 3, 40, "none", "./morgan.png");
+                    }
+
+                }
+           
+        }
+
+        
 
         // if(nextBeatTime==30){
 
