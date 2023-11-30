@@ -5,8 +5,19 @@ html{
 }
 
 body {
-    background: #222;
+    background: #000;
     /* cursor: none; */
+}
+
+#squareout {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    width: 900px;
+    height: 700px;
+    /* border: white 2px solid; */
+    /* box-shadow : 0px 0px 20px 8px rgb(255, 255, 255); */
+    transform: translate(-50%, -50%);
 }
 
 #square {
@@ -15,9 +26,32 @@ body {
     position: absolute;
     width: 800px;
     height: 600px;
-    border: white 1px solid;
+    border: white 2px solid;
+    /* box-shadow : 0px 0px 20px 8px rgb(255, 255, 255); */
     transform: translate(-50%, -50%);
+    
     overflow: hidden;
+}
+
+#lynics {
+    bottom: 1%;
+    left: 50%;
+    /* border: 1px solid white; */
+    text-align: center;
+    color:white;
+    width: 400px;
+    height: 20px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    user-select:none;   
+    font-size: 24px;
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+#lynics.hide{
+    opacity: 0;
 }
 
 #meta {
@@ -38,6 +72,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     pointer-events: none;
+    user-select:none;
 
     overflow: none;
 }
@@ -55,6 +90,7 @@ body {
     border-radius: 100%;
     /* box-shadow : inset 0px 0px 8px 1px rgb(255, 100, 0); */
     background-position: 50% 50%;
+    transform: translate(-50%, -50%);
     background-repeat: no-repeat;
     background-size: cover;
     /* border: white 1px solid; */
@@ -87,4 +123,90 @@ body {
     position: fixed;
     transform: translate(-50%, -50%);
     z-index: 1;
+    user-select:none;   
+    
+}
+
+#morgan{
+
+    top: 10%;
+    left: 50%;
+
+    width: 200px;
+    height: 200px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    filter: blur(200px);
+    transition: filter 5s linear;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 0%;
+    z-index: 1;
+    background-image: url(./morgan.png);
+    animation-iteration-count: infinite;
+    animation-duration: 0.25s;
+}
+
+
+@keyframes borderBeats{
+    0%{
+        box-shadow : none;
+    }
+    0.0000001%{
+        box-shadow : 0px 0px 10px 4px rgb(255, 255, 255);
+    }
+    100%{
+        box-shadow : none;
+    }
+}
+
+@keyframes rotates{
+    0%{
+        transform: translate(-50%, -50%) rotate(0deg) ;
+    }
+    
+    16.66%{
+        transform: translate(-50%, -50%) rotate(0deg) ;
+    }
+    16.67%{
+        transform: translate(-50%, -50%) rotate(60deg) ;
+    }
+
+    33.33%{
+        transform: translate(-50%, -50%) rotate(60deg) ;
+    }
+    33.34%{
+        transform: translate(-50%, -50%) rotate(120deg) ;
+    }
+
+
+    50%{
+        transform: translate(-50%, -50%) rotate(120deg);
+    }
+    50.01%{
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+
+    66.66%{
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+    66.67%{
+        transform: translate(-50%, -50%) rotate(240deg);
+    }
+
+    83.32%{
+        transform: translate(-50%, -50%) rotate(240deg);
+    }
+    83.33%{
+        transform: translate(-50%, -50%) rotate(300deg);
+    }
+
+    99.99%{
+        transform: translate(-50%, -50%) rotate(300deg);
+    }
+    100%{
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
