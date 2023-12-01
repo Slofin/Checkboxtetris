@@ -2,6 +2,7 @@ html{
     backface-visibility: hidden;
     perspective: 1000;
     overflow: hidden;
+    
 }
 
 body {
@@ -127,7 +128,24 @@ body {
     
 }
 
-#morgan{
+#seizurewarning{
+
+    top: 30%;
+    left: 50%;
+    /* border: 1px solid white; */
+    text-align: center;
+    color:white;
+    width: 100%;
+    height: 200px;
+    font-size: 32px;
+    display: block;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    user-select:none;
+}
+
+.morgan{
 
     top: 10%;
     left: 50%;
@@ -156,7 +174,7 @@ body {
         box-shadow : none;
     }
     0.0000001%{
-        box-shadow : 0px 0px 10px 4px rgb(255, 255, 255);
+        box-shadow : 0px 0px 10px 4px rgb(192, 192, 192);
     }
     100%{
         box-shadow : none;
