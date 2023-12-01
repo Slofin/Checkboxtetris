@@ -221,7 +221,7 @@ jQuery(document).ready(function () {
         $("#square").append(`<div id="premovetext">Use Arrow Keys to move<br>Use Shift to focus</div>`);
         $("#squareout").append(`<div id="lynics"></div>`);
 
-        audio[`m`].currentTime = 114;
+        audio[`m`].currentTime = 0;
 
         while (beatTimes[nextBeatTime] <= audio["m"].currentTime || beatTimes[nextBeatTime] - audio["m"].currentTime < 0.0166) {
             nextBeatTime++;
@@ -254,9 +254,6 @@ function game() {
     metaMoveWall();
     metaHitbox();
 
-
-
-
 }
 
 function bulletVector(startXY, distance, angle, time, radius, border, picture) {
@@ -268,16 +265,16 @@ function bulletVector(startXY, distance, angle, time, radius, border, picture) {
 
 function keyboard() {
 
-    if (keyboardInput["ArrowUp"]) {
+    if (keyboardInput["ArrowUp"] || keyboardInput["w"] || keyboardInput["W"]) {
         metaMoveKeyboard(0, -metaSpeed);
     }
-    if (keyboardInput["ArrowDown"]) {
+    if (keyboardInput["ArrowDown"] || keyboardInput["s"] || keyboardInput["S"]) {
         metaMoveKeyboard(0, metaSpeed);
     }
-    if (keyboardInput["ArrowLeft"]) {
+    if (keyboardInput["ArrowLeft"] || keyboardInput["a"] || keyboardInput["A"]) {
         metaMoveKeyboard(-metaSpeed, 0);
     }
-    if (keyboardInput["ArrowRight"]) {
+    if (keyboardInput["ArrowRight"] || keyboardInput["d"] || keyboardInput["D"]) {
         metaMoveKeyboard(metaSpeed, 0);
     }
 
@@ -285,11 +282,6 @@ function keyboard() {
     //     console.log(meta.x, meta.y);
     //     console.log(screenX, screenY);
     // }
-
-    if (keyboardInput["z"]) {
-
-
-    }
 
     if (keyboardInput["Shift"]) {
         metaSpeed = 2;
@@ -387,15 +379,6 @@ function random(n) {
 
 function musicBullets() {
 
-    // var Snowing;
-    // var i = 0;
-
-    // var Snowing = setInterval(() => {
-    //     var a = Math.random() * $("#square").width();
-    //     var b = a + (50 - Math.random() * 100);
-    //     new bullet(a, -20, b, 600, 5, 10, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
-    // }, 250);
-
     if (beatTimes[nextBeatTime] <= audio["m"].currentTime || beatTimes[nextBeatTime] - audio["m"].currentTime < 0.0166) {
         nextBeatTime++;
 
@@ -417,6 +400,10 @@ function musicBullets() {
             new bullet(a, -10, b, 600, 5, 10, "inset 0px 0px 10px 2px rgb(255, 255, 255)");
         }
 
+        if (nextBeatTime == 13) {
+            new bullet(600, -50, 600, 50, beatTimes[18] - beatTimes[13], 40, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+        }
+
         if (nextBeatTime == 18) {
             Snowing[0] = setInterval(() => {
                 if (nextBeatTime >= 112) {
@@ -427,37 +414,30 @@ function musicBullets() {
                 new bullet(a, -20, b, 600, 5, 10, "inset 0px 0px 10px 2px rgb(255, 255, 255)");
             }, 200);
         }
+        var nextBeatTimeIntro = [18, 30, 41, 50, 59, 67, 70, 76, 80, 85, 93, 100];
 
-        if (nextBeatTime == 18 ||
-            nextBeatTime == 41 ||
-            nextBeatTime == 59 ||
-            nextBeatTime == 70 ||
-            nextBeatTime == 80 ||
-            nextBeatTime == 93) {
-            // for (var i = -400 + Math.random() * 50; i <= $("#square").width() + 400; i += 200) {
-            //     new bullet(i, - 10, i + (20 - Math.random() * 40) - 100, 600, 5, 20, "inset 0px 0px 10px 2px rgb(255, 0, 0)");
-            //     new bullet(i + 100, -10, i + (20 - Math.random() * 40) + 200, 600, 5, 20, "inset 0px 0px 10px 2px rgb(0, 255, 0)");
-            // }
-            setTimeout(() => {
-                for (var i = 1; i <= 100; i++) {
-                    bulletVector([600, 50], 800, random(360), random(30) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+
+        if (nextBeatTimeIntro.indexOf(nextBeatTime) != -1) {
+            if (nextBeatTimeIntro.indexOf(nextBeatTime) % 2 == 0) {
+                if (nextBeatTime != 100) {
+                    new bullet(200, -50, 200, 50, beatTimes[nextBeatTimeIntro[nextBeatTimeIntro.indexOf(nextBeatTime) + 1]] - beatTimes[nextBeatTimeIntro[nextBeatTimeIntro.indexOf(nextBeatTime)]], 40, "inset 0px 0px 10px 2px rgb(0,255, 0)");
                 }
-            }, 0);
-
-        }
-
-        if (nextBeatTime == 30 ||
-            nextBeatTime == 50 ||
-            nextBeatTime == 67 ||
-            nextBeatTime == 76 ||
-            nextBeatTime == 85 ||
-            nextBeatTime == 100) {
-            setTimeout(() => {
-                for (var i = 1; i <= 100; i++) {
-                    bulletVector([200, 50], 800, random(360), random(30) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
-                }
-            }, 0);
-
+                setTimeout(() => {
+                    for (var i = 1; i <= 100; i++) {
+                        bulletVector([600, 50], 800, random(360), random(30) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+                    }
+                }, 0);
+            }
+            else {
+                setTimeout(() => {
+                    if (nextBeatTime != 100) {
+                        new bullet(600, -50, 600, 50, beatTimes[nextBeatTimeIntro[nextBeatTimeIntro.indexOf(nextBeatTime) + 1]] - beatTimes[nextBeatTimeIntro[nextBeatTimeIntro.indexOf(nextBeatTime)]], 40, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+                    }
+                    for (var i = 1; i <= 100; i++) {
+                        bulletVector([200, 50], 800, random(360), random(30) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
+                    }
+                }, 0);
+            }
         }
 
         if (nextBeatTime == 123) {
@@ -477,7 +457,7 @@ function musicBullets() {
                     clearInterval(Snowing[0]);
                 }
                 new bullet((random(20 + closing)), -10, (random(20 + closing)), 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
-                new bullet(800 - (random(20 + closing)), -10, 800 - (random(20 + closing)) , 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
+                new bullet(800 - (random(20 + closing)), -10, 800 - (random(20 + closing)), 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
             }, 100);
         }
 
@@ -526,7 +506,7 @@ function musicBullets() {
                 }
                 a > 800 ? a -= 800 - random(10) : a += 144;
                 b = a + (10 - random(20));
-                new bullet(a, -20, b, 600, 3, 10, `inset 0px 0px 10px 2px rgb(${(c%2)*255}, ${((c+1)%2)*255}, 0)`);
+                new bullet(a, -20, b, 600, 3, 10, `inset 0px 0px 10px 2px rgb(${(c % 2) * 255}, ${((c + 1) % 2) * 255}, 0)`);
             }, 50);
         }
 
@@ -634,7 +614,7 @@ function musicBullets() {
                 var degree = random(360);
                 var forward = rotateVector([0, 100], 0 + degree);
                 if (Math.abs(degree % 360) < 120 || Math.abs(degree % 360) > 240) {
-                   bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree, random(20) / 10 + 4, 10, "inset 0px 0px 10px 2px rgb(0,255,0)");
+                    bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree, random(20) / 10 + 4, 10, "inset 0px 0px 10px 2px rgb(0,255,0)");
                 }
 
             }, 20);
@@ -657,20 +637,20 @@ function musicBullets() {
             }, 150);
         }
 
-        if(nextBeatTime >= 250 && nextBeatTime <= 280){
+        if (nextBeatTime >= 250 && nextBeatTime <= 280) {
             for (var v = 0 + (nextBeatTime - 249) / 2; v <= 7 + (nextBeatTime - 249) / 2; v++) {
                 var degree = (nextBeatTime - 249) / 2 * 8 + (v * 360 / 8);
                 var forward = rotateVector([0, 120], 0 + degree);
                 if (Math.abs(degree % 360) < 120 || Math.abs(degree % 360) > 240) {
-                    for(var w=-1;w<=1;w++){
-                    bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + w*6 + degree, 3, 40, "none", "./morgan.png");
+                    for (var w = -1; w <= 1; w++) {
+                        bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + w * 6 + degree, 3, 40, "none", "./morgan.png");
                     }
                 }
             }
         }
 
-        if(nextBeatTime == 265){
-            
+        if (nextBeatTime == 265) {
+
             closing = 0;
             Snowing[0] = setInterval(() => {
                 closing += 2.5;
@@ -678,37 +658,177 @@ function musicBullets() {
                     clearInterval(Snowing[0]);
                 }
                 new bullet(closing, -10, (random(20 + closing)), 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
-                new bullet(800-closing, -10, (random(20 + closing)) + 780 - closing, 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
+                new bullet(800 - closing, -10, (random(20 + closing)) + 780 - closing, 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
             }, 50);
 
         }
 
-        if(nextBeatTime == 281){
-
-            var a = 0, b = 0;
-            // Snowing[0] = setInterval(() => {
-            //     if (nextBeatTime >= 296) {
-            //         clearInterval(Snowing[0]);
-            //     }
-            //     a > 800 ? a -= 800 - random(10) : a += 144;;
-            //     new bullet(a, -20, b, 600, 3, 10, "inset 0px 0px 10px 2px rgb(255, 0, 0)");
-            // }, 100);
+        if (nextBeatTime == 277) {
 
             var a = 0, b = 0, c = 0;
-            Snowing[0] = setInterval(() => {
+            Snowing[1] = setInterval(() => {
                 c++;
-                if (nextBeatTime >= 313) {
-                    clearInterval(Snowing[0]);
+                if (nextBeatTime >= 309) {
+                    clearInterval(Snowing[1]);
                 }
                 a > 800 ? a -= 800 - random(10) : a += 333;
                 b = a + (10 - random(20));
-                // for(i=0;i<3;i++){
-                    new bullet(a, -20, b, 600, 3, 10, `inset 0px 0px 10px 2px rgb(${(c%3!=0)*255}, ${(c%3!=1)*255}, ${(c%3==2)*255})`);
+
+                if (c % 3 == 0 && nextBeatTime >= 298) {
+                    new bullet(a, -20, b, 600, 3, 40, 'none', "./morgan.png");
+                }
+                else {
+                    new bullet(a, -20, b, 600, 3, 10, `inset 0px 0px 10px 2px rgb(${(c % 3 != 0) * 255}, ${(c % 3 != 1) * 255}, ${(c % 3 == 2) * 255})`);
+                }
+
                 // }
             }, 20);
 
         }
 
+        if (nextBeatTime == 313) {
+
+            a = 0;
+            b = 0;
+            Snowing[0] = setInterval(() => {
+
+                if (nextBeatTime >= 335) {
+                    clearInterval(Snowing[0]);
+                }
+                var degree = a * 10 - 120 + b;
+                var degree2 = -a * 10 + 120 - b;
+
+                if (degree > 90) {
+                    a = 0;
+                    b += 5;
+                }
+
+                var forward = rotateVector([0, 120], 0 + degree);
+                var forward2 = rotateVector([0, 120], 0 + degree2);
+                for (var i = -1; i <= 1; i += 2) {
+                    bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree + i * 50, 3, 40, "none", "./morgan.png");
+                    bulletVector([400 + forward2[0], 50 + forward2[1]], 800, -90 + degree2 - i * 50, 3, 40, "none", "./morgan.png");
+                }
+                a++;
+            }, 100);
+        }
+
+        if (nextBeatTime >= 336 && nextBeatTime <= 345) {
+            for (var i = 0 + (nextBeatTime - 336); i <= 35 + (nextBeatTime - 336); i++) {
+                var degree = (nextBeatTime - 336) * 18 + (i * 360 / 36);
+                var forward = rotateVector([0, 120], 0 + degree);
+                if (Math.abs(degree % 360) < 120 || Math.abs(degree % 360) > 240) {
+                    bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree, 3, 40 + (nextBeatTime - 336) * 2, "none", "./morgan.png");
+                }
+            }
+        }
+
+        if (nextBeatTime == 345) {
+            c = 0;
+            Snowing[0] = setInterval(() => {
+
+                for (var i = 0; i < 5; i++) {
+                    c++;
+                    if (nextBeatTime >= 362) {
+                        clearInterval(Snowing[0]);
+                    }
+                    var degree = random(360);
+                    var forward = rotateVector([0, 100], 0 + degree);
+                    if (Math.abs(degree % 360) < 120 || Math.abs(degree % 360) > 240) {
+                        bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree, random(20) / 10 + 3, 10, `inset 0px 0px 10px 2px rgb(${(c % 3 != 0) * 255}, ${(c % 3 != 1) * 255}, ${(c % 3 == 2) * 255})`);
+                    }
+                }
+            }, 100);
+
+        }
+
+        if (nextBeatTime == 362) {
+            Snowing[1] = setInterval(() => {
+
+                if ($("#square").width() <= 200) {
+                    console.log($("#square").width());
+                    $("#square").width(200);
+                    clearInterval(Snowing[1]);
+                }
+                else {
+                    meta.x -= 2;
+                    $("#square").width($("#square").width() - 4);
+                }
+
+            }, 35);
+        }
+
+        if (nextBeatTime >= 362 && nextBeatTime <= 398) {
+
+            for (var i = 0; i <= 7; i++) {
+                var a = -500 + i * 200 - ((nextBeatTime - 362) * 100) % 400 + (nextBeatTime - 362);
+                var b = a + 500;
+                new bullet(a, -20, b, 620, 5, 30, "inset 0px 0px 5px 2px rgb(255, 255, 255)");
+            }
+        }
+        if (nextBeatTime >= 378 && nextBeatTime <= 398) {
+
+            for (var i = 0; i <= 7; i++) {
+                var a = -600 + i * 200 - ((nextBeatTime - 378) * 100) % 400 + (nextBeatTime - 362);
+                var b = a + 500;
+                new bullet(a, -20, b, 620, 5, 30, "inset 0px 0px 5px 2px rgb(0, 255, 0)");
+            }
+
+        }
+
+        if (nextBeatTime == 394) {
+            Snowing[1] = setInterval(() => {
+
+                if ($("#square").width() >= 800) {
+                    console.log($("#square").width());
+                    $("#square").width(800);
+                    clearInterval(Snowing[1]);
+                }
+                else {
+                    meta.x += 1;
+                    $("#square").width($("#square").width() + 2);
+                }
+            }, 17);
+        }
+        c = 0;
+        if (nextBeatTime >= 410 && nextBeatTime <= 417) {
+            a = 0, b = 0;
+            if (nextBeatTime % 2 == 0) {
+
+                Snowing[3] = setInterval(() => {
+                    if (a++ >= 5) {
+                        clearInterval(Snowing[3]);
+                    } else {
+                        for (var i = 1; i <= 4; i++) {
+                            bulletVector([790, 10], 1000, 180 + random(90), random(10) / 10 + 4, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+                        }
+                    }
+                }, 10);
+            }
+            else {
+
+                Snowing[4] = setInterval(() => {
+                    if (b++ >= 5) {
+                        clearInterval(Snowing[4]);
+                    } else {
+                        for (var i = 1; i <= 4; i++) {
+                            bulletVector([10, 10], 1000, 270 + random(90), random(10) / 10 + 4, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
+                        }
+                    }
+                }, 10);
+            }
+        }
+
+        if (nextBeatTime == 418) {
+            for (var i = 0; i <= 107; i++) {
+                var k = Math.floor(i / 36);
+                var degree = i * 10 + k * 3.3;
+                var forward = rotateVector([0, 50 - k * 50], 0 + degree);
+                if (Math.abs(degree % 360) < 120 || Math.abs(degree % 360) > 240) {
+                    bulletVector([400 + forward[0], 50 + forward[1]], 800, -90 + degree, 4 + k, 40, "none", "./morgan.png");
+                }
+            }
+        }
 
         console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
         // audio['b'].play();
