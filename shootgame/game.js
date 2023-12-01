@@ -216,8 +216,8 @@ jQuery(document).ready(function () {
     $("#startbutton").click(function () {
         // $("body").css({ "cursor": "none" });
         $("#startbutton").css({ "display": "none" });
-        var GameInterval = setInterval(game, 16.67);
-        var MusicInterval = setInterval(musicBullets, 1);
+        var GameInterval = setInterval(game, 16);
+        var MusicInterval = setInterval(musicBullets, 17);
         $("#square").append(`<div id="premovetext">Use Arrow Keys to move<br>Use Shift to focus</div>`);
         $("#squareout").append(`<div id="lynics"></div>`);
 
@@ -659,7 +659,7 @@ function musicBullets() {
                 }
                 new bullet(closing, -10, (random(20 + closing)), 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
                 new bullet(800 - closing, -10, (random(20 + closing)) + 780 - closing, 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
-            }, 50);
+            }, 75);
 
         }
 
@@ -830,7 +830,7 @@ function musicBullets() {
             }
         }
 
-        console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
+        // console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
         // audio['b'].play();
 
     }
