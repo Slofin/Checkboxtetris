@@ -33,7 +33,7 @@ body {
     transform: translate(-50%, -50%);
     user-zoom: none;
     user-select: none;
-    overflow:hidden;
+    /* overflow:hidden; */
 }
 
 #lynics {
