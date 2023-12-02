@@ -2,12 +2,13 @@ html{
     backface-visibility: hidden;
     perspective: 1000;
     overflow: hidden;
-    
+    margin: 0; height: 100%; overflow: hidden;
 }
 
 body {
     background: #000;
     /* cursor: none; */
+    margin: 0; height: 100%; overflow: hidden;
 }
 
 #squareout {
@@ -24,14 +25,15 @@ body {
 #square {
     top: 50%;
     left: 50%;
-    position: absolute;
+    position: fixed;
     width: 800px;
     height: 600px;
     border: white 2px solid;
     /* box-shadow : 0px 0px 20px 8px rgb(255, 255, 255); */
     transform: translate(-50%, -50%);
-    
-    overflow: hidden;
+    user-zoom: none;
+    user-select: none;
+    overflow:hidden;
 }
 
 #lynics {
@@ -61,22 +63,20 @@ body {
     height: 40px;
     display: block;
     position: fixed;
-    /* background-image: url(./metaorb.png); */
     background-size: 100px 100px;
     top: 80%;
     left: 52.5%;
     transform: translate(-50%, -50%) rotate(0deg);
     /* border: white 1px solid; */
     border-radius: 100%;
-    
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
     pointer-events: none;
     user-select:none;
-    /* opacity: 0.5; */
-    /* box-shadow: 0px 10px rgba(255,255,255,1); */
     overflow: none;
+    animation-iteration-count: infinite;
+    animation-duration: 0.001s;
 }
 
 .bullet{
@@ -178,6 +178,21 @@ body {
     }
     100%{
         box-shadow : none;
+    }
+}
+
+@keyframes hurt{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    50.0000001%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
     }
 }
 
