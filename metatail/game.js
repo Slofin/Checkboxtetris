@@ -361,9 +361,6 @@ function metaHitbox() {
         var bY = parseInt(nearest.css("top"), 10);
 
         var dist = Math.hypot(meta.x - bX, meta.y - bY);
-        if (keyboardInput[' ']) {
-            console.log(dist);
-        }
 
         if (dist < parseInt(nearest.css("height"), 10) / 2 + metaHitboxSize /*this is meta's size*/ && metaInvincibility==false) {
 
@@ -660,13 +657,13 @@ function musicBullets() {
 
             closing = 0;
             Snowing[0] = setInterval(() => {
-                closing += 2.5;
+                closing += 2;
                 if (nextBeatTime >= 280) {
                     clearInterval(Snowing[0]);
                 }
                 new bullet(closing, -10, (random(20 + closing)), 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
                 new bullet(800 - closing, -10, (random(20 + closing)) + 780 - closing, 600, 2, 20, "inset 0px 0px 10px 2px rgb(255, 255, 0)");
-            }, 75);
+            }, 150);
 
         }
 
@@ -977,7 +974,7 @@ function musicBullets() {
             },3000);
         }
 
-        console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
+        // console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
         // audio['b'].play();
     }
 }
