@@ -827,7 +827,7 @@ function musicBullets() {
                         clearInterval(Snowing[1]);
                     } else {
                         for (var i = 1; i <= 4; i++) {
-                            bulletVector([790, 10], 600, 180 + random(90), random(10) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
+                            bulletVector([790, 10], 1000, 180 + random(90), random(10) / 10 + 4, 20, "inset 0px 0px 10px 2px rgb(255,0, 0)");
                         }
                     }
                 }, 10);
@@ -839,7 +839,7 @@ function musicBullets() {
                         clearInterval(Snowing[4]);
                     } else {
                         for (var i = 1; i <= 4; i++) {
-                            bulletVector([10, 10], 600, 270 + random(90), random(10) / 10 + 3, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
+                            bulletVector([10, 10], 1000, 270 + random(90), random(10) / 10 + 4, 20, "inset 0px 0px 10px 2px rgb(0,255, 0)");
                         }
                     }
                 }, 10);
@@ -980,6 +980,5 @@ function musicBullets() {
         }
 
         // console.log(nextBeatTime, audio["m"].currentTime, beatTimes[nextBeatTime]);
-        // audio['b'].play();
     }
 }
