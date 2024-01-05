@@ -83,8 +83,17 @@ function chamber(type, floor) {
                     console.log(`There's Key at B${found[0][0]} in ${type} Chamber`);
                     $(`#key`).text(`Key : ${key}`);
                 }
+                else if(e[1] == "Mew"){
+                    mew++;
+                    console.log(`There's Mew chance at B${found[0][0]} in ${type} Chamber`);
+                }
+                else if(e[1] == "Exit"){
+                    console.log(`Reach Exit B${found[0][0]} in ${type} Chamber`);
+                    $(`#${chamberNow}`).unbind("click");
+                    exit = true;
+                }
                 else{
-                    console.log(`There's ${e[1]} Chamber Switch in B${e[0]}`);
+                    // console.log(`There's ${e[1]} Chamber Switch in B${e[0]}`);
                 }
                 $(`#${e[1]}`).text(`B${e[0]}`);
                 // console.log(e[1]);
