@@ -1,0 +1,108 @@
+body {
+    display: flex;
+    justify-content: center;
+    background-color: #111116;
+    flex-direction: column;
+    align-items: center;
+}
+
+#main {
+    display: flex;
+    width: 90vh;
+    height: 90vh;
+    /* border: 1px solid white; */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+.blocks {
+    user-select: none;
+    font-size: 2em;
+    color: white;
+    display: flex;
+    width: 17vh;
+    height: 17vh;
+    border: 1px solid white;
+    border-radius: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.hiddenblock {
+    border: 1px;
+}
+
+#key {
+    color: white;
+    font-size: 2em;
+}
+
+#Normal {
+    border: 1px solid white;
+}
+
+#Fire {
+    border: 1px solid red;
+}
+
+#Water {
+    border: 1px solid cornflowerblue;
+}
+
+#Grass {
+    border: 1px solid green;
+}
+
+#Electric {
+    border: 1px solid yellow;
+}
+
+#Psychic {
+    border: 1px solid #Fbb8ca;
+}
+
+#Fighting {
+    border: 1px solid darkred;
+}
+
+#Ghost {
+    border: 1px solid #7892d2;
+}
+
+#Dark {
+    border: 1px solid gray;
+}
+
+#Flying {
+    border: 1px solid #97d7df;
+}
+
+#Rock {
+    border: 1px solid #F87297;
+}
+
+#Dragon {
+    border: 1px solid #f3e5b1;
+}
+
+#Bug {
+    border: 1px solid #bee035;
+}
+
+#Ground {
+    border: 1px solid #f2ca2a;
+}
+
+#Ice {
+    border: 1px solid lightskyblue;
+}
+
+#Poison {
+    border: 1px solid purple;
+}
+
+#Steel {
+    border: 1px solid #c6c6c6;
+}
