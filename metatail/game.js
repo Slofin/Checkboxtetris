@@ -82,9 +82,6 @@ var lynics = [
     ``
 ];
 
-
-
-
 var nextLynicsBeatTime = [
     16, 21, 31, 41, 51, 59, 69, 81, 94, 110, 120, 120, 134,
     138, 145, 154, 161, 169, 177, 185, 193, 201, 209, 217, 225,
@@ -94,8 +91,6 @@ var nextLynicsBeatTime = [
     529, 545, 561, 573];
 
 var lynicsidx = 0;
-
-
 
 var keyboardInput = [],
     metaSpeed,
@@ -117,7 +112,7 @@ var rotateVector = function (vec, ang) {
     var cos = Math.cos(ang);
     var sin = Math.sin(ang);
     return new Array(Math.round(10000 * (vec[0] * cos - vec[1] * sin)) / 10000, Math.round(10000 * (vec[0] * sin + vec[1] * cos)) / 10000);
-};
+};  
 
 function angle(cx, cy, ex, ey) {
     var dy = ey - cy;
@@ -389,7 +384,6 @@ function random(n) {
 }
 
 function musicBullets() {
-
     if (beatTimes[nextBeatTime] <= audio["m"].currentTime || beatTimes[nextBeatTime] - audio["m"].currentTime < 0.0166) {
         nextBeatTime++;
 
@@ -577,8 +571,6 @@ function musicBullets() {
             }
         }
 
-
-
         if (nextBeatTime >= 202 && nextBeatTime <= 234) {
             var a = 0;
             if (nextBeatTime >= 210) {
@@ -626,7 +618,6 @@ function musicBullets() {
             }, 20);
 
         }
-
 
         if (nextBeatTime == 246 ||
             nextBeatTime == 247 ||
