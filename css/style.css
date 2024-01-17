@@ -73,6 +73,12 @@ body {
     width: 100%;
 }
 
+#gitpage{
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+}
+
 /* div[class^="col"]:nth-child(odd) {
     background-color: rgb(70, 70, 70);
 }
