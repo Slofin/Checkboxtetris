@@ -32,7 +32,7 @@ body {
     transform: translate(-50%, -50%);
     /* border: 3px rgb(255, 255, 255) solid; */
     justify-content: center;
-    transition: 0.5s all;
+    transition: width 0.5s height 0.5s;
     color: white;
 }
 
@@ -140,6 +140,7 @@ body {
 }
 
 #versionText {
+    z-index: 50;
     position: fixed;
     bottom: -8px;
     left: 8px;
@@ -192,15 +193,74 @@ body {
 }
 
 #QRCode {
+    z-index: 100;
     visibility: visible;
     position: fixed;
-    right: 2%;
-    bottom: 60vh;
-    transform: scale(1.3);
+    left: 90%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
     pointer-events: none;
     user-select: none;
     /* visibility: hidden; */
     /* transition: opacity 2s; */
+}
+
+#QRCodeGame {
+    z-index: 100;
+    visibility: none;
+    position: fixed;
+    opacity: 0;
+    left: 10%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    pointer-events: none;
+    user-select: none;
+    /* visibility: hidden; */
+    transition: opacity 1s;
+}
+
+#flashlight {
+    /* left: 50%;
+    top: 50%; */
+    width: 200vw;
+    height: 200vh;
+    opacity: 100%;
+    background-image: unset;
+    visibility: visible;
+    position: absolute;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 30;
+    background-image: url(./img/light.png);
+    background: radial-gradient(circle at ' + x + ' px ' + y + ' px, transparent, #000 30%);
+    pointer-events: none;
+    /* overflow: none; */
+}
+
+#flashlightinit {
+    visibility: visible;
+    z-index: 50;
+    content: "oven";
+    width: 90%;
+    height: 30%;
+    color: white;
+    user-select: none;
+    background-color: unset;
+    font-weight: bold;
+    display: block;
+    word-break: break-all;
+    flex-wrap: wrap;
+    font-size: calc(var(--font-size) * 1.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    text-align: center;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    /* border: 1px solid white; */
 }
 
 /* 主要介面 */
@@ -299,10 +359,12 @@ body {
 
 /* 倒數計時器 */
 .clock {
+    visibility: hidden;
+    z-index: 50;
     transform: scaleY(1.3);
     font-family: DSEG7;
     color: red;
-    font-size: calc(var(--font-size) * 1.4);
+    font-size: calc(var(--font-size) * var(--countertext));
     position: absolute;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -324,17 +386,6 @@ body {
     user-select: none;
 }
 
-.clock {
-    font-family: DSEG7;
-    color: red;
-    font-size: calc(var(--font-size) * var(--countertext));
-    position: absolute;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    user-select: none;
-    /* animation-name: numberFlashing; */
-}
-
 .clockbg {
     transform: scaleY(1.3);
     font-family: DSEG7;
@@ -344,10 +395,25 @@ body {
     user-select: none;
 }
 
+.clockscreen {
+    visibility: hidden;
+    font-family: DSEG7;
+    color: red;
+    font-size: calc(var(--font-size) * var(--countertext));
+    position: absolute;
+    animation-duration: 5s;
+    animation-iteration-count: 1;
+    user-select: none;
+    left: 0px;
+    top: 0px;
+    transform: translate(-0%, -50%) scaleY(1.3);
+}
+
 /* 倒數計時器 */
 
 /* 錯誤計數器 */
 .counter {
+    z-index: 50;
     letter-spacing: -9px;
     font-family: DSEG14;
     color: red;
@@ -420,6 +486,7 @@ body {
     }
 
     #startText {
+        z-index: 50;
         font-size: 48px;
     }
 
@@ -436,7 +503,10 @@ body {
     #QRCode {
         visibility: hidden;
     }
-
+    #flashlight,#flashlightinit {
+        display: none;
+        visibility: hidden;
+    }
 }
 
 @media (min-width: 800px) {
@@ -491,6 +561,11 @@ body {
 
     #QRCode {
         visibility: hidden;
+    }
+
+    #flashlight,#flashlightinit {
+        display: block;
+        visibility: visible;
     }
 }
 

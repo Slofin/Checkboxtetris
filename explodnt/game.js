@@ -17,7 +17,7 @@ var bombId = [];        // 用來存放各種 bombQuest
 var randomOrder = [];   // 用來存放0~5，不重複數字的隨機陣列
 var bombIdCount = 0;    // 用來存放id
 var life = 2;           // 這是生命。勝利時，將生命設置成3
-var gameTime = 150 * 1000;    // 計時
+var gameTime = 180 * 1000;    // 計時
 var audio = {}; // 音效
 var wrongs = 0; // 錯誤次數 小專報告用
 var beeping = {};
@@ -28,7 +28,7 @@ class bombQuest { // 一個炸彈模塊由以下五個值組合：
         this.question = question;       // 問題
         this.answer = answer;           // 答案
         this.whereBomb = whereBomb;     // 炸彈的位置
-        this.bombType = bombType;       // 炸彈的類型，只有
+        this.bombType = bombType;       // 炸彈的類型
     }
 }
 // -----宣告變數-----
@@ -48,15 +48,16 @@ function skipIntro() {
 
     console.log(`[DEBUG] Skipped Intro`);
     // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("buttonToPDF", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("divRightBottomButton", { 'visibility': 'hidden' });
+    // setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("divBackground", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
-    setStyle("buttonToPDF", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
-    setStyle("divRightBottomButton", { 'visibility': 'hidden' });
-    setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 0.0001s', 'animation-fill-mode': 'forwards' });
     setBomb(randomOrder[5], 0);
 
     setStyle("divBomb", { 'animation': 'fade-in 0.25s', 'visibility': 'visible' });
+    $(".clockscreen").css({ 'animation': 'fade-in 5s', 'visibility': 'visible' })
 
 }
 
@@ -70,19 +71,20 @@ function gameStartButton() {
     audioPlay("MusicIntro");
     audio["MusicIntro"].volume = 0.66;
     // setStyle("versionText", { 'animation': 'fade-out 0.0001s', 'animation-fill-mode': 'forwards' });
+    // setStyle("buttonToPDF", { 'animation': 'fade-out 0.2s', 'animation-fill-mode': 'forwards' });
+    // setStyle("divRightBottomButton", { 'visibility': 'hidden' });
+    // setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("divBackground", { 'animation': 'fade-out 2s', 'animation-fill-mode': 'forwards' });
-    setStyle("buttonToPDF", { 'animation': 'fade-out 0.2s', 'animation-fill-mode': 'forwards' });
-    setStyle("divRightBottomButton", { 'visibility': 'hidden' });
-    setStyle("divRightBottomButtonText", { 'visibility': 'hidden' });
     setStyle("initButton", { 'visibility': 'hidden' });
     setStyle("startText", { 'animation': 'fadeInAndOut 5s', 'animation-fill-mode': 'forwards' });
+
     setBomb(randomOrder[5], 0);
 
 
     //有延遲的動畫
     setTimeout(function () {
         setStyle("divBomb", { 'animation': 'fade-in 5s', 'visibility': 'visible' });
-
+        $(".clockscreen").css({ 'animation-name': 'fade-in', 'visibility': 'visible', 'animation-fill-mode': 'forwards' })
     }, 4000);
 
 
@@ -168,9 +170,9 @@ function setBomb(bombDiv, bombType) {
                                 clearInterval(timingLessMin);
                             }
                             if (minTime < 30) {
-                                $(".clock").css("animation-name", "numberFlashing");
-
                                 if (musicFlag == 1) {
+                                    $(".clock").css({"animation-name": "numberFlashing","animation-iteration-count": "infinite","animation-duration":"1s"});
+                                    $(".clockscreen").css({"animation-name": "numberFlashing","animation-iteration-count": "infinite","animation-duration":"1s"});
                                     console.log("[Audio] musicStage2 Fade Start");
                                     musicFlag = 2;
                                     var musicStage2Fade = setInterval(function () {
@@ -182,11 +184,11 @@ function setBomb(bombDiv, bombType) {
                                             MusicStage[1].volume = Math.floor(MusicStage[1].volume * 1000 - 10) / 1000;
                                             MusicStage[2].volume = Math.floor(MusicStage[2].volume * 1000 + 10) / 1000;
                                         }
-                                    }, 10);
+                                    }, 100);
                                 }
                             }
                             if (minTime <= 0) {
-                                // setStyle("QRCode", { 'visibility': 'hidden'});
+
                                 clearInterval(timingLessMin);
                                 minTime = 0;
                                 defusedOrExploded(false);
@@ -216,7 +218,19 @@ function setBomb(bombDiv, bombType) {
                 <div class="counterbg">XX</div>
             </div>    
             `
+
+
             bomb[bombDiv].innerHTML = bombText;
+
+            //我不知道為什麼改變位置需要塞延時才修得好，但這樣才過得去
+            setTimeout(() => {
+                var element = document.getElementsByClassName('clock');
+                var topPos = element[0].getBoundingClientRect().top + window.scrollY;
+                var leftPos = element[0].getBoundingClientRect().left + window.scrollX;
+                $(".clockscreen").css({ left: leftPos + 'px', top: topPos + 'px' });
+                $(".clockscreen").text(`${preTimerMinute}:${preTimerSecond}`);
+            }, 500);
+
 
             //隱藏沒有炸彈的方格
             bomb.forEach(e => {
@@ -422,7 +436,8 @@ function setBomb(bombDiv, bombType) {
             }
 
             //設定這個炸彈的數值與答案
-            bombText += `<button id="bombbutton${bombIdCount}" class="roundButton roundButton${questions[1]}">${questions[0]}</button>`;
+            bombText += `<button id="bombbutton${bombIdCount}" 
+            class="roundButton roundButton${questions[1]}">${questions[0]}</button>`;
             bombId.push(new bombQuest(bombIdCount, questions[0], answer, bombDiv, bombType));
             bombId.push(new bombQuest(bombIdCount + 1, questions[1], 0, bombDiv, -1));
 
@@ -664,7 +679,7 @@ function bombTrigger(correct, bombDivForSolveCheck) {
                 "visibility": "hidden"
             });
             bomb[bombDivForSolveCheck].innerHTML = '';
-        }, 1500);
+        }, 1400);
 
     }
     else {  // 回答錯誤
@@ -724,17 +739,23 @@ function bombTrigger(correct, bombDivForSolveCheck) {
 
 // 觸發炸彈，或者是拆掉炸彈
 function defusedOrExploded(correct) {
+
+    MusicStage[0].volume = 0;
+    MusicStage[1].volume = 0;
+    MusicStage[2].volume = 0;
+    clearInterval(beeping);
+    setStyle("QRCode", { 'visibility': 'hidden' });
+    setTimeout(() => {
+        setStyle("QRCodeGame", { 'visibility': 'visible', 'opacity': '1' });
+    }, 6000);
+
     if (correct) {
 
         life = 3;
-        clearInterval(beeping);
-
-        MusicStage[0].volume = 0;
-        MusicStage[1].volume = 0;
-        MusicStage[2].volume = 0;
 
         $(".clock").css("animation-name", "numberFlashing");
         $(".clock").css("animation-iteration-count", "1");
+        setStyle("clockscreen",{"animation-iteration-count": "1"},{"animation-name": "numberFlashing"})
 
         setTimeout(() => {
             audioPlay("BombDefused");
@@ -749,18 +770,19 @@ function defusedOrExploded(correct) {
     else {
 
         console.log("[Game] Game Over");
-        MusicStage[2].volume = 0;
-        clearInterval(beeping);
         audioPlay("explode");
         $(".clock").css("animation-name", "");
+        setStyle("clockscreen",{ 'visibility': 'hidden' })
         setStyle("divBomb", { 'visibility': 'hidden' });
         document.body.style = `background-color: rgb(0, 0, 0)`;
-
+        setStyle("QRCodeGame", { 'left': '50%' });
         setStyle("divForeground", {
             'animation': 'fadeInAndOut 10s',
             'animation-fill-mode': 'forwards',
             'background-image': 'url(./img/youdied.png)'
         });
+        
+
 
         // 滿 滿 的 動 畫
     }
@@ -792,6 +814,33 @@ function Bag() {
     }
 }
 
+// 讓黑幕跟著滑鼠
+
+jQuery(document).ready(function () {
+
+    var mouseX = 0, mouseY = 0;
+    var xp = 0, yp = 0;
+
+    $(document).mousemove(function (e) {
+
+        if($("#flashlightinit").css("visibility") == "visible"){
+            setStyle("flashlightinit", { 'animation': 'fade-out .5s', 'animation-fill-mode': 'forwards' });
+        }
+
+        mouseX = e.pageX - $(window).width();
+        mouseY = e.pageY - $(window).height();
+    });
+
+    setInterval(function () {
+        xp += ((mouseX - xp) / 10);
+        yp += ((mouseY - yp) / 10);
+        $("#flashlight").css({ left: xp + 'px', top: yp + 'px' });
+    }, 20);
+
+});
+
+
+
 // -------功能-------
 
 // ------瀏覽器------
@@ -816,6 +865,17 @@ document.addEventListener('gestureend', function (e) {
 });
 
 // ------瀏覽器------
+
+$(window).resize(function () {
+    setTimeout(() => {
+        var element = document.getElementsByClassName('clock');
+        var topPos = element[0].getBoundingClientRect().top + window.scrollY;
+        var leftPos = element[0].getBoundingClientRect().left + window.scrollX;
+        $(".clockscreen").css({ left: leftPos + 'px', top: topPos + 'px' });
+    }, 50);
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+});
 
 // -----音效設定-----
 
