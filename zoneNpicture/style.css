@@ -1,0 +1,17 @@
+html,body{
+    background: #112;
+    margin: 0; height: 100%; overflow: hidden;
+}
+
+#pictureRaven{
+    width: 75vw;
+    margin-bottom: 12px;
+}
+
+#PictureAndButton {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <title>zonepicture.js</title>
+</head>
+
+<body>
+
+    <div id="PictureAndButton">
+        <img src="./peaceraven.png" alt="praise banan" id="pictureRaven">
+        <button id="demo">Click Me And Drag a Square on site!</button>
+    </div>
+
+</body>
+
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="./zonepicture.js"></script>
+
+<script>
+    const btn = document.querySelector('#demo');
+    btn.addEventListener('click', capture);
+</script>
+
+</html>
